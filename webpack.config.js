@@ -32,10 +32,10 @@ module.exports = {
             //     include: `${__dirname}/static_src`,
             //     loader: 'babel-loader?presets[]=react&presents[]=es2015&presets',
             // },
-            // {
-            //     test: /\.css$/,
-            //     loader: 'style-loader!css-loader',
-            // },
+            {
+                test: /\.css$/,
+                loader: 'style-loader!css-loader',
+            },
             // {
             //     test: /\.scss$/,
             //     loader: 'style-loader!css-loader!sass-loader?outputStyle=expanded',
@@ -55,8 +55,12 @@ module.exports = {
         ]
     }
     ,resolve: {
-        modules: [`${__dirname}/static_src`, 'node_modules'],
+        modules: ['/static_src', 'node_modules'],
         extensions: ['.js', '.jsx', '.css'],
+    },
+    resolveLoader: {
+        modules: ['node_modules'],
+        extensions: ['.loader.js', '.js', '.css']
     },
     watch: NODE_ENV === 'development',
     watchOptions: {

@@ -5,7 +5,7 @@ import {Link} from "react-router-dom";
 class LayoutComponent extends React.Component {
     render() {
         return (
-            <div>
+            <div className="menu">
                 <Link to="/teams">
                     <div>
                         Команды

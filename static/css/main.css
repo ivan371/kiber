@@ -1,0 +1,11 @@
+.menu {
+    display: flex;
+    height: 20px;
+    justify-content: space-around;
+    background-color: chocolate;
+    color: white;
+}
+.menu a{
+    text-decoration: none;
+    color: white;
+}
