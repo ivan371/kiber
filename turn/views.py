@@ -1,3 +1,14 @@
+from __future__ import absolute_import
 from django.shortcuts import render
+from rest_framework import viewsets
 
-# Create your views here.
+from app.api import router
+from .models import Turn
+from .serfializers import  TurnSerializer
+
+
+class TurnViewSet(viewsets.ModelViewSet):
+    queryset = Turn.objects.all().order_by('-id')
+    serializer_class = TurnSerializer
+
+router.register('turns', TurnViewSet)

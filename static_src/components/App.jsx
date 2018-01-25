@@ -4,6 +4,7 @@ import Layout from "./Layout";
 import Teams from "./Team/Teams";
 import Games from "./Game/Games";
 import OwnTeam from "./Team/OwnTeam";
+import OwnGame from "./Game/OwnGame";
 
 
 class AppComponent extends React.Component {
@@ -15,6 +16,7 @@ class AppComponent extends React.Component {
                     <Route exact path="/teams" component={Teams}/>
                     <Route exact path="/team/:id" component={OwnTeam}/>
                     <Route exact path="/games" component={Games}/>
+                    <Route exact path="/game/:id" component={OwnGame}/>
                 </Switch>
             </div>
         );

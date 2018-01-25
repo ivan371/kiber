@@ -1486,7 +1486,7 @@ var matchPath = function matchPath(pathname) {
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.LOAD_TEAM_ERROR = exports.LOAD_TEAM = exports.LOAD_TEAM_SUCCESS = exports.LOAD_TEAMS_ERROR = exports.LOAD_TEAMS = exports.LOAD_TEAMS_MORE = exports.LOAD_TEAMS_SUCCESS = undefined;
+exports.LOAD_TEAM_ERROR = exports.LOAD_TEAM = exports.LOAD_OWN_TEAM_SUCCESS = exports.LOAD_TEAM_SUCCESS = exports.LOAD_TEAMS_ERROR = exports.LOAD_TEAMS = exports.LOAD_TEAMS_MORE = exports.LOAD_TEAMS_SUCCESS = undefined;
 exports.loadTeams = loadTeams;
 exports.loadTeamsMore = loadTeamsMore;
 exports.loadTeam = loadTeam;
@@ -1501,6 +1501,7 @@ var LOAD_TEAMS_MORE = exports.LOAD_TEAMS_MORE = 'LOAD_TEAMS_MORE';
 var LOAD_TEAMS = exports.LOAD_TEAMS = 'LOAD_TEAMS';
 var LOAD_TEAMS_ERROR = exports.LOAD_TEAMS_ERROR = 'LOAD_TEAMS_ERROR';
 var LOAD_TEAM_SUCCESS = exports.LOAD_TEAM_SUCCESS = 'LOAD_TEAM_SUCCESS';
+var LOAD_OWN_TEAM_SUCCESS = exports.LOAD_OWN_TEAM_SUCCESS = 'LOAD_TEAM_SUCCESS';
 var LOAD_TEAM = exports.LOAD_TEAM = 'LOAD_TEAM';
 var LOAD_TEAM_ERROR = exports.LOAD_TEAM_ERROR = 'LOAD_TEAM_ERROR';
 
@@ -1515,7 +1516,7 @@ function loadTeamsMore(url) {
 }
 
 function loadTeam(url) {
-    var types = [LOAD_TEAM, LOAD_TEAM_SUCCESS, LOAD_TEAM_ERROR];
+    var types = [LOAD_TEAM, LOAD_OWN_TEAM_SUCCESS, LOAD_TEAM_ERROR];
     return (0, _load.apiLoad)(url, 'GET', types, null, _teams.teamNormalize, true);
 }
 
@@ -2989,6 +2990,9 @@ Object.defineProperty(exports, "__esModule", {
 var urls = exports.urls = {
     team: {
         teamUrl: '/api/teams/'
+    },
+    game: {
+        gameUrl: '/api/games/'
     }
 };
 
@@ -27981,12 +27985,17 @@ var _users = __webpack_require__(262);
 
 var _users2 = _interopRequireDefault(_users);
 
+var _games = __webpack_require__(286);
+
+var _games2 = _interopRequireDefault(_games);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = (0, _redux.combineReducers)({
     routerReducer: _reactRouterRedux.routerReducer,
     teams: _teams2.default,
-    users: _users2.default
+    users: _users2.default,
+    games: _games2.default
 });
 
 /***/ }),
@@ -28055,6 +28064,15 @@ function teams() {
                 },
                 teamsList: {
                     $unshift: [action.payload.result]
+                }
+            });
+        case _teams.LOAD_OWN_TEAM_SUCCESS:
+            return (0, _reactAddonsUpdate2.default)(store, {
+                isLoading: {
+                    $set: true
+                },
+                teamsList: {
+                    $set: [action.payload.result]
                 }
             });
         case _teams.LOAD_TEAMS_SUCCESS:
@@ -31978,6 +31996,10 @@ var _OwnTeam = __webpack_require__(282);
 
 var _OwnTeam2 = _interopRequireDefault(_OwnTeam);
 
+var _OwnGame = __webpack_require__(289);
+
+var _OwnGame2 = _interopRequireDefault(_OwnGame);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -32007,7 +32029,8 @@ var AppComponent = function (_React$Component) {
                     null,
                     _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: "/teams", component: _Teams2.default }),
                     _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: "/team/:id", component: _OwnTeam2.default }),
-                    _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: "/games", component: _Games2.default })
+                    _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: "/games", component: _Games2.default }),
+                    _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: "/game/:id", component: _OwnGame2.default })
                 )
             );
         }
@@ -33049,11 +33072,29 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
+
+var _games = __webpack_require__(284);
+
+var _constans = __webpack_require__(75);
+
+var _redux = __webpack_require__(10);
+
+var _reactRedux = __webpack_require__(19);
+
+var _Game = __webpack_require__(287);
+
+var _Game2 = _interopRequireDefault(_Game);
+
+var _GameForm = __webpack_require__(288);
+
+var _GameForm2 = _interopRequireDefault(_GameForm);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -33063,30 +33104,79 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var Games = function (_React$Component) {
-    _inherits(Games, _React$Component);
+var GamesComponent = function (_React$Component) {
+    _inherits(GamesComponent, _React$Component);
 
-    function Games() {
-        _classCallCheck(this, Games);
+    function GamesComponent() {
+        var _ref;
 
-        return _possibleConstructorReturn(this, (Games.__proto__ || Object.getPrototypeOf(Games)).apply(this, arguments));
+        var _temp, _this, _ret;
+
+        _classCallCheck(this, GamesComponent);
+
+        for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+            args[_key] = arguments[_key];
+        }
+
+        return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = GamesComponent.__proto__ || Object.getPrototypeOf(GamesComponent)).call.apply(_ref, [this].concat(args))), _this), _this.onLoadMore = function (e) {
+            _this.props.loadGamesMore(_constans.urls.game.gameUrl + '?offset=' + (_this.props.page - 1) * 10);
+        }, _temp), _possibleConstructorReturn(_this, _ret);
     }
 
-    _createClass(Games, [{
-        key: 'render',
+    _createClass(GamesComponent, [{
+        key: "componentDidMount",
+        value: function componentDidMount() {
+            this.props.loadGames(_constans.urls.game.gameUrl);
+        }
+    }, {
+        key: "render",
         value: function render() {
+            var gameList = [];
+            if (this.props.isLoading) {
+                gameList = this.props.gameList.map(function (gameId) {
+                    return _react2.default.createElement(_Game2.default, { key: gameId, id: gameId });
+                });
+            }
             return _react2.default.createElement(
-                'div',
-                null,
-                '\u0418\u0433\u0440\u044B'
+                "div",
+                { className: "teams" },
+                _react2.default.createElement(_GameForm2.default, null),
+                gameList,
+                this.props.isLoading && this.props.count > 10 * (this.props.page - 1) ? _react2.default.createElement(
+                    "div",
+                    null,
+                    _react2.default.createElement(
+                        "button",
+                        { onClick: this.onLoadMore },
+                        "\u041F\u043E\u043A\u0430\u0437\u0430\u0442\u044C \u0435\u0449\u0435"
+                    )
+                ) : null
             );
         }
     }]);
 
-    return Games;
+    return GamesComponent;
 }(_react2.default.Component);
 
-exports.default = Games;
+GamesComponent.propTypes = {};
+
+var mapStoreToProps = function mapStoreToProps(state, props) {
+    return {
+        isLoading: state.games.isLoading,
+        gameList: state.games.gameList,
+        count: state.games.count,
+        page: state.games.page
+    };
+};
+
+var mapDispatchToProps = function mapDispatchToProps(dispatch) {
+    return _extends({}, (0, _redux.bindActionCreators)({
+        loadGames: _games.loadGames,
+        loadGamesMore: _games.loadGamesMore
+    }, dispatch));
+};
+
+exports.default = (0, _reactRedux.connect)(mapStoreToProps, mapDispatchToProps)(GamesComponent);
 
 /***/ }),
 /* 282 */
@@ -33266,6 +33356,478 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch) {
 };
 
 exports.default = (0, _reactRedux.connect)(mapStoreToProps, mapDispatchToProps)(OwnTeamComponent);
+
+/***/ }),
+/* 284 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.LOAD_GAME_ERROR = exports.LOAD_GAME = exports.LOAD_GAME_SUCCESS = exports.LOAD_GAMES_ERROR = exports.LOAD_GAMES = exports.LOAD_GAMES_MORE = exports.LOAD_GAMES_SUCCESS = undefined;
+exports.loadGames = loadGames;
+exports.loadGamesMore = loadGamesMore;
+exports.loadGame = loadGame;
+exports.gameCreate = gameCreate;
+
+var _teams = __webpack_require__(190);
+
+var _load = __webpack_require__(197);
+
+var _games = __webpack_require__(285);
+
+var LOAD_GAMES_SUCCESS = exports.LOAD_GAMES_SUCCESS = 'LOAD_GAMES_SUCCESS';
+var LOAD_GAMES_MORE = exports.LOAD_GAMES_MORE = 'LOAD_GAMES_MORE';
+var LOAD_GAMES = exports.LOAD_GAMES = 'LOAD_GAMES';
+var LOAD_GAMES_ERROR = exports.LOAD_GAMES_ERROR = 'LOAD_GAMES_ERROR';
+var LOAD_GAME_SUCCESS = exports.LOAD_GAME_SUCCESS = 'LOAD_GAME_SUCCESS';
+var LOAD_GAME = exports.LOAD_GAME = 'LOAD_GAME';
+var LOAD_GAME_ERROR = exports.LOAD_GAME_ERROR = 'LOAD_GAME_ERROR';
+
+function loadGames(url) {
+    var types = [LOAD_GAMES, LOAD_GAMES_SUCCESS, LOAD_GAMES_ERROR];
+    return (0, _load.apiLoad)(url, 'GET', types, null, _games.gamesNormalize, false);
+}
+
+function loadGamesMore(url) {
+    var types = [LOAD_GAMES, LOAD_GAMES_MORE, LOAD_GAMES_ERROR];
+    return (0, _load.apiLoad)(url, 'GET', types, null, _games.gamesNormalize, false);
+}
+
+function loadGame(url) {
+    var types = [LOAD_GAME, LOAD_GAME_SUCCESS, LOAD_GAME_ERROR];
+    return (0, _load.apiLoad)(url, 'GET', types, null, _games.gameNormalize, true);
+}
+
+function gameCreate(url, name) {
+    var types = [LOAD_GAME, LOAD_GAME_SUCCESS, LOAD_GAME_ERROR];
+    return (0, _load.apiLoad)(url, 'POST', types, JSON.stringify({ name: name }), _games.gameNormalize, true);
+}
+
+/***/ }),
+/* 285 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.gamesNormalize = gamesNormalize;
+exports.gameNormalize = gameNormalize;
+
+var _normalizr = __webpack_require__(191);
+
+function gamesNormalize(game) {
+    var team = new _normalizr.schema.Entity('team');
+    var games = new _normalizr.schema.Entity('game', { 'winner': team });
+    return (0, _normalizr.normalize)(game, [games]);
+}
+
+function gameNormalize(games) {
+    var team = new _normalizr.schema.Entity('team');
+    var game = new _normalizr.schema.Entity('game', { 'winner': team });
+    return (0, _normalizr.normalize)(games, game);
+}
+
+/***/ }),
+/* 286 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.default = games;
+
+var _reactAddonsUpdate = __webpack_require__(107);
+
+var _reactAddonsUpdate2 = _interopRequireDefault(_reactAddonsUpdate);
+
+var _games = __webpack_require__(284);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var inititalStore = {
+    isLoading: false,
+    count: 0,
+    page: 2,
+    games: {},
+    gameList: []
+};
+
+function games() {
+    var store = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : inititalStore;
+    var action = arguments[1];
+
+
+    if (action.hasOwnProperty('payload')) {
+        if (action.payload !== undefined) {
+            if (action.payload.hasOwnProperty('entities')) {
+                if (action.payload.entities.hasOwnProperty('game')) {
+                    store = (0, _reactAddonsUpdate2.default)(store, {
+                        games: {
+                            $merge: action.payload.entities.game
+                        }
+                    });
+                }
+            }
+        }
+    }
+    switch (action.type) {
+        case _games.LOAD_GAMES:
+            return (0, _reactAddonsUpdate2.default)(store, {
+                isLoading: {
+                    $set: false
+                }
+            });
+        case _games.LOAD_GAME:
+            return (0, _reactAddonsUpdate2.default)(store, {
+                isLoading: {
+                    $set: false
+                }
+            });
+        case _games.LOAD_GAME_SUCCESS:
+            return (0, _reactAddonsUpdate2.default)(store, {
+                isLoading: {
+                    $set: true
+                },
+                gameList: {
+                    $unshift: [action.payload.result]
+                }
+            });
+        case _games.LOAD_GAMES_SUCCESS:
+            return (0, _reactAddonsUpdate2.default)(store, {
+                isLoading: {
+                    $set: true
+                },
+                gameList: {
+                    $set: action.payload.result
+                },
+                count: {
+                    $set: action.payload.count
+                },
+                page: {
+                    $set: 2
+                }
+            });
+        case _games.LOAD_GAMES_MORE:
+            return (0, _reactAddonsUpdate2.default)(store, {
+                isLoading: {
+                    $set: true
+                },
+                gamesList: {
+                    $push: action.payload.result
+                },
+                count: {
+                    $set: action.payload.count
+                },
+                page: {
+                    $set: store.page + 1
+                }
+            });
+        default:
+            return store;
+    }
+}
+
+/***/ }),
+/* 287 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactRedux = __webpack_require__(19);
+
+var _redux = __webpack_require__(10);
+
+var _propTypes = __webpack_require__(2);
+
+var _propTypes2 = _interopRequireDefault(_propTypes);
+
+var _reactRouterDom = __webpack_require__(73);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var GameComponent = function (_React$Component) {
+    _inherits(GameComponent, _React$Component);
+
+    function GameComponent() {
+        _classCallCheck(this, GameComponent);
+
+        return _possibleConstructorReturn(this, (GameComponent.__proto__ || Object.getPrototypeOf(GameComponent)).apply(this, arguments));
+    }
+
+    _createClass(GameComponent, [{
+        key: "render",
+        value: function render() {
+            return _react2.default.createElement(
+                "div",
+                { className: "team" },
+                _react2.default.createElement(
+                    "h3",
+                    null,
+                    _react2.default.createElement(
+                        _reactRouterDom.Link,
+                        { to: "/game/" + this.props.id },
+                        this.props.name
+                    )
+                ),
+                _react2.default.createElement(
+                    "p",
+                    null,
+                    this.props.teamName
+                )
+            );
+        }
+    }]);
+
+    return GameComponent;
+}(_react2.default.Component);
+
+GameComponent.propTypes = {
+    id: _propTypes2.default.number.isRequired
+};
+
+var mapStoreToProps = function mapStoreToProps(state, props) {
+    return {
+        name: state.games.games[props.id].name,
+        teamName: state.teams.teams[state.games.games[props.id].winner].name
+    };
+};
+
+var mapDispatchToProps = function mapDispatchToProps(dispatch) {
+    return _extends({}, (0, _redux.bindActionCreators)({}, dispatch));
+};
+
+exports.default = (0, _reactRedux.connect)(mapStoreToProps, mapDispatchToProps)(GameComponent);
+
+/***/ }),
+/* 288 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactRedux = __webpack_require__(19);
+
+var _redux = __webpack_require__(10);
+
+var _propTypes = __webpack_require__(2);
+
+var _propTypes2 = _interopRequireDefault(_propTypes);
+
+var _games = __webpack_require__(284);
+
+var _constans = __webpack_require__(75);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var GameFormComponent = function (_React$Component) {
+    _inherits(GameFormComponent, _React$Component);
+
+    function GameFormComponent() {
+        var _ref;
+
+        var _temp, _this, _ret;
+
+        _classCallCheck(this, GameFormComponent);
+
+        for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+            args[_key] = arguments[_key];
+        }
+
+        return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = GameFormComponent.__proto__ || Object.getPrototypeOf(GameFormComponent)).call.apply(_ref, [this].concat(args))), _this), _this.state = {
+            name: ''
+        }, _this.onChange = function (e) {
+            _this.setState(_defineProperty({}, e.target.name, e.target.value));
+        }, _this.onPress = function (e) {
+            if (e.keyCode === 13) {
+                _this.onCreate(e);
+            }
+        }, _this.onCreate = function (e) {
+            _this.props.gameCreate(_constans.urls.game.gameUrl, _this.state.name);
+            _this.setState({ name: '' });
+        }, _temp), _possibleConstructorReturn(_this, _ret);
+    }
+
+    _createClass(GameFormComponent, [{
+        key: "render",
+        value: function render() {
+            return _react2.default.createElement(
+                "div",
+                { className: "team" },
+                _react2.default.createElement(
+                    "h2",
+                    null,
+                    "\u0421\u043E\u0437\u0434\u0430\u0442\u044C \u0438\u0433\u0440\u0443"
+                ),
+                _react2.default.createElement(
+                    "label",
+                    null,
+                    "\u041D\u0430\u0437\u0432\u0430\u043D\u0438\u0435"
+                ),
+                _react2.default.createElement("input", { type: "text", onChange: this.onChange, onKeyDown: this.onPress, value: this.state.name, name: "name" }),
+                _react2.default.createElement(
+                    "button",
+                    { onClick: this.onCreate },
+                    "\u0421\u043E\u0437\u0434\u0430\u0442\u044C"
+                )
+            );
+        }
+    }]);
+
+    return GameFormComponent;
+}(_react2.default.Component);
+
+GameFormComponent.propTypes = {};
+
+var mapStoreToProps = function mapStoreToProps(state, props) {
+    return {};
+};
+
+var mapDispatchToProps = function mapDispatchToProps(dispatch) {
+    return _extends({}, (0, _redux.bindActionCreators)({
+        gameCreate: _games.gameCreate
+    }, dispatch));
+};
+
+exports.default = (0, _reactRedux.connect)(mapStoreToProps, mapDispatchToProps)(GameFormComponent);
+
+/***/ }),
+/* 289 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactRedux = __webpack_require__(19);
+
+var _redux = __webpack_require__(10);
+
+var _propTypes = __webpack_require__(2);
+
+var _propTypes2 = _interopRequireDefault(_propTypes);
+
+var _constans = __webpack_require__(75);
+
+var _games = __webpack_require__(284);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+// import TeamPage from "./TeamPage";
+
+
+var OwnGameComponent = function (_React$Component) {
+    _inherits(OwnGameComponent, _React$Component);
+
+    function OwnGameComponent() {
+        _classCallCheck(this, OwnGameComponent);
+
+        return _possibleConstructorReturn(this, (OwnGameComponent.__proto__ || Object.getPrototypeOf(OwnGameComponent)).apply(this, arguments));
+    }
+
+    _createClass(OwnGameComponent, [{
+        key: "componentDidMount",
+        value: function componentDidMount() {
+            this.props.loadGame(_constans.urls.game.gameUrl + this.props.match.params.id + '/');
+        }
+    }, {
+        key: "render",
+        value: function render() {
+            var game = null;
+            if (this.props.isLoading) {
+                // team = <TeamPage id={parseInt(this.props.match.params.id)}/>;
+            }
+            return _react2.default.createElement(
+                "div",
+                { className: "teams" },
+                game,
+                "\u0438\u0433\u0440\u0430"
+            );
+        }
+    }]);
+
+    return OwnGameComponent;
+}(_react2.default.Component);
+
+OwnGameComponent.propTypes = {};
+
+var mapStoreToProps = function mapStoreToProps(state, props) {
+    return {
+        isLoading: state.games.isLoading
+    };
+};
+
+var mapDispatchToProps = function mapDispatchToProps(dispatch) {
+    return _extends({}, (0, _redux.bindActionCreators)({
+        loadGame: _games.loadGame
+    }, dispatch));
+};
+
+exports.default = (0, _reactRedux.connect)(mapStoreToProps, mapDispatchToProps)(OwnGameComponent);
 
 /***/ })
 /******/ ]);

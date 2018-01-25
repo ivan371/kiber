@@ -1,10 +1,15 @@
 class PrimaryRouter(object):
     def db_for_read(self, model, **hints):
-        print(hints)
+        print(hints, model._meta.app_label)
         if 'instance' in hints:
-            if hints['instance'].id % 2:
-                print('db1')
-                return 'db1'
+            if model._meta.app_label == 'game' or model._meta.app_label == 'team':
+                if hash(hints['instance'].name) % 2:
+                    print('db1', 'write')
+                    return 'db1'
+            else:
+                if hints['instance'].id % 2:
+                    print('db1')
+                    return 'db1'
         return 'db2'
 
     def db_for_write(self, model, **hints):
@@ -12,7 +17,9 @@ class PrimaryRouter(object):
         if 'instance' in hints:
             if model._meta.app_label == 'auth':
                 if hash(hints['instance'].username) % 2:
-                    print('db1', 'write')
+                    return 'db1'
+            elif model._meta.app_label == 'game' or model._meta.app_label == 'team':
+                if hash(hints['instance'].name) % 2:
                     return 'db1'
             else:
                 if hints['instance'].id % 2:

@@ -1,5 +1,8 @@
 import update from 'react-addons-update';
-import {LOAD_TEAM, LOAD_TEAM_SUCCESS, LOAD_TEAMS, LOAD_TEAMS_MORE, LOAD_TEAMS_SUCCESS} from "../actions/teams";
+import {
+    LOAD_OWN_TEAM_SUCCESS, LOAD_TEAM, LOAD_TEAM_SUCCESS, LOAD_TEAMS, LOAD_TEAMS_MORE,
+    LOAD_TEAMS_SUCCESS
+} from "../actions/teams";
 
 
 const inititalStore = {
@@ -46,6 +49,15 @@ export default function teams (store = inititalStore, action) {
                 },
                 teamsList: {
                     $unshift: [action.payload.result]
+                },
+            });
+        case LOAD_OWN_TEAM_SUCCESS:
+            return update(store, {
+                isLoading: {
+                    $set: true
+                },
+                teamsList: {
+                    $set: [action.payload.result]
                 },
             });
         case LOAD_TEAMS_SUCCESS:

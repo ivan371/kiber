@@ -40,7 +40,10 @@ INSTALLED_APPS = [
     'rest_framework',
     'core.apps.CoreConfig',
     'team.apps.TeamConfig',
-    'game.apps.GameConfig'
+    'game.apps.GameConfig',
+    'turn.apps.TurnConfig',
+    'match.apps.MatchConfig',
+    'debug_toolbar',
 ]
 
 MIDDLEWARE = [
@@ -51,6 +54,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
 ]
 
 ROOT_URLCONF = 'app.urls'
@@ -80,22 +84,22 @@ WSGI_APPLICATION = 'app.wsgi.application'
 # https://docs.djangoproject.com/en/2.0/ref/settings/#databases
 
 DATABASES = {
-    'default': {},
-    # 'default': {
+    # 'default': {},
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+    },
+    # 'db1': {
+    #     'NAME': os.path.join(BASE_DIR, 'db1.sqlite3'),
     #     'ENGINE': 'django.db.backends.sqlite3',
-    #     'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     # },
-    'db1': {
-        'NAME': os.path.join(BASE_DIR, 'db1.sqlite3'),
-        'ENGINE': 'django.db.backends.sqlite3',
-    },
-    'db2': {
-        'NAME': os.path.join(BASE_DIR, 'db2.sqlite3'),
-        'ENGINE': 'django.db.backends.sqlite3',
-    },
+    # 'db2': {
+    #     'NAME': os.path.join(BASE_DIR, 'db2.sqlite3'),
+    #     'ENGINE': 'django.db.backends.sqlite3',
+    # },
 }
 
-DATABASE_ROUTERS = ['app.db_route.PrimaryRouter',]
+# DATABASE_ROUTERS = ['app.db_route.PrimaryRouter',]
 
 
 # Password validation
@@ -143,3 +147,5 @@ REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
     'PAGE_SIZE': 10
 }
+
+INTERNAL_IPS = '127.0.0.1'

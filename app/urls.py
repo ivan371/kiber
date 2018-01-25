@@ -22,7 +22,16 @@ from django.conf.urls.static import static
 from django.conf import settings
 from .api import router
 
-urlpatterns = [
+urlpatterns = []
+
+if settings.DEBUG:
+    import debug_toolbar
+
+    urlpatterns += [
+        url(r'^__debug__/', include(debug_toolbar.urls)),
+    ]
+
+urlpatterns += [
     path('admin/', admin.site.urls),
     path('api/', include(router.urls)),
     re_path(r'^', include('core.urls')),
