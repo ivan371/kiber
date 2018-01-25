@@ -19,7 +19,7 @@ export function apiLoad(url, method, types, body, normalizer, isSimple) {
                                 if(isSimple)
                                     return normalizer(json);
                                 else
-                                    return normalizer(json.results, json.count)
+                                    return Object.assign({}, normalizer(json.results), {count: json.count});
                             },
                         );
                     },

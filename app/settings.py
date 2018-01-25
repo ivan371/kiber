@@ -80,11 +80,22 @@ WSGI_APPLICATION = 'app.wsgi.application'
 # https://docs.djangoproject.com/en/2.0/ref/settings/#databases
 
 DATABASES = {
-    'default': {
+    'default': {},
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.sqlite3',
+    #     'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+    # },
+    'db1': {
+        'NAME': os.path.join(BASE_DIR, 'db1.sqlite3'),
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
+    },
+    'db2': {
+        'NAME': os.path.join(BASE_DIR, 'db2.sqlite3'),
+        'ENGINE': 'django.db.backends.sqlite3',
+    },
 }
+
+DATABASE_ROUTERS = ['app.db_route.PrimaryRouter',]
 
 
 # Password validation
@@ -127,3 +138,8 @@ STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(os.path.dirname(BASE_DIR), 'static/')
 STATICFILES_DIRS = ['/mnt/c/Users/nagai/intensiv/back/app/static/', ]
 MEDIA_ROOT = os.path.join(os.path.dirname(BASE_DIR), 'media/')
+
+REST_FRAMEWORK = {
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
+    'PAGE_SIZE': 10
+}

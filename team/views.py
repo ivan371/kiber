@@ -8,7 +8,7 @@ from .serializers import TeamSerializer
 
 
 class TeamViewSet(viewsets.ModelViewSet):
-    queryset = Team.objects.all()
+    queryset = Team.objects.all().order_by('-id')
     serializer_class = TeamSerializer
 
     def perform_create(self, serializer):

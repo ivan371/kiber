@@ -58,10 +58,10 @@ module.exports = {
         modules: ['/static_src', 'node_modules'],
         extensions: ['.js', '.jsx', '.css'],
     },
-    resolveLoader: {
-        modules: ['node_modules'],
-        extensions: ['.loader.js', '.js', '.css']
-    },
+    // resolveLoader: {
+    //     modules: ['node_modules'],
+    //     extensions: ['.loader.js', '.js', '.css']
+    // },
     watch: NODE_ENV === 'development',
     watchOptions: {
         aggregateTimeout: 100,
