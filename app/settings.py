@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'turn.apps.TurnConfig',
     'match.apps.MatchConfig',
     'debug_toolbar',
+    # "django_sharding",
 ]
 
 MIDDLEWARE = [
@@ -89,14 +90,14 @@ DATABASES = {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     },
-    # 'db1': {
-    #     'NAME': os.path.join(BASE_DIR, 'db1.sqlite3'),
-    #     'ENGINE': 'django.db.backends.sqlite3',
-    # },
-    # 'db2': {
-    #     'NAME': os.path.join(BASE_DIR, 'db2.sqlite3'),
-    #     'ENGINE': 'django.db.backends.sqlite3',
-    # },
+    'db1': {
+        'NAME': os.path.join(BASE_DIR, 'db1.sqlite3'),
+        'ENGINE': 'django.db.backends.sqlite3',
+    },
+    'db2': {
+        'NAME': os.path.join(BASE_DIR, 'db2.sqlite3'),
+        'ENGINE': 'django.db.backends.sqlite3',
+    },
 }
 
 # DATABASE_ROUTERS = ['app.db_route.PrimaryRouter',]
@@ -139,6 +140,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
 
 STATIC_URL = '/static/'
+MEDIA_URL = '/media/'
 STATIC_ROOT = os.path.join(os.path.dirname(BASE_DIR), 'static/')
 STATICFILES_DIRS = ['/mnt/c/Users/nagai/intensiv/back/app/static/', ]
 MEDIA_ROOT = os.path.join(os.path.dirname(BASE_DIR), 'media/')

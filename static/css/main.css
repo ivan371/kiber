@@ -18,8 +18,14 @@
     padding: 20px;
     background-color: chocolate;
     margin: 10px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0,0,0,1);
 }
 .team a{
     color: white;
     text-decoration: none;
+}
+.team img{
+    width: 100px;
+    border-radius: 50px;
 }

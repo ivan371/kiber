@@ -16,12 +16,16 @@ class LayoutComponent extends React.Component {
                         Игры
                     </div>
                 </Link>
-                <div>
-                    Матчи
-                </div>
-                <div>
-                    Турниры
-                </div>
+                <Link to="/matches">
+                    <div>
+                        Матчи
+                    </div>
+                </Link>
+                <Link to="/turns">
+                    <div>
+                        Турниры
+                    </div>
+                </Link>
             </div>
         );
     }

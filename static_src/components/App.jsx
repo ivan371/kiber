@@ -5,6 +5,8 @@ import Teams from "./Team/Teams";
 import Games from "./Game/Games";
 import OwnTeam from "./Team/OwnTeam";
 import OwnGame from "./Game/OwnGame";
+import Matches from "./Match/Matches";
+import Turnes from "./Match/Turnes";
 
 
 class AppComponent extends React.Component {
@@ -17,6 +19,8 @@ class AppComponent extends React.Component {
                     <Route exact path="/team/:id" component={OwnTeam}/>
                     <Route exact path="/games" component={Games}/>
                     <Route exact path="/game/:id" component={OwnGame}/>
+                    <Route exact path="/matches" component={Matches}/>
+                    <Route exact path="/turns" component={Turnes}/>
                 </Switch>
             </div>
         );

@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import {urls} from "../../constans";
 // import TeamPage from "./TeamPage";
 import {loadGame} from "../../actions/games";
+import GamePage from "./GamePage";
 
 class OwnGameComponent extends React.Component {
     componentDidMount() {
@@ -13,12 +14,11 @@ class OwnGameComponent extends React.Component {
     render () {
         let game = null;
         if(this.props.isLoading) {
-            // team = <TeamPage id={parseInt(this.props.match.params.id)}/>;
+            game = <GamePage id={parseInt(this.props.match.params.id)}/>;
         }
         return(
             <div className="teams">
                 {game}
-                игра
             </div>
         );
     }

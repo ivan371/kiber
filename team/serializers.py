@@ -1,7 +1,7 @@
 from rest_framework import serializers
 
 from core.serializers import UserSerializer
-from .models import Team
+from .models import Team, UserTeam
 
 
 class TeamSerializer(serializers.ModelSerializer):
@@ -9,4 +9,11 @@ class TeamSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Team
-        fields = ('name', 'admin', 'id')
+        fields = ('name', 'admin', 'id', 'games', 'avatar')
+
+
+class TeamUserSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = UserTeam
+        fields = ('id', 'name', 'user', 'team')

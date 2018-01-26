@@ -4,5 +4,8 @@ export const urls = {
     },
     game: {
         gameUrl: '/api/games/'
+    },
+    match: {
+        matchUrl: '/api/matches/'
     }
 };
