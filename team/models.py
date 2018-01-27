@@ -13,7 +13,6 @@ class Team(models.Model):
 
 
 class UserTeam(models.Model):
-    name = models.CharField(max_length=100)
     team = models.ForeignKey(Team, on_delete=True)
     user = models.ForeignKey(User, on_delete=True)
 

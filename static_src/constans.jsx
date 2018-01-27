@@ -1,6 +1,7 @@
 export const urls = {
     team : {
         teamUrl: '/api/teams/',
+        teamUserUrl: '/api/teamuser/'
     },
     game: {
         gameUrl: '/api/games/'
@@ -8,4 +9,8 @@ export const urls = {
     match: {
         matchUrl: '/api/matches/'
     }
+};
+
+export const modalConst = {
+    users: 'users',
 };

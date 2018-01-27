@@ -2,8 +2,16 @@ import React from 'react';
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
 import PropTypes from 'prop-types';
+import {modalOpen, modalValue} from "../../actions/modal";
+import {modalConst} from "../../constans";
 
 class TeamPageComponent extends React.Component {
+
+    modalOpen = (e) => {
+        this.props.modalOpen();
+        this.props.modalValue(modalConst.users)
+    };
+
     render () {
         return(
             <div>
@@ -13,6 +21,8 @@ class TeamPageComponent extends React.Component {
                     <h2>Команда {this.props.name}</h2>
                     <p>{this.props.first_name} {this.props.last_name}</p>
                     <p>{this.props.games} игр</p>
+                    <img onClick={this.modalOpen} className="edit" src="/static/img/add.png"/>
+                    <br/>
                 </div>
             </div>
         );
@@ -34,6 +44,8 @@ const mapStoreToProps = (state, props) => ({
 const mapDispatchToProps = (dispatch) => {
     return {
         ...bindActionCreators({
+            modalOpen,
+            modalValue,
         }, dispatch),
     };
 };

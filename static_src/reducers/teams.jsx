@@ -1,16 +1,20 @@
 import update from 'react-addons-update';
 import {
-    LOAD_OWN_TEAM_SUCCESS, LOAD_TEAM, LOAD_TEAM_SUCCESS, LOAD_TEAMS, LOAD_TEAMS_MORE,
+    LOAD_OWN_TEAM_SUCCESS, LOAD_TEAM, LOAD_TEAM_SUCCESS, LOAD_TEAM_USER, LOAD_TEAM_USER_SUCCESS, LOAD_TEAMS,
+    LOAD_TEAMS_MORE,
     LOAD_TEAMS_SUCCESS
 } from "../actions/teams";
 
 
 const inititalStore = {
     isLoading: false,
+    isTeamUserLoading: false,
     count: 0,
     page: 2,
     teams: {},
     teamList: [],
+    teamUsers: {},
+    teamUsersList: [],
 };
 
 
@@ -23,6 +27,13 @@ export default function teams (store = inititalStore, action) {
                     store = update(store, {
                         teams: {
                             $merge: action.payload.entities.team,
+                        },
+                    });
+                }
+                if (action.payload.entities.hasOwnProperty('teamuser')) {
+                    store = update(store, {
+                        teamUsers: {
+                            $merge: action.payload.entities.teamuser,
                         },
                     });
                 }
@@ -88,6 +99,21 @@ export default function teams (store = inititalStore, action) {
                 },
                 page: {
                     $set: store.page + 1,
+                },
+            });
+        case LOAD_TEAM_USER:
+            return update(store, {
+                isTeamUserLoading: {
+                    $set: false
+                }
+            });
+        case LOAD_TEAM_USER_SUCCESS:
+            return update(store, {
+                isTeamUserLoading: {
+                    $set: true
+                },
+                teamUsersList: {
+                    $set: action.payload.result
                 },
             });
         default:

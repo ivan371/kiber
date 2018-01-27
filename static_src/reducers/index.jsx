@@ -4,6 +4,7 @@ import teams from "./teams";
 import users from "./users";
 import games from "./games";
 import matches from "./matches";
+import modal from "./modal";
 
 export default combineReducers({
     routerReducer,
@@ -11,4 +12,5 @@ export default combineReducers({
     users,
     games,
     matches,
+    modal,
 });

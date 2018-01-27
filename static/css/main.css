@@ -35,3 +35,14 @@
     width: 100px;
     border-radius: 50px;
 }
+.modal{
+    float: right;
+    width: 300px;
+    color: white;
+    padding: 20px;
+    margin-right: 50px;
+    margin-top: 10px;
+    background-color: chocolate;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0,0,0,1);
+}

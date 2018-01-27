@@ -1,4 +1,4 @@
-import {teamNormalize, teamsNormalize} from "../normalizers/teams";
+import {teamNormalize, teamsNormalize, teamUserNormalize} from "../normalizers/teams";
 import {apiLoad} from "./load";
 
 export const LOAD_TEAMS_SUCCESS = 'LOAD_TEAMS_SUCCESS';
@@ -9,8 +9,14 @@ export const LOAD_TEAM_SUCCESS = 'LOAD_TEAM_SUCCESS';
 export const LOAD_OWN_TEAM_SUCCESS = 'LOAD_OWN_TEAM_SUCCESS';
 export const LOAD_TEAM = 'LOAD_TEAM';
 export const LOAD_TEAM_ERROR = 'LOAD_TEAM_ERROR';
+export const LOAD_TEAM_USER = 'LOAD_TEAM_USER';
+export const LOAD_TEAM_USER_SUCCESS = 'LOAD_TEAM_USER_SUCCESS';
+export const LOAD_TEAM_USER_ERROR = 'LOAD_TEAM_USER_ERROR';
 
-
+export function loadTeamUsers(url) {
+    const types = [LOAD_TEAM_USER, LOAD_TEAM_USER_SUCCESS, LOAD_TEAM_USER_ERROR];
+    return apiLoad(url, 'GET', types, null, teamUserNormalize, false);
+}
 
 export function loadTeams(url) {
     const types = [LOAD_TEAMS, LOAD_TEAMS_SUCCESS, LOAD_TEAMS_ERROR];

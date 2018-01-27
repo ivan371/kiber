@@ -7,6 +7,7 @@ import OwnTeam from "./Team/OwnTeam";
 import OwnGame from "./Game/OwnGame";
 import Matches from "./Match/Matches";
 import Turnes from "./Match/Turnes";
+import Modal from "./Modal";
 
 
 class AppComponent extends React.Component {
@@ -14,6 +15,7 @@ class AppComponent extends React.Component {
         return (
             <div>
                 <Layout/>
+                <Modal/>
                 <Switch>
                     <Route exact path="/teams" component={Teams}/>
                     <Route exact path="/team/:id" component={OwnTeam}/>

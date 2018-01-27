@@ -687,7 +687,8 @@ Object.defineProperty(exports, "__esModule", {
 });
 var urls = exports.urls = {
     team: {
-        teamUrl: '/api/teams/'
+        teamUrl: '/api/teams/',
+        teamUserUrl: '/api/teamuser/'
     },
     game: {
         gameUrl: '/api/games/'
@@ -695,6 +696,10 @@ var urls = exports.urls = {
     match: {
         matchUrl: '/api/matches/'
     }
+};
+
+var modalConst = exports.modalConst = {
+    users: 'users'
 };
 
 /***/ }),
@@ -898,7 +903,8 @@ module.exports = invariant;
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.LOAD_TEAM_ERROR = exports.LOAD_TEAM = exports.LOAD_OWN_TEAM_SUCCESS = exports.LOAD_TEAM_SUCCESS = exports.LOAD_TEAMS_ERROR = exports.LOAD_TEAMS = exports.LOAD_TEAMS_MORE = exports.LOAD_TEAMS_SUCCESS = undefined;
+exports.LOAD_TEAM_USER_ERROR = exports.LOAD_TEAM_USER_SUCCESS = exports.LOAD_TEAM_USER = exports.LOAD_TEAM_ERROR = exports.LOAD_TEAM = exports.LOAD_OWN_TEAM_SUCCESS = exports.LOAD_TEAM_SUCCESS = exports.LOAD_TEAMS_ERROR = exports.LOAD_TEAMS = exports.LOAD_TEAMS_MORE = exports.LOAD_TEAMS_SUCCESS = undefined;
+exports.loadTeamUsers = loadTeamUsers;
 exports.loadTeams = loadTeams;
 exports.loadTeamsMore = loadTeamsMore;
 exports.loadTeam = loadTeam;
@@ -916,6 +922,14 @@ var LOAD_TEAM_SUCCESS = exports.LOAD_TEAM_SUCCESS = 'LOAD_TEAM_SUCCESS';
 var LOAD_OWN_TEAM_SUCCESS = exports.LOAD_OWN_TEAM_SUCCESS = 'LOAD_OWN_TEAM_SUCCESS';
 var LOAD_TEAM = exports.LOAD_TEAM = 'LOAD_TEAM';
 var LOAD_TEAM_ERROR = exports.LOAD_TEAM_ERROR = 'LOAD_TEAM_ERROR';
+var LOAD_TEAM_USER = exports.LOAD_TEAM_USER = 'LOAD_TEAM_USER';
+var LOAD_TEAM_USER_SUCCESS = exports.LOAD_TEAM_USER_SUCCESS = 'LOAD_TEAM_USER_SUCCESS';
+var LOAD_TEAM_USER_ERROR = exports.LOAD_TEAM_USER_ERROR = 'LOAD_TEAM_USER_ERROR';
+
+function loadTeamUsers(url) {
+    var types = [LOAD_TEAM_USER, LOAD_TEAM_USER_SUCCESS, LOAD_TEAM_USER_ERROR];
+    return (0, _load.apiLoad)(url, 'GET', types, null, _teams.teamUserNormalize, false);
+}
 
 function loadTeams(url) {
     var types = [LOAD_TEAMS, LOAD_TEAMS_SUCCESS, LOAD_TEAMS_ERROR];
@@ -2611,6 +2625,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.teamsNormalize = teamsNormalize;
 exports.teamNormalize = teamNormalize;
+exports.teamUserNormalize = teamUserNormalize;
 
 var _normalizr = __webpack_require__(58);
 
@@ -2624,6 +2639,12 @@ function teamNormalize(teams) {
     var user = new _normalizr.schema.Entity('user');
     var team = new _normalizr.schema.Entity('team', { 'admin': user });
     return (0, _normalizr.normalize)(teams, team);
+}
+
+function teamUserNormalize(teamUsers) {
+    var user = new _normalizr.schema.Entity('user');
+    var teamUser = new _normalizr.schema.Entity('teamuser', { user: user });
+    return (0, _normalizr.normalize)(teamUsers, [teamUser]);
 }
 
 /***/ }),
@@ -27747,7 +27768,7 @@ exports = module.exports = __webpack_require__(189)(false);
 
 
 // module
-exports.push([module.i, ".menu {\r\n    display: flex;\r\n    height: 20px;\r\n    justify-content: space-around;\r\n    background-color: chocolate;\r\n    color: white;\r\n}\r\n.menu a{\r\n    text-decoration: none;\r\n    color: white;\r\n}\r\n.teams{\r\n    margin: 0 auto;\r\n    width: 500px;\r\n}\r\n.team{\r\n    color: white;\r\n    padding: 20px;\r\n    background-color: chocolate;\r\n    margin: 10px;\r\n    border-radius: 5px;\r\n    box-shadow: 0 0 10px rgba(0,0,0,1);\r\n}\r\n.team a{\r\n    color: white;\r\n    text-decoration: none;\r\n}\r\n.edit{\r\n    width: 20px !important;\r\n    border-radius: 0 !important;\r\n    float: right;\r\n    cursor: pointer;\r\n}\r\n.team img{\r\n    width: 100px;\r\n    border-radius: 50px;\r\n}", ""]);
+exports.push([module.i, ".menu {\r\n    display: flex;\r\n    height: 20px;\r\n    justify-content: space-around;\r\n    background-color: chocolate;\r\n    color: white;\r\n}\r\n.menu a{\r\n    text-decoration: none;\r\n    color: white;\r\n}\r\n.teams{\r\n    margin: 0 auto;\r\n    width: 500px;\r\n}\r\n.team{\r\n    color: white;\r\n    padding: 20px;\r\n    background-color: chocolate;\r\n    margin: 10px;\r\n    border-radius: 5px;\r\n    box-shadow: 0 0 10px rgba(0,0,0,1);\r\n}\r\n.team a{\r\n    color: white;\r\n    text-decoration: none;\r\n}\r\n.edit{\r\n    width: 20px !important;\r\n    border-radius: 0 !important;\r\n    float: right;\r\n    cursor: pointer;\r\n}\r\n.team img{\r\n    width: 100px;\r\n    border-radius: 50px;\r\n}\r\n.modal{\r\n    float: right;\r\n    width: 300px;\r\n    color: white;\r\n    padding: 20px;\r\n    margin-right: 50px;\r\n    margin-top: 10px;\r\n    background-color: chocolate;\r\n    border-radius: 5px;\r\n    box-shadow: 0 0 10px rgba(0,0,0,1);\r\n}", ""]);
 
 // exports
 
@@ -28355,6 +28376,10 @@ var _matches = __webpack_require__(267);
 
 var _matches2 = _interopRequireDefault(_matches);
 
+var _modal = __webpack_require__(300);
+
+var _modal2 = _interopRequireDefault(_modal);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = (0, _redux.combineReducers)({
@@ -28362,7 +28387,8 @@ exports.default = (0, _redux.combineReducers)({
     teams: _teams2.default,
     users: _users2.default,
     games: _games2.default,
-    matches: _matches2.default
+    matches: _matches2.default,
+    modal: _modal2.default
 });
 
 /***/ }),
@@ -28387,10 +28413,13 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var inititalStore = {
     isLoading: false,
+    isTeamUserLoading: false,
     count: 0,
     page: 2,
     teams: {},
-    teamList: []
+    teamList: [],
+    teamUsers: {},
+    teamUsersList: []
 };
 
 function teams() {
@@ -28405,6 +28434,13 @@ function teams() {
                     store = (0, _reactAddonsUpdate2.default)(store, {
                         teams: {
                             $merge: action.payload.entities.team
+                        }
+                    });
+                }
+                if (action.payload.entities.hasOwnProperty('teamuser')) {
+                    store = (0, _reactAddonsUpdate2.default)(store, {
+                        teamUsers: {
+                            $merge: action.payload.entities.teamuser
                         }
                     });
                 }
@@ -28470,6 +28506,21 @@ function teams() {
                 },
                 page: {
                     $set: store.page + 1
+                }
+            });
+        case _teams.LOAD_TEAM_USER:
+            return (0, _reactAddonsUpdate2.default)(store, {
+                isTeamUserLoading: {
+                    $set: false
+                }
+            });
+        case _teams.LOAD_TEAM_USER_SUCCESS:
+            return (0, _reactAddonsUpdate2.default)(store, {
+                isTeamUserLoading: {
+                    $set: true
+                },
+                teamUsersList: {
+                    $set: action.payload.result
                 }
             });
         default:
@@ -32497,6 +32548,10 @@ var _Turnes = __webpack_require__(296);
 
 var _Turnes2 = _interopRequireDefault(_Turnes);
 
+var _Modal = __webpack_require__(299);
+
+var _Modal2 = _interopRequireDefault(_Modal);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -32521,6 +32576,7 @@ var AppComponent = function (_React$Component) {
                 "div",
                 null,
                 _react2.default.createElement(_Layout2.default, null),
+                _react2.default.createElement(_Modal2.default, null),
                 _react2.default.createElement(
                     _reactRouterDom.Switch,
                     null,
@@ -33931,6 +33987,10 @@ var _TeamPage = __webpack_require__(291);
 
 var _TeamPage2 = _interopRequireDefault(_TeamPage);
 
+var _TeamUsers = __webpack_require__(297);
+
+var _TeamUsers2 = _interopRequireDefault(_TeamUsers);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -33952,6 +34012,7 @@ var OwnTeamComponent = function (_React$Component) {
         key: "componentDidMount",
         value: function componentDidMount() {
             this.props.loadTeam(_constans.urls.team.teamUrl + this.props.match.params.id + '/');
+            this.props.loadTeamUsers(_constans.urls.team.teamUserUrl + '?team=' + this.props.match.params.id);
         }
     }, {
         key: "render",
@@ -33963,7 +34024,8 @@ var OwnTeamComponent = function (_React$Component) {
             return _react2.default.createElement(
                 "div",
                 { className: "teams" },
-                team
+                team,
+                _react2.default.createElement(_TeamUsers2.default, null)
             );
         }
     }]);
@@ -33981,7 +34043,8 @@ var mapStoreToProps = function mapStoreToProps(state, props) {
 
 var mapDispatchToProps = function mapDispatchToProps(dispatch) {
     return _extends({}, (0, _redux.bindActionCreators)({
-        loadTeam: _teams.loadTeam
+        loadTeam: _teams.loadTeam,
+        loadTeamUsers: _teams.loadTeamUsers
     }, dispatch));
 };
 
@@ -34014,6 +34077,10 @@ var _propTypes = __webpack_require__(1);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
+var _modal = __webpack_require__(301);
+
+var _constans = __webpack_require__(15);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -34026,9 +34093,20 @@ var TeamPageComponent = function (_React$Component) {
     _inherits(TeamPageComponent, _React$Component);
 
     function TeamPageComponent() {
+        var _ref;
+
+        var _temp, _this, _ret;
+
         _classCallCheck(this, TeamPageComponent);
 
-        return _possibleConstructorReturn(this, (TeamPageComponent.__proto__ || Object.getPrototypeOf(TeamPageComponent)).apply(this, arguments));
+        for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+            args[_key] = arguments[_key];
+        }
+
+        return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = TeamPageComponent.__proto__ || Object.getPrototypeOf(TeamPageComponent)).call.apply(_ref, [this].concat(args))), _this), _this.modalOpen = function (e) {
+            _this.props.modalOpen();
+            _this.props.modalValue(_constans.modalConst.users);
+        }, _temp), _possibleConstructorReturn(_this, _ret);
     }
 
     _createClass(TeamPageComponent, [{
@@ -34060,7 +34138,9 @@ var TeamPageComponent = function (_React$Component) {
                         null,
                         this.props.games,
                         " \u0438\u0433\u0440"
-                    )
+                    ),
+                    _react2.default.createElement("img", { onClick: this.modalOpen, className: "edit", src: "/static/img/add.png" }),
+                    _react2.default.createElement("br", null)
                 )
             );
         }
@@ -34084,7 +34164,10 @@ var mapStoreToProps = function mapStoreToProps(state, props) {
 };
 
 var mapDispatchToProps = function mapDispatchToProps(dispatch) {
-    return _extends({}, (0, _redux.bindActionCreators)({}, dispatch));
+    return _extends({}, (0, _redux.bindActionCreators)({
+        modalOpen: _modal.modalOpen,
+        modalValue: _modal.modalValue
+    }, dispatch));
 };
 
 exports.default = (0, _reactRedux.connect)(mapStoreToProps, mapDispatchToProps)(TeamPageComponent);
@@ -34552,6 +34635,360 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch) {
 };
 
 exports.default = (0, _reactRedux.connect)(mapStoreToProps, mapDispatchToProps)(TurnesComponent);
+
+/***/ }),
+/* 297 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _teams = __webpack_require__(21);
+
+var _constans = __webpack_require__(15);
+
+var _reactRedux = __webpack_require__(6);
+
+var _redux = __webpack_require__(3);
+
+var _Team = __webpack_require__(285);
+
+var _Team2 = _interopRequireDefault(_Team);
+
+var _TeamForm = __webpack_require__(286);
+
+var _TeamForm2 = _interopRequireDefault(_TeamForm);
+
+var _TeamUser = __webpack_require__(298);
+
+var _TeamUser2 = _interopRequireDefault(_TeamUser);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var TeamUsersComponent = function (_React$Component) {
+    _inherits(TeamUsersComponent, _React$Component);
+
+    function TeamUsersComponent() {
+        _classCallCheck(this, TeamUsersComponent);
+
+        return _possibleConstructorReturn(this, (TeamUsersComponent.__proto__ || Object.getPrototypeOf(TeamUsersComponent)).apply(this, arguments));
+    }
+
+    _createClass(TeamUsersComponent, [{
+        key: "render",
+        value: function render() {
+            var teamUserList = [];
+            if (this.props.isLoading) {
+                teamUserList = this.props.teamUserList.map(function (teamUserId) {
+                    return _react2.default.createElement(_TeamUser2.default, { key: teamUserId, id: teamUserId });
+                });
+            }
+            return _react2.default.createElement(
+                "div",
+                { className: "teams" },
+                teamUserList,
+                this.props.isLoading && this.props.count > 10 * (this.props.page - 1) ? _react2.default.createElement(
+                    "div",
+                    null,
+                    _react2.default.createElement(
+                        "button",
+                        { onClick: this.onLoadMore },
+                        "\u041F\u043E\u043A\u0430\u0437\u0430\u0442\u044C \u0435\u0449\u0435"
+                    )
+                ) : null
+            );
+        }
+    }]);
+
+    return TeamUsersComponent;
+}(_react2.default.Component);
+
+var mapStoreToProps = function mapStoreToProps(state, props) {
+    return {
+        isLoading: state.teams.isTeamUserLoading,
+        teamUserList: state.teams.teamUsersList
+        // count: state.teams.count,
+        // page: state.teams.page,
+    };
+};
+
+var mapDispatchToProps = function mapDispatchToProps(dispatch) {
+    return _extends({}, (0, _redux.bindActionCreators)({}, dispatch));
+};
+
+exports.default = (0, _reactRedux.connect)(mapStoreToProps, mapDispatchToProps)(TeamUsersComponent);
+
+/***/ }),
+/* 298 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactRedux = __webpack_require__(6);
+
+var _redux = __webpack_require__(3);
+
+var _propTypes = __webpack_require__(1);
+
+var _propTypes2 = _interopRequireDefault(_propTypes);
+
+var _reactRouterDom = __webpack_require__(31);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var TeamUserComponent = function (_React$Component) {
+    _inherits(TeamUserComponent, _React$Component);
+
+    function TeamUserComponent() {
+        _classCallCheck(this, TeamUserComponent);
+
+        return _possibleConstructorReturn(this, (TeamUserComponent.__proto__ || Object.getPrototypeOf(TeamUserComponent)).apply(this, arguments));
+    }
+
+    _createClass(TeamUserComponent, [{
+        key: "render",
+        value: function render() {
+            return _react2.default.createElement(
+                "div",
+                { className: "team" },
+                _react2.default.createElement(
+                    "p",
+                    null,
+                    this.props.first_name,
+                    " ",
+                    this.props.last_name
+                )
+            );
+        }
+    }]);
+
+    return TeamUserComponent;
+}(_react2.default.Component);
+
+TeamUserComponent.propTypes = {
+    id: _propTypes2.default.number.isRequired
+};
+
+var mapStoreToProps = function mapStoreToProps(state, props) {
+    return {
+        first_name: state.users.users[state.teams.teamUsers[props.id].user].first_name,
+        last_name: state.users.users[state.teams.teamUsers[props.id].user].last_name
+    };
+};
+
+var mapDispatchToProps = function mapDispatchToProps(dispatch) {
+    return _extends({}, (0, _redux.bindActionCreators)({}, dispatch));
+};
+
+exports.default = (0, _reactRedux.connect)(mapStoreToProps, mapDispatchToProps)(TeamUserComponent);
+
+/***/ }),
+/* 299 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactRedux = __webpack_require__(6);
+
+var _redux = __webpack_require__(3);
+
+var _modal = __webpack_require__(301);
+
+var _constans = __webpack_require__(15);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var ModalComponent = function (_React$Component) {
+    _inherits(ModalComponent, _React$Component);
+
+    function ModalComponent() {
+        var _ref;
+
+        var _temp, _this, _ret;
+
+        _classCallCheck(this, ModalComponent);
+
+        for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+            args[_key] = arguments[_key];
+        }
+
+        return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = ModalComponent.__proto__ || Object.getPrototypeOf(ModalComponent)).call.apply(_ref, [this].concat(args))), _this), _this.modalClose = function (e) {
+            _this.props.modalOpen();
+        }, _temp), _possibleConstructorReturn(_this, _ret);
+    }
+
+    _createClass(ModalComponent, [{
+        key: "render",
+        value: function render() {
+            if (!this.props.isOpen) {
+                return null;
+            }
+            var modal = null;
+            switch (this.props.modal) {
+                case _constans.modalConst.users:
+                    modal = _react2.default.createElement(
+                        "div",
+                        null,
+                        "\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u0438"
+                    );
+            }
+            return _react2.default.createElement(
+                "div",
+                { className: "modal" },
+                _react2.default.createElement("img", { onClick: this.modalClose, className: "edit", src: "/static/img/close.png" }),
+                modal
+            );
+        }
+    }]);
+
+    return ModalComponent;
+}(_react2.default.Component);
+
+var mapStoreToProps = function mapStoreToProps(state, props) {
+    return {
+        isOpen: state.modal.isOpen,
+        modal: state.modal.modal
+    };
+};
+
+var mapDispatchToProps = function mapDispatchToProps(dispatch) {
+    return _extends({}, (0, _redux.bindActionCreators)({
+        modalOpen: _modal.modalOpen
+    }, dispatch));
+};
+
+exports.default = (0, _reactRedux.connect)(mapStoreToProps, mapDispatchToProps)(ModalComponent);
+
+/***/ }),
+/* 300 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.default = modal;
+
+var _reactAddonsUpdate = __webpack_require__(37);
+
+var _reactAddonsUpdate2 = _interopRequireDefault(_reactAddonsUpdate);
+
+var _modal = __webpack_require__(301);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var initialStore = {
+    isOpen: false,
+    modal: null
+};
+
+function modal() {
+    var store = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : initialStore;
+    var action = arguments[1];
+
+    switch (action.type) {
+        case _modal.MODAL_OPEN:
+            return (0, _reactAddonsUpdate2.default)(store, {
+                isOpen: {
+                    $set: !store.isOpen
+                }
+            });
+        case _modal.MODAL_VALUE:
+            return (0, _reactAddonsUpdate2.default)(store, {
+                modal: {
+                    $set: action.value
+                }
+            });
+        default:
+            return store;
+    }
+}
+
+/***/ }),
+/* 301 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.modalOpen = modalOpen;
+exports.modalValue = modalValue;
+var MODAL_OPEN = exports.MODAL_OPEN = 'MODAL_OPEN';
+var MODAL_VALUE = exports.MODAL_VALUE = 'MODAL_VALUE';
+
+function modalOpen() {
+    return {
+        type: MODAL_OPEN
+    };
+}
+
+function modalValue(value) {
+    return {
+        type: MODAL_VALUE,
+        value: value
+    };
+}
 
 /***/ })
 /******/ ]);

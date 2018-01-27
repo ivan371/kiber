@@ -2,13 +2,15 @@ import React from 'react';
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
 import PropTypes from 'prop-types';
-import {loadTeam} from "../../actions/teams";
+import {loadTeam, loadTeamUsers} from "../../actions/teams";
 import {urls} from "../../constans";
 import TeamPage from "./TeamPage";
+import TeamUsers from "./TeamUsers";
 
 class OwnTeamComponent extends React.Component {
     componentDidMount() {
         this.props.loadTeam(urls.team.teamUrl + this.props.match.params.id + '/');
+        this.props.loadTeamUsers(urls.team.teamUserUrl  + '?team=' + this.props.match.params.id);
     }
     render () {
         let team = null;
@@ -18,6 +20,7 @@ class OwnTeamComponent extends React.Component {
         return(
             <div className="teams">
                 {team}
+                <TeamUsers/>
             </div>
         );
     }
@@ -34,6 +37,7 @@ const mapDispatchToProps = (dispatch) => {
     return {
         ...bindActionCreators({
             loadTeam,
+            loadTeamUsers
         }, dispatch),
     };
 };
