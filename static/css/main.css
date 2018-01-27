@@ -25,6 +25,12 @@
     color: white;
     text-decoration: none;
 }
+.edit{
+    width: 20px !important;
+    border-radius: 0 !important;
+    float: right;
+    cursor: pointer;
+}
 .team img{
     width: 100px;
     border-radius: 50px;
