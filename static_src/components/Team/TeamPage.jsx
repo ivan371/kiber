@@ -2,26 +2,33 @@ import React from 'react';
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
 import PropTypes from 'prop-types';
-import {modalOpen, modalValue} from "../../actions/modal";
+import {modalOpen, modalValue, setModalId} from "../../actions/modal";
 import {modalConst} from "../../constans";
 
 class TeamPageComponent extends React.Component {
 
-    modalOpen = (e) => {
+    addUser = (e) => {
         this.props.modalOpen();
-        this.props.modalValue(modalConst.users)
+        this.props.modalValue(modalConst.users);
+        this.props.setModalId(this.props.id);
+    };
+
+    teamEdit = (e) => {
+        this.props.modalOpen();
+        this.props.modalValue(modalConst.teamEdit);
+        this.props.setModalId(this.props.id);
     };
 
     render () {
         return(
             <div>
                 <div className="team">
-                    <img className="edit" src="/static/img/light_check.png"/>
+                    <img onClick={this.teamEdit} className="edit" src="/static/img/light_check.png"/>
                     <img src={this.props.avatar}/>
                     <h2>Команда {this.props.name}</h2>
                     <p>{this.props.first_name} {this.props.last_name}</p>
                     <p>{this.props.games} игр</p>
-                    <img onClick={this.modalOpen} className="edit" src="/static/img/add.png"/>
+                    <img onClick={this.addUser} className="edit" src="/static/img/add.png"/>
                     <br/>
                 </div>
             </div>
@@ -46,6 +53,7 @@ const mapDispatchToProps = (dispatch) => {
         ...bindActionCreators({
             modalOpen,
             modalValue,
+            setModalId,
         }, dispatch),
     };
 };

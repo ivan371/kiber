@@ -3,32 +3,27 @@ import {loadTeams, loadTeamsMore} from "../../actions/teams";
 import {urls} from "../../constans";
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
-import Team from "./Team";
-import TeamForm from "./TeamForm";
+import {loadUsers} from "../../actions/users";
+import User from "./User";
 
-class TeamsComponent extends React.Component {
+class UsersComponent extends React.Component {
 
     componentDidMount() {
-        this.props.loadTeams(urls.team.teamUrl);
+        this.props.loadUsers(urls.user.userUrl);
     }
 
-    onLoadMore = (e) => {
-        this.props.loadTeamsMore(urls.team.teamUrl + '?offset=' + (this.props.page - 1) * 10);
-    };
-
     render () {
-        let teamList = [];
+        let userList = [];
         if (this.props.isLoading) {
-            teamList = this.props.teamList.map(
-                (teamId) => {
-                    return <Team key={ teamId } id={ teamId } />
+            userList = this.props.userList.map(
+                (userId) => {
+                    return <User key={userId} id={userId} />
                 }
             );
         }
         return (
             <div className="teams">
-                <TeamForm/>
-                {this.props.isLoading ? teamList : <div className="loading"/>}
+                {userList}
                 { this.props.isLoading && this.props.count > (10 * (this.props.page - 1)) ? <div>
                     <button onClick={this.onLoadMore}>Показать еще</button>
                 </div> : null }
@@ -38,17 +33,14 @@ class TeamsComponent extends React.Component {
 }
 
 const mapStoreToProps = (state, props) => ({
-    isLoading: state.teams.isLoading,
-    teamList: state.teams.teamsList,
-    count: state.teams.count,
-    page: state.teams.page,
+    isLoading: state.users.isLoading,
+    userList: state.users.userList,
 });
 
 const mapDispatchToProps = (dispatch) => {
     return {
         ...bindActionCreators({
-            loadTeams,
-            loadTeamsMore,
+            loadUsers,
         }, dispatch),
     };
 };
@@ -56,4 +48,4 @@ const mapDispatchToProps = (dispatch) => {
 export default connect(
     mapStoreToProps,
     mapDispatchToProps
-)(TeamsComponent);
+)(UsersComponent);

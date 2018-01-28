@@ -1,8 +1,10 @@
 import update from 'react-addons-update';
+import {LOAD_USERS, LOAD_USERS_SUCCESS} from "../actions/users";
 
 const inititalStore = {
     users: {},
     userList: [],
+    isLoading: false,
 };
 
 
@@ -22,6 +24,21 @@ export default function users (store = inititalStore, action) {
         }
     }
     switch (action.type) {
+        case LOAD_USERS:
+            return update(store, {
+                isLoading: {
+                    $set: false,
+                }
+            });
+        case LOAD_USERS_SUCCESS:
+            return update(store, {
+                isLoading: {
+                    $set: true,
+                },
+                userList:{
+                    $set: action.payload.result,
+                }
+            });
         default:
             return store;
     }

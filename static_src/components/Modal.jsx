@@ -3,6 +3,8 @@ import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
 import {modalOpen} from "../actions/modal";
 import {modalConst} from "../constans";
+import Users from "./User/Users";
+import TeamEdit from "./Team/TeamEdit";
 
 class ModalComponent extends React.Component {
 
@@ -17,7 +19,13 @@ class ModalComponent extends React.Component {
         let modal = null;
         switch (this.props.modal) {
             case modalConst.users:
-                modal = <div>Пользователи</div>
+                modal = <Users/>;
+                break;
+            case modalConst.teamEdit:
+                modal = <TeamEdit/>;
+                break;
+            default:
+                modal = null;
         }
         return (
             <div className="modal">

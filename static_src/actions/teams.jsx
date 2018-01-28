@@ -1,4 +1,4 @@
-import {teamNormalize, teamsNormalize, teamUserNormalize} from "../normalizers/teams";
+import {teamNormalize, teamsNormalize, teamUserNormalize, teamUsersNormalize} from "../normalizers/teams";
 import {apiLoad} from "./load";
 
 export const LOAD_TEAMS_SUCCESS = 'LOAD_TEAMS_SUCCESS';
@@ -12,10 +12,18 @@ export const LOAD_TEAM_ERROR = 'LOAD_TEAM_ERROR';
 export const LOAD_TEAM_USER = 'LOAD_TEAM_USER';
 export const LOAD_TEAM_USER_SUCCESS = 'LOAD_TEAM_USER_SUCCESS';
 export const LOAD_TEAM_USER_ERROR = 'LOAD_TEAM_USER_ERROR';
+export const LOAD_TEAM_USERS = 'LOAD_TEAM_USERS';
+export const LOAD_TEAM_USERS_SUCCESS = 'LOAD_TEAM_USERS_SUCCESS';
+export const LOAD_TEAM_USERS_ERROR = 'LOAD_TEAM_USERS_ERROR';
+
+export function loadTeamUser(url, user) {
+    const types = [LOAD_TEAM_USER, LOAD_TEAM_USER_SUCCESS, LOAD_TEAM_USER_ERROR];
+    return apiLoad(url, 'POST', types, JSON.stringify({user}), teamUserNormalize, true);
+}
 
 export function loadTeamUsers(url) {
-    const types = [LOAD_TEAM_USER, LOAD_TEAM_USER_SUCCESS, LOAD_TEAM_USER_ERROR];
-    return apiLoad(url, 'GET', types, null, teamUserNormalize, false);
+    const types = [LOAD_TEAM_USERS, LOAD_TEAM_USERS_SUCCESS, LOAD_TEAM_USERS_ERROR];
+    return apiLoad(url, 'GET', types, null, teamUsersNormalize, false);
 }
 
 export function loadTeams(url) {
@@ -37,4 +45,9 @@ export function loadTeam(url) {
 export function teamCreate(url, name) {
     const types = [LOAD_TEAM, LOAD_TEAM_SUCCESS, LOAD_TEAM_ERROR];
     return apiLoad(url, 'POST', types, JSON.stringify({name}), teamNormalize, true);
+}
+
+export function teamEdit(url, name) {
+    const types = [LOAD_TEAM, LOAD_TEAM_SUCCESS, LOAD_TEAM_ERROR];
+    return apiLoad(url, 'PUT', types, JSON.stringify({name}), teamNormalize, true);
 }

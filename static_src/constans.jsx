@@ -8,9 +8,13 @@ export const urls = {
     },
     match: {
         matchUrl: '/api/matches/'
+    },
+    user: {
+        userUrl: '/api/users/'
     }
 };
 
 export const modalConst = {
     users: 'users',
+    teamEdit: 'teamEdit',
 };

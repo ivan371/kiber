@@ -1,10 +1,11 @@
 import update from 'react-addons-update';
-import {MODAL_OPEN, MODAL_VALUE} from "../actions/modal";
+import {MODAL_OPEN, MODAL_VALUE, SET_MODAL_ID} from "../actions/modal";
 
 
 const initialStore = {
     isOpen: false,
     modal: null,
+    id: null,
 };
 
 
@@ -20,6 +21,12 @@ export default function modal (store = initialStore, action) {
             return update(store, {
                 modal: {
                     $set: action.value,
+                }
+            });
+        case SET_MODAL_ID:
+            return update(store, {
+                id: {
+                    $set: action.id,
                 }
             });
         default:

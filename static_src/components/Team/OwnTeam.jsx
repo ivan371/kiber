@@ -19,7 +19,7 @@ class OwnTeamComponent extends React.Component {
         }
         return(
             <div className="teams">
-                {team}
+                {this.props.isLoading ? team : <div className="loading"/>}
                 <TeamUsers/>
             </div>
         );

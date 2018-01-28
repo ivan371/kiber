@@ -1,6 +1,7 @@
 import update from 'react-addons-update';
 import {
-    LOAD_OWN_TEAM_SUCCESS, LOAD_TEAM, LOAD_TEAM_SUCCESS, LOAD_TEAM_USER, LOAD_TEAM_USER_SUCCESS, LOAD_TEAMS,
+    LOAD_OWN_TEAM_SUCCESS, LOAD_TEAM, LOAD_TEAM_SUCCESS, LOAD_TEAM_USER_SUCCESS, LOAD_TEAM_USERS,
+    LOAD_TEAM_USERS_SUCCESS, LOAD_TEAMS,
     LOAD_TEAMS_MORE,
     LOAD_TEAMS_SUCCESS
 } from "../actions/teams";
@@ -62,6 +63,12 @@ export default function teams (store = inititalStore, action) {
                     $unshift: [action.payload.result]
                 },
             });
+        case LOAD_TEAM_USER_SUCCESS:
+            return update(store, {
+                teamUsersList: {
+                    $unshift: [action.payload.result]
+                }
+            });
         case LOAD_OWN_TEAM_SUCCESS:
             return update(store, {
                 isLoading: {
@@ -101,13 +108,13 @@ export default function teams (store = inititalStore, action) {
                     $set: store.page + 1,
                 },
             });
-        case LOAD_TEAM_USER:
+        case LOAD_TEAM_USERS:
             return update(store, {
                 isTeamUserLoading: {
                     $set: false
                 }
             });
-        case LOAD_TEAM_USER_SUCCESS:
+        case LOAD_TEAM_USERS_SUCCESS:
             return update(store, {
                 isTeamUserLoading: {
                     $set: true
