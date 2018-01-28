@@ -57,11 +57,11 @@ class TeamUserViewSet(viewsets.ModelViewSet):
         queryset = super(TeamUserViewSet, self).get_queryset()
         if 'team' in self.request.query_params:
             if self.request.query_params['team'].isdigit():
-                queryset = list(chain(UserTeam.objects.filter(team=self.request.query_params['team']).using('db1')
-                                      .prefetch_related('user'),
-                                      UserTeam.objects.filter(team=self.request.query_params['team']).using('db2')
-                                      .prefetch_related('user')))
-                queryset = list(set(queryset))
+                queryset = UserTeam.objects.all().using('db1')
+                qs = UserTeam.objects.all().using('db2')
+                queryset = (qs | queryset).distinct()\
+                    .filter(team=self.request.query_params['team']).prefetch_related('user')
+
         else:
             if hash(self.request.user.username) % 2 == 0:
                 queryset = queryset.using('db1')

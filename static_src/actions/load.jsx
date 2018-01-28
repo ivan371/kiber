@@ -1,7 +1,7 @@
 import {CALL_API, getJSON} from "redux-api-middleware";
 import cookie from 'react-cookies';
 
-export function apiLoad(url, method, types, body, normalizer, isSimple) {
+export function apiLoad(url, method, types, body, normalizer, isSimple, id) {
     return {
         [CALL_API]: {
             credentials: 'same-origin',
@@ -14,6 +14,9 @@ export function apiLoad(url, method, types, body, normalizer, isSimple) {
                 {
                     type: types[1],
                     payload: (action, state, res) => {
+                        if (method === 'DELETE') {
+                            return {id}
+                        }
                         return getJSON(res).then(
                             (json) => {
                                 if(isSimple)

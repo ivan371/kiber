@@ -3,7 +3,7 @@ import {
     LOAD_OWN_TEAM_SUCCESS, LOAD_TEAM, LOAD_TEAM_SUCCESS, LOAD_TEAM_USER_SUCCESS, LOAD_TEAM_USERS,
     LOAD_TEAM_USERS_SUCCESS, LOAD_TEAMS,
     LOAD_TEAMS_MORE,
-    LOAD_TEAMS_SUCCESS
+    LOAD_TEAMS_SUCCESS, TEAM_USER_DELETE_SUCCESS
 } from "../actions/teams";
 
 
@@ -41,6 +41,7 @@ export default function teams (store = inititalStore, action) {
             }
         }
     }
+    let index = null;
     switch (action.type) {
         case LOAD_TEAMS:
             return update(store, {
@@ -67,6 +68,13 @@ export default function teams (store = inititalStore, action) {
             return update(store, {
                 teamUsersList: {
                     $unshift: [action.payload.result]
+                }
+            });
+        case TEAM_USER_DELETE_SUCCESS:
+            index = store.teamUsersList.indexOf(action.id);
+            return update(store, {
+                teamUsersList: {
+                    $splice: [[index, 1]],
                 }
             });
         case LOAD_OWN_TEAM_SUCCESS:

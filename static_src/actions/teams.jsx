@@ -15,6 +15,14 @@ export const LOAD_TEAM_USER_ERROR = 'LOAD_TEAM_USER_ERROR';
 export const LOAD_TEAM_USERS = 'LOAD_TEAM_USERS';
 export const LOAD_TEAM_USERS_SUCCESS = 'LOAD_TEAM_USERS_SUCCESS';
 export const LOAD_TEAM_USERS_ERROR = 'LOAD_TEAM_USERS_ERROR';
+export const TEAM_USER_DELETE = 'TEAM_USER_DELETE';
+export const TEAM_USER_DELETE_SUCCESS = 'TEAM_USER_DELETE_SUCCESS';
+export const TEAM_USER_DELETE_ERROR = 'TEAM_USER_DELETE_ERROR';
+
+export function deleteTeamUser(url, id) {
+    const types = [TEAM_USER_DELETE, TEAM_USER_DELETE_SUCCESS, TEAM_USER_DELETE_ERROR];
+    return apiLoad(url, 'DELETE', types, null, () => {}, true, id);
+}
 
 export function loadTeamUser(url, user) {
     const types = [LOAD_TEAM_USER, LOAD_TEAM_USER_SUCCESS, LOAD_TEAM_USER_ERROR];

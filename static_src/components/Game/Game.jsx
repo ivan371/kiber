@@ -9,7 +9,7 @@ class GameComponent extends React.Component {
         return(
             <div className="team">
                 <h3><Link to={"/game/" + this.props.id}>{this.props.name}</Link></h3>
-                <p>{this.props.teamName}</p>
+                {/*<p>{this.props.teamName}</p>*/}
             </div>
         );
     }
@@ -21,7 +21,7 @@ GameComponent.propTypes = {
 
 const mapStoreToProps = (state, props) => ({
     name: state.games.games[props.id].name,
-    teamName: state.teams.teams[state.games.games[props.id].winner].name,
+    // teamName: state.teams.teams[state.games.games[props.id].winner].name,
 });
 
 const mapDispatchToProps = (dispatch) => {

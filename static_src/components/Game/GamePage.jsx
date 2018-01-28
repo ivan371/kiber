@@ -8,7 +8,7 @@ class GamePageComponent extends React.Component {
         return(
             <div className="team">
                 <h2>Игра {this.props.name}</h2>
-                <p>Победитель{this.props.teamName}</p>
+                {/*<p>Победитель{this.props.teamName}</p>*/}
             </div>
         );
     }
@@ -20,7 +20,7 @@ GamePageComponent.propTypes = {
 
 const mapStoreToProps = (state, props) => ({
     name: state.games.games[props.id].name,
-    teamName: state.teams.teams[state.games.games[props.id].winner].name,
+    // teamName: state.teams.teams[state.games.games[props.id].winner].name,
 });
 
 const mapDispatchToProps = (dispatch) => {
