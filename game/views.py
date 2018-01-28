@@ -21,7 +21,11 @@ class GameViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         queryset = Game.objects.using('db1')
         qs = Game.objects.using('db2')
-        return (queryset | qs).distinct()
+        queryset = (qs | queryset).distinct()
+        if 'match' in self.request.query_params:
+            if self.request.query_params['match'].isdigit:
+                queryset = queryset.filter(match_id=self.request.query_params['match'])
+        return queryset
 
 
 class GameTeamViewSet(viewsets.ModelViewSet):

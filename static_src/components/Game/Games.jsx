@@ -24,7 +24,7 @@ class GamesComponent extends React.Component {
         }
         return(
             <div className="teams">
-                <GameForm/>
+                {/*<GameForm/>*/}
                 {gameList}
                 { this.props.isLoading && this.props.count > (10 * (this.props.page - 1)) ? <div>
                     <button onClick={this.onLoadMore}>Показать еще</button>

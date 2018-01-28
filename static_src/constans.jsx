@@ -17,4 +17,6 @@ export const urls = {
 export const modalConst = {
     users: 'users',
     teamEdit: 'teamEdit',
+    matchEdit: 'matchEdit',
+    gameCreate: 'gameCreate',
 };

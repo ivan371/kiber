@@ -18,12 +18,12 @@ class GameFormComponent extends React.Component {
         }
     };
     onCreate = (e) => {
-        this.props.gameCreate(urls.game.gameUrl, this.state.name);
+        this.props.gameCreate(urls.game.gameUrl, this.state.name, this.props.id);
         this.setState({name: ''});
     };
     render () {
         return(
-            <div className="team">
+            <div>
                 <h2>Создать игру</h2>
                 <label>Название</label>
                 <input type="text" onChange={this.onChange} onKeyDown={this.onPress} value={this.state.name} name="name"/>
@@ -37,6 +37,7 @@ GameFormComponent.propTypes = {
 };
 
 const mapStoreToProps = (state, props) => ({
+    id: state.modal.id,
 });
 
 const mapDispatchToProps = (dispatch) => {

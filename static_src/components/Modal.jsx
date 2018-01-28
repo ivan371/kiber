@@ -5,6 +5,8 @@ import {modalOpen} from "../actions/modal";
 import {modalConst} from "../constans";
 import Users from "./User/Users";
 import TeamEdit from "./Team/TeamEdit";
+import GameForm from "./Game/GameForm";
+import MatchEdit from "./Match/MatchEdit";
 
 class ModalComponent extends React.Component {
 
@@ -23,6 +25,12 @@ class ModalComponent extends React.Component {
                 break;
             case modalConst.teamEdit:
                 modal = <TeamEdit/>;
+                break;
+            case modalConst.matchEdit:
+                modal = <MatchEdit/>;
+                break;
+            case modalConst.gameCreate:
+                modal = <GameForm/>;
                 break;
             default:
                 modal = null;

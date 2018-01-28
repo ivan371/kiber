@@ -8,6 +8,7 @@ import OwnGame from "./Game/OwnGame";
 import Matches from "./Match/Matches";
 import Turnes from "./Match/Turnes";
 import Modal from "./Modal";
+import OwnMatch from "./Match/OwnMatch";
 
 
 class AppComponent extends React.Component {
@@ -23,6 +24,8 @@ class AppComponent extends React.Component {
                     <Route exact path="/game/:id" component={OwnGame}/>
                     <Route exact path="/matches" component={Matches}/>
                     <Route exact path="/turns" component={Turnes}/>
+                    <Route exact path="/match/:id" component={OwnMatch}/>
+
                 </Switch>
             </div>
         );

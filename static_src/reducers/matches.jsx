@@ -56,7 +56,7 @@ export default function matches (store = inititalStore, action) {
                 isLoading: {
                     $set: true
                 },
-                matchesList: {
+                matchList: {
                     $unshift: [action.payload.result]
                 },
             });
@@ -65,7 +65,7 @@ export default function matches (store = inititalStore, action) {
                 isLoading: {
                     $set: true
                 },
-                matchesList: {
+                matchList: {
                     $set: [action.payload.result]
                 },
             });

@@ -464,7 +464,9 @@ var urls = exports.urls = {
 
 var modalConst = exports.modalConst = {
     users: 'users',
-    teamEdit: 'teamEdit'
+    teamEdit: 'teamEdit',
+    matchEdit: 'matchEdit',
+    gameCreate: 'gameCreate'
 };
 
 /***/ }),
@@ -2280,9 +2282,9 @@ function loadGame(url) {
     return (0, _load.apiLoad)(url, 'GET', types, null, _games.gameNormalize, true);
 }
 
-function gameCreate(url, name) {
+function gameCreate(url, name, match) {
     var types = [LOAD_GAME, LOAD_GAME_SUCCESS, LOAD_GAME_ERROR];
-    return (0, _load.apiLoad)(url, 'POST', types, JSON.stringify({ name: name }), _games.gameNormalize, true);
+    return (0, _load.apiLoad)(url, 'POST', types, JSON.stringify({ name: name, match: match }), _games.gameNormalize, true);
 }
 
 /***/ }),
@@ -6931,6 +6933,7 @@ exports.loadTurnss = loadTurnss;
 exports.loadTurnsMore = loadTurnsMore;
 exports.loadTurn = loadTurn;
 exports.turnCreate = turnCreate;
+exports.matchEdit = matchEdit;
 
 var _teams = __webpack_require__(60);
 
@@ -6943,7 +6946,7 @@ var LOAD_MATCHES_MORE = exports.LOAD_MATCHES_MORE = 'LOAD_MATCHES_MORE';
 var LOAD_MATCHES = exports.LOAD_MATCHES = 'LOAD_MATCHES';
 var LOAD_MATCHES_ERROR = exports.LOAD_MATCHES_ERROR = 'LOAD_MATCHES_ERROR';
 var LOAD_MATCH_SUCCESS = exports.LOAD_MATCH_SUCCESS = 'LOAD_MATCH_SUCCESS';
-var LOAD_OWN_MATCH_SUCCESS = exports.LOAD_OWN_MATCH_SUCCESS = 'LOAD_MATCH_SUCCESS';
+var LOAD_OWN_MATCH_SUCCESS = exports.LOAD_OWN_MATCH_SUCCESS = 'LOAD_OWN_MATCH_SUCCESS';
 var LOAD_MATCH = exports.LOAD_MATCH = 'LOAD_MATCH';
 var LOAD_MATCH_ERROR = exports.LOAD_MATCH_ERROR = 'LOAD_MATCH_ERROR';
 var LOAD_TURNS_SUCCESS = exports.LOAD_TURNS_SUCCESS = 'LOAD_TURNS_SUCCESS';
@@ -6951,7 +6954,7 @@ var LOAD_TURNS_MORE = exports.LOAD_TURNS_MORE = 'LOAD_TURNS_MORE';
 var LOAD_TURNS = exports.LOAD_TURNS = 'LOAD_TURNS';
 var LOAD_TURNS_ERROR = exports.LOAD_TURNS_ERROR = 'LOAD_TURNS_ERROR';
 var LOAD_TURN_SUCCESS = exports.LOAD_TURN_SUCCESS = 'LOAD_TURN_SUCCESS';
-var LOAD_OWN_TURN_SUCCESS = exports.LOAD_OWN_TURN_SUCCESS = 'LOAD_TURN_SUCCESS';
+var LOAD_OWN_TURN_SUCCESS = exports.LOAD_OWN_TURN_SUCCESS = 'LOAD_OWN_TURN_SUCCESS';
 var LOAD_TURN = exports.LOAD_TURN = 'LOAD_TURN';
 var LOAD_TURN_ERROR = exports.LOAD_TURN_ERROR = 'LOAD_TURN_ERROR';
 
@@ -6993,6 +6996,11 @@ function loadTurn(url) {
 function turnCreate(url, name) {
     var types = [LOAD_TURN, LOAD_TURN_SUCCESS, LOAD_TURN_ERROR];
     return (0, _load.apiLoad)(url, 'POST', types, JSON.stringify({ name: name }), _matches.turnNormalize, true);
+}
+
+function matchEdit(url, name) {
+    var types = [LOAD_MATCH, LOAD_MATCH_SUCCESS, LOAD_MATCH_ERROR];
+    return (0, _load.apiLoad)(url, 'PUT', types, JSON.stringify({ name: name }), _matches.matchNormalize, true);
 }
 
 /***/ }),
@@ -28082,7 +28090,7 @@ exports = module.exports = __webpack_require__(193)(false);
 
 
 // module
-exports.push([module.i, ".menu {\r\n    display: flex;\r\n    height: 20px;\r\n    justify-content: space-around;\r\n    background-color: chocolate;\r\n    color: white;\r\n}\r\n.menu a{\r\n    text-decoration: none;\r\n    color: white;\r\n}\r\n.teams{\r\n    margin: 0 auto;\r\n    width: 500px;\r\n}\r\n.team{\r\n    color: white;\r\n    padding: 20px;\r\n    background-color: chocolate;\r\n    margin: 10px;\r\n    border-radius: 5px;\r\n    box-shadow: 0 0 10px rgba(0,0,0,1);\r\n}\r\n.team a{\r\n    color: white;\r\n    text-decoration: none;\r\n}\r\n.edit{\r\n    width: 20px !important;\r\n    border-radius: 0 !important;\r\n    float: right;\r\n    cursor: pointer;\r\n}\r\n.left-edit{\r\n    width: 20px !important;\r\n    border-radius: 0 !important;\r\n    float: left;\r\n    cursor: pointer;\r\n}\r\n.team img{\r\n    width: 100px;\r\n    border-radius: 50px;\r\n}\r\n.modal{\r\n    float: right;\r\n    width: 300px;\r\n    color: white;\r\n    padding: 20px;\r\n    margin-right: 50px;\r\n    margin-top: 10px;\r\n    background-color: chocolate;\r\n    border-radius: 5px;\r\n    box-shadow: 0 0 10px rgba(0,0,0,1);\r\n}\r\n.loading {\r\n    position: relative;\r\n    width: 0;\r\n    padding: 3%;  /* если задать в %, то будет рассчитываться от ширины родителя */\r\n    background:\r\n            linear-gradient(rgba(0,0,0,1) 30%, transparent 30%, transparent 70%, rgba(0,0,0,.4) 70%),\r\n            linear-gradient(to left, rgba(0,0,0,.2) 30%, transparent 30%, transparent 70%, rgba(0,0,0,.8) 70%);\r\n    background-repeat: no-repeat;\r\n    background-size: 10% 100%, 100% 10%;\r\n    background-position: 50% 0%, 0 50%;\r\n    -webkit-animation: loading .7s infinite steps(8);\r\n    animation: loading .7s infinite steps(8);\r\n}\r\n\r\n.loading:after {\r\n    content: '';\r\n    position: absolute;\r\n    top: 0;\r\n    left: 0;\r\n    width: 100%;\r\n    height: 100%;\r\n    background-image:\r\n            linear-gradient(rgba(0,0,0,.1) 30%, transparent 30%, transparent 70%, rgba(0,0,0,.5) 70%),\r\n            linear-gradient(to left, rgba(0,0,0,.3) 30%, transparent 30%, transparent 70%, rgba(0,0,0,.9) 70%);\r\n    background-repeat: no-repeat;\r\n    background-size: 10% 100%, 100% 10%;\r\n    background-position: 50% 0%, 0 50%;\r\n    -webkit-transform: rotate(45deg);\r\n    transform: rotate(45deg);\r\n}\r\n@-webkit-keyframes loading {\r\n    100% {-webkit-transform: rotate(1turn);}\r\n}\r\n\r\n@keyframes loading {\r\n    100% {transform: rotate(1turn);}\r\n}", ""]);
+exports.push([module.i, ".menu {\r\n    display: flex;\r\n    height: 20px;\r\n    justify-content: space-around;\r\n    background-color: chocolate;\r\n    color: white;\r\n}\r\n.menu a{\r\n    text-decoration: none;\r\n    color: white;\r\n}\r\n.teams{\r\n    margin: 0 auto;\r\n    width: 500px;\r\n}\r\n.matches {\r\n    width: 1024px;\r\n    margin: 0 auto;\r\n}\r\n.match {\r\n    display: flex;\r\n    justify-content: space-around;\r\n    color: white;\r\n    background-color: chocolate;\r\n    margin: 10px;\r\n    border-radius: 5px;\r\n    box-shadow: 0 0 10px rgba(0,0,0,1);\r\n}\r\n.match div{\r\n    margin: 20px;\r\n}\r\n.match:first-child div{\r\n    margin: 1px;\r\n}\r\n.match a{\r\n    color: white;\r\n    text-decoration: none;\r\n}\r\n.team{\r\n    color: white;\r\n    padding: 20px;\r\n    background-color: chocolate;\r\n    margin: 10px;\r\n    border-radius: 5px;\r\n    box-shadow: 0 0 10px rgba(0,0,0,1);\r\n}\r\n.team a{\r\n    color: white;\r\n    text-decoration: none;\r\n}\r\n.edit{\r\n    width: 20px !important;\r\n    border-radius: 0 !important;\r\n    float: right;\r\n    cursor: pointer;\r\n}\r\n.left-edit{\r\n    width: 20px !important;\r\n    border-radius: 0 !important;\r\n    float: left;\r\n    cursor: pointer;\r\n}\r\n.team img{\r\n    width: 100px;\r\n    border-radius: 50px;\r\n}\r\n.modal{\r\n    float: right;\r\n    width: 300px;\r\n    color: white;\r\n    padding: 20px;\r\n    margin-right: 50px;\r\n    margin-top: 10px;\r\n    background-color: chocolate;\r\n    border-radius: 5px;\r\n    box-shadow: 0 0 10px rgba(0,0,0,1);\r\n}\r\n.loading {\r\n    position: relative;\r\n    width: 0;\r\n    padding: 3%;  /* если задать в %, то будет рассчитываться от ширины родителя */\r\n    background:\r\n            linear-gradient(rgba(0,0,0,1) 30%, transparent 30%, transparent 70%, rgba(0,0,0,.4) 70%),\r\n            linear-gradient(to left, rgba(0,0,0,.2) 30%, transparent 30%, transparent 70%, rgba(0,0,0,.8) 70%);\r\n    background-repeat: no-repeat;\r\n    background-size: 10% 100%, 100% 10%;\r\n    background-position: 50% 0%, 0 50%;\r\n    -webkit-animation: loading .7s infinite steps(8);\r\n    animation: loading .7s infinite steps(8);\r\n}\r\n\r\n.loading:after {\r\n    content: '';\r\n    position: absolute;\r\n    top: 0;\r\n    left: 0;\r\n    width: 100%;\r\n    height: 100%;\r\n    background-image:\r\n            linear-gradient(rgba(0,0,0,.1) 30%, transparent 30%, transparent 70%, rgba(0,0,0,.5) 70%),\r\n            linear-gradient(to left, rgba(0,0,0,.3) 30%, transparent 30%, transparent 70%, rgba(0,0,0,.9) 70%);\r\n    background-repeat: no-repeat;\r\n    background-size: 10% 100%, 100% 10%;\r\n    background-position: 50% 0%, 0 50%;\r\n    -webkit-transform: rotate(45deg);\r\n    transform: rotate(45deg);\r\n}\r\n@-webkit-keyframes loading {\r\n    100% {-webkit-transform: rotate(1turn);}\r\n}\r\n\r\n@keyframes loading {\r\n    100% {transform: rotate(1turn);}\r\n}", ""]);
 
 // exports
 
@@ -32683,7 +32691,7 @@ function matches() {
                 isLoading: {
                     $set: true
                 },
-                matchesList: {
+                matchList: {
                     $unshift: [action.payload.result]
                 }
             });
@@ -32692,7 +32700,7 @@ function matches() {
                 isLoading: {
                     $set: true
                 },
-                matchesList: {
+                matchList: {
                     $set: [action.payload.result]
                 }
             });
@@ -32809,12 +32817,14 @@ exports.turnNormalize = turnNormalize;
 var _normalizr = __webpack_require__(39);
 
 function matchesNormalize(match) {
-    var matches = new _normalizr.schema.Entity('match');
+    var turn = new _normalizr.schema.Entity('turn');
+    var matches = new _normalizr.schema.Entity('match', { turn: turn });
     return (0, _normalizr.normalize)(match, [matches]);
 }
 
 function matchNormalize(match) {
-    var matches = new _normalizr.schema.Entity('match');
+    var turn = new _normalizr.schema.Entity('turn');
+    var matches = new _normalizr.schema.Entity('match', { turn: turn });
     return (0, _normalizr.normalize)(match, matches);
 }
 
@@ -32977,6 +32987,10 @@ var _Modal = __webpack_require__(303);
 
 var _Modal2 = _interopRequireDefault(_Modal);
 
+var _OwnMatch = __webpack_require__(307);
+
+var _OwnMatch2 = _interopRequireDefault(_OwnMatch);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -33010,7 +33024,8 @@ var AppComponent = function (_React$Component) {
                     _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: "/games", component: _Games2.default }),
                     _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: "/game/:id", component: _OwnGame2.default }),
                     _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: "/matches", component: _Matches2.default }),
-                    _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: "/turns", component: _Turnes2.default })
+                    _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: "/turns", component: _Turnes2.default }),
+                    _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: "/match/:id", component: _OwnMatch2.default })
                 )
             );
         }
@@ -33923,7 +33938,6 @@ var GamesComponent = function (_React$Component) {
             return _react2.default.createElement(
                 "div",
                 { className: "teams" },
-                _react2.default.createElement(_GameForm2.default, null),
                 gameList,
                 this.props.isLoading && this.props.count > 10 * (this.props.page - 1) ? _react2.default.createElement(
                     "div",
@@ -34110,7 +34124,7 @@ var GameFormComponent = function (_React$Component) {
                 _this.onCreate(e);
             }
         }, _this.onCreate = function (e) {
-            _this.props.gameCreate(_constans.urls.game.gameUrl, _this.state.name);
+            _this.props.gameCreate(_constans.urls.game.gameUrl, _this.state.name, _this.props.id);
             _this.setState({ name: '' });
         }, _temp), _possibleConstructorReturn(_this, _ret);
     }
@@ -34120,7 +34134,7 @@ var GameFormComponent = function (_React$Component) {
         value: function render() {
             return _react2.default.createElement(
                 "div",
-                { className: "team" },
+                null,
                 _react2.default.createElement(
                     "h2",
                     null,
@@ -34147,7 +34161,9 @@ var GameFormComponent = function (_React$Component) {
 GameFormComponent.propTypes = {};
 
 var mapStoreToProps = function mapStoreToProps(state, props) {
-    return {};
+    return {
+        id: state.modal.id
+    };
 };
 
 var mapDispatchToProps = function mapDispatchToProps(dispatch) {
@@ -34828,8 +34844,39 @@ var MatchesComponent = function (_React$Component) {
             }
             return _react2.default.createElement(
                 "div",
-                { className: "teams" },
-                matchList,
+                { className: "matches" },
+                _react2.default.createElement(
+                    "div",
+                    { className: "match" },
+                    _react2.default.createElement(
+                        "div",
+                        null,
+                        _react2.default.createElement(
+                            "p",
+                            null,
+                            "\u041C\u0430\u0442\u0447"
+                        )
+                    ),
+                    _react2.default.createElement(
+                        "div",
+                        null,
+                        _react2.default.createElement(
+                            "p",
+                            null,
+                            "\u0427\u0438\u0441\u043B\u043E \u0438\u0433\u0440"
+                        )
+                    ),
+                    _react2.default.createElement(
+                        "div",
+                        null,
+                        _react2.default.createElement(
+                            "p",
+                            null,
+                            "\u0422\u0443\u0440\u043D\u0438\u0440"
+                        )
+                    )
+                ),
+                this.props.isLoading ? matchList : _react2.default.createElement("div", { className: "loading" }),
                 this.props.isLoading && this.props.count > 10 * (this.props.page - 1) ? _react2.default.createElement(
                     "div",
                     null,
@@ -34915,14 +34962,43 @@ var MatchComponent = function (_React$Component) {
         value: function render() {
             return _react2.default.createElement(
                 "div",
-                { className: "team" },
+                { className: "match" },
                 _react2.default.createElement(
-                    "h3",
+                    "div",
+                    null,
+                    _react2.default.createElement("img", { src: this.props.avatar }),
+                    _react2.default.createElement(
+                        "h3",
+                        null,
+                        _react2.default.createElement(
+                            _reactRouterDom.Link,
+                            { to: "/match/" + this.props.id },
+                            this.props.name
+                        )
+                    )
+                ),
+                _react2.default.createElement(
+                    "div",
                     null,
                     _react2.default.createElement(
-                        _reactRouterDom.Link,
-                        { to: "/match/" + this.props.id },
-                        this.props.name
+                        "p",
+                        null,
+                        this.props.games,
+                        " \u0438\u0433\u0440"
+                    )
+                ),
+                _react2.default.createElement(
+                    "div",
+                    null,
+                    _react2.default.createElement(
+                        "p",
+                        null,
+                        "\u0422\u0443\u0440\u043D\u0438\u0440 ",
+                        _react2.default.createElement(
+                            _reactRouterDom.Link,
+                            { to: "/turn/" + this.props.turnId },
+                            this.props.turnName
+                        )
                     )
                 )
             );
@@ -34938,7 +35014,11 @@ MatchComponent.propTypes = {
 
 var mapStoreToProps = function mapStoreToProps(state, props) {
     return {
-        name: state.matches.matches[props.id].name
+        name: state.matches.matches[props.id].name,
+        games: state.matches.matches[props.id].games,
+        avatar: state.matches.matches[props.id].avatar,
+        turnName: state.matches.turns[state.matches.matches[props.id].turn].name,
+        turnId: state.matches.turns[state.matches.matches[props.id].turn].id
     };
 };
 
@@ -35077,6 +35157,14 @@ var _TeamEdit = __webpack_require__(306);
 
 var _TeamEdit2 = _interopRequireDefault(_TeamEdit);
 
+var _GameForm = __webpack_require__(293);
+
+var _GameForm2 = _interopRequireDefault(_GameForm);
+
+var _MatchEdit = __webpack_require__(309);
+
+var _MatchEdit2 = _interopRequireDefault(_MatchEdit);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -35117,6 +35205,12 @@ var ModalComponent = function (_React$Component) {
                     break;
                 case _constans.modalConst.teamEdit:
                     modal = _react2.default.createElement(_TeamEdit2.default, null);
+                    break;
+                case _constans.modalConst.matchEdit:
+                    modal = _react2.default.createElement(_MatchEdit2.default, null);
+                    break;
+                case _constans.modalConst.gameCreate:
+                    modal = _react2.default.createElement(_GameForm2.default, null);
                     break;
                 default:
                     modal = null;
@@ -35458,6 +35552,360 @@ var mapStoreToProps = function mapStoreToProps(state, props) {
 var mapDispatchToProps = function mapDispatchToProps(dispatch) {
     return _extends({}, (0, _redux.bindActionCreators)({
         teamEdit: _teams.teamEdit,
+        modalOpen: _modal.modalOpen
+    }, dispatch));
+};
+
+exports.default = (0, _reactRedux.connect)(mapStoreToProps, mapDispatchToProps)(TeamEditComponent);
+
+/***/ }),
+/* 307 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactRedux = __webpack_require__(4);
+
+var _redux = __webpack_require__(2);
+
+var _propTypes = __webpack_require__(1);
+
+var _propTypes2 = _interopRequireDefault(_propTypes);
+
+var _teams = __webpack_require__(11);
+
+var _constans = __webpack_require__(7);
+
+var _matches = __webpack_require__(137);
+
+var _MatchPage = __webpack_require__(308);
+
+var _MatchPage2 = _interopRequireDefault(_MatchPage);
+
+var _games = __webpack_require__(51);
+
+var _Game = __webpack_require__(292);
+
+var _Game2 = _interopRequireDefault(_Game);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var OwnMatchComponent = function (_React$Component) {
+    _inherits(OwnMatchComponent, _React$Component);
+
+    function OwnMatchComponent() {
+        _classCallCheck(this, OwnMatchComponent);
+
+        return _possibleConstructorReturn(this, (OwnMatchComponent.__proto__ || Object.getPrototypeOf(OwnMatchComponent)).apply(this, arguments));
+    }
+
+    _createClass(OwnMatchComponent, [{
+        key: "componentDidMount",
+        value: function componentDidMount() {
+            this.props.loadMatch(_constans.urls.match.matchUrl + this.props.match.params.id + '/');
+            this.props.loadGames(_constans.urls.game.gameUrl + '?match=' + this.props.match.params.id);
+        }
+    }, {
+        key: "render",
+        value: function render() {
+            var match = null;
+            if (this.props.isLoading) {
+                match = _react2.default.createElement(_MatchPage2.default, { id: parseInt(this.props.match.params.id) });
+            }
+            var gameList = [];
+            if (this.props.isGamesLoading) {
+                gameList = this.props.gameList.map(function (gameId) {
+                    return _react2.default.createElement(_Game2.default, { key: gameId, id: gameId });
+                });
+            }
+            return _react2.default.createElement(
+                "div",
+                { className: "teams" },
+                this.props.isLoading ? match : _react2.default.createElement("div", { className: "loading" }),
+                this.props.isGamesLoading ? gameList : _react2.default.createElement("div", { className: "loading" })
+            );
+        }
+    }]);
+
+    return OwnMatchComponent;
+}(_react2.default.Component);
+
+OwnMatchComponent.propTypes = {};
+
+var mapStoreToProps = function mapStoreToProps(state, props) {
+    return {
+        isLoading: state.matches.isLoading,
+        isGamesLoading: state.games.isLoading,
+        gameList: state.games.gameList,
+        count: state.games.count,
+        page: state.games.page
+    };
+};
+
+var mapDispatchToProps = function mapDispatchToProps(dispatch) {
+    return _extends({}, (0, _redux.bindActionCreators)({
+        loadMatch: _matches.loadMatch,
+        loadGames: _games.loadGames
+    }, dispatch));
+};
+
+exports.default = (0, _reactRedux.connect)(mapStoreToProps, mapDispatchToProps)(OwnMatchComponent);
+
+/***/ }),
+/* 308 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactRedux = __webpack_require__(4);
+
+var _redux = __webpack_require__(2);
+
+var _propTypes = __webpack_require__(1);
+
+var _propTypes2 = _interopRequireDefault(_propTypes);
+
+var _modal = __webpack_require__(33);
+
+var _constans = __webpack_require__(7);
+
+var _reactRouterDom = __webpack_require__(21);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var MatchPageComponent = function (_React$Component) {
+    _inherits(MatchPageComponent, _React$Component);
+
+    function MatchPageComponent() {
+        var _ref;
+
+        var _temp, _this, _ret;
+
+        _classCallCheck(this, MatchPageComponent);
+
+        for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+            args[_key] = arguments[_key];
+        }
+
+        return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = MatchPageComponent.__proto__ || Object.getPrototypeOf(MatchPageComponent)).call.apply(_ref, [this].concat(args))), _this), _this.gameCreate = function (e) {
+            _this.props.modalOpen();
+            _this.props.modalValue(_constans.modalConst.gameCreate);
+            _this.props.setModalId(_this.props.id);
+        }, _this.matchEdit = function (e) {
+            _this.props.modalOpen();
+            _this.props.modalValue(_constans.modalConst.matchEdit);
+            _this.props.setModalId(_this.props.id);
+        }, _temp), _possibleConstructorReturn(_this, _ret);
+    }
+
+    _createClass(MatchPageComponent, [{
+        key: "render",
+        value: function render() {
+            return _react2.default.createElement(
+                "div",
+                null,
+                _react2.default.createElement(
+                    "div",
+                    { className: "team" },
+                    _react2.default.createElement("img", { onClick: this.matchEdit, className: "edit", src: "/static/img/light_check.png" }),
+                    _react2.default.createElement("img", { src: this.props.avatar }),
+                    _react2.default.createElement(
+                        "h3",
+                        null,
+                        this.props.name
+                    ),
+                    _react2.default.createElement(
+                        "p",
+                        null,
+                        this.props.games,
+                        " \u0438\u0433\u0440"
+                    ),
+                    _react2.default.createElement(
+                        "b",
+                        null,
+                        "\u0422\u0443\u0440\u043D\u0438\u0440 ",
+                        _react2.default.createElement(
+                            _reactRouterDom.Link,
+                            { to: "/turn/" + this.props.turnId },
+                            this.props.turnName
+                        )
+                    ),
+                    _react2.default.createElement("img", { onClick: this.gameCreate, className: "edit", src: "/static/img/add.png" })
+                )
+            );
+        }
+    }]);
+
+    return MatchPageComponent;
+}(_react2.default.Component);
+
+MatchPageComponent.propTypes = {
+    id: _propTypes2.default.number.isRequired
+};
+
+var mapStoreToProps = function mapStoreToProps(state, props) {
+    return {
+        name: state.matches.matches[props.id].name,
+        games: state.matches.matches[props.id].games,
+        avatar: state.matches.matches[props.id].avatar,
+        turnName: state.matches.turns[state.matches.matches[props.id].turn].name,
+        turnId: state.matches.turns[state.matches.matches[props.id].turn].id
+    };
+};
+
+var mapDispatchToProps = function mapDispatchToProps(dispatch) {
+    return _extends({}, (0, _redux.bindActionCreators)({
+        modalOpen: _modal.modalOpen,
+        modalValue: _modal.modalValue,
+        setModalId: _modal.setModalId
+    }, dispatch));
+};
+
+exports.default = (0, _reactRedux.connect)(mapStoreToProps, mapDispatchToProps)(MatchPageComponent);
+
+/***/ }),
+/* 309 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactRedux = __webpack_require__(4);
+
+var _redux = __webpack_require__(2);
+
+var _propTypes = __webpack_require__(1);
+
+var _propTypes2 = _interopRequireDefault(_propTypes);
+
+var _teams = __webpack_require__(11);
+
+var _constans = __webpack_require__(7);
+
+var _modal = __webpack_require__(33);
+
+var _matches = __webpack_require__(137);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var TeamEditComponent = function (_React$Component) {
+    _inherits(TeamEditComponent, _React$Component);
+
+    function TeamEditComponent() {
+        var _ref;
+
+        var _temp, _this, _ret;
+
+        _classCallCheck(this, TeamEditComponent);
+
+        for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+            args[_key] = arguments[_key];
+        }
+
+        return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = TeamEditComponent.__proto__ || Object.getPrototypeOf(TeamEditComponent)).call.apply(_ref, [this].concat(args))), _this), _this.state = {
+            name: _this.props.name
+        }, _this.onChange = function (e) {
+            _this.setState(_defineProperty({}, e.target.name, e.target.value));
+        }, _this.matchEdit = function (e) {
+            _this.props.matchEdit(_constans.urls.match.matchUrl + _this.props.matchId + '/', _this.state.name);
+            _this.props.modalOpen();
+        }, _temp), _possibleConstructorReturn(_this, _ret);
+    }
+
+    _createClass(TeamEditComponent, [{
+        key: "render",
+        value: function render() {
+            return _react2.default.createElement(
+                "div",
+                null,
+                _react2.default.createElement(
+                    "h2",
+                    null,
+                    "\u0420\u0435\u0434\u0430\u043A\u0442\u0438\u0440\u043E\u0432\u0430\u0442\u044C \u043C\u0430\u0442\u0447"
+                ),
+                _react2.default.createElement("input", { name: "name", value: this.state.name, onChange: this.onChange }),
+                _react2.default.createElement(
+                    "button",
+                    { onClick: this.matchEdit },
+                    "\u0421\u043E\u0445\u0440\u0430\u043D\u0438\u0442\u044C"
+                )
+            );
+        }
+    }]);
+
+    return TeamEditComponent;
+}(_react2.default.Component);
+
+TeamEditComponent.propTypes = {};
+
+var mapStoreToProps = function mapStoreToProps(state, props) {
+    return {
+        name: state.matches.matches[state.modal.id].name,
+        matchId: state.modal.id
+    };
+};
+
+var mapDispatchToProps = function mapDispatchToProps(dispatch) {
+    return _extends({}, (0, _redux.bindActionCreators)({
+        matchEdit: _matches.matchEdit,
         modalOpen: _modal.modalOpen
     }, dispatch));
 };

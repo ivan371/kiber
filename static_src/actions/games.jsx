@@ -27,7 +27,7 @@ export function loadGame(url) {
     return apiLoad(url, 'GET', types, null, gameNormalize, true);
 }
 
-export function gameCreate(url, name) {
+export function gameCreate(url, name, match) {
     const types = [LOAD_GAME, LOAD_GAME_SUCCESS, LOAD_GAME_ERROR];
-    return apiLoad(url, 'POST', types, JSON.stringify({name}), gameNormalize, true);
+    return apiLoad(url, 'POST', types, JSON.stringify({name, match}), gameNormalize, true);
 }

@@ -26,9 +26,19 @@ class MatchesComponent extends React.Component {
             );
         }
         return (
-            <div className="teams">
-                {/*<TeamForm/>*/}
-                {matchList}
+            <div className="matches">
+                <div className="match">
+                    <div>
+                        <p>Матч</p>
+                    </div>
+                    <div>
+                        <p>Число игр</p>
+                    </div>
+                    <div>
+                        <p>Турнир</p>
+                    </div>
+                </div>
+                {this.props.isLoading ? matchList : <div className="loading"/>}
                 { this.props.isLoading && this.props.count > (10 * (this.props.page - 1)) ? <div>
                     <button onClick={this.onLoadMore}>Показать еще</button>
                 </div> : null }

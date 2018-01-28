@@ -13,6 +13,29 @@
     margin: 0 auto;
     width: 500px;
 }
+.matches {
+    width: 1024px;
+    margin: 0 auto;
+}
+.match {
+    display: flex;
+    justify-content: space-around;
+    color: white;
+    background-color: chocolate;
+    margin: 10px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0,0,0,1);
+}
+.match div{
+    margin: 20px;
+}
+.match:first-child div{
+    margin: 1px;
+}
+.match a{
+    color: white;
+    text-decoration: none;
+}
 .team{
     color: white;
     padding: 20px;

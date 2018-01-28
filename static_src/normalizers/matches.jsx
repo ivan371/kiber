@@ -1,12 +1,14 @@
 import { normalize, schema } from 'normalizr';
 
 export function matchesNormalize (match) {
-    const matches = new schema.Entity('match');
+    const turn = new schema.Entity('turn');
+    const matches = new schema.Entity('match', {turn});
     return normalize(match, [matches]);
 }
 
 export function matchNormalize (match) {
-    const matches = new schema.Entity('match');
+    const turn = new schema.Entity('turn');
+    const matches = new schema.Entity('match', {turn});
     return normalize(match, matches);
 }
 
