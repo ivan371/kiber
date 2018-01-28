@@ -6,6 +6,7 @@ import {loadTeam, loadTeamUsers} from "../../actions/teams";
 import {urls} from "../../constans";
 import TeamPage from "./TeamPage";
 import TeamUsers from "./TeamUsers";
+import TeamGames from "./TeamGames";
 
 class OwnTeamComponent extends React.Component {
     componentDidMount() {
@@ -18,9 +19,12 @@ class OwnTeamComponent extends React.Component {
             team = <TeamPage id={parseInt(this.props.match.params.id)}/>;
         }
         return(
-            <div className="teams">
-                {this.props.isLoading ? team : <div className="loading"/>}
-                <TeamUsers/>
+            <div>
+                <TeamGames id={parseInt(this.props.match.params.id)}/>
+                <div className="teams">
+                    {this.props.isLoading ? team : <div className="loading"/>}
+                    <TeamUsers/>
+                </div>
             </div>
         );
     }

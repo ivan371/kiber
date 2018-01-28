@@ -14,7 +14,8 @@ class TeamUserComponent extends React.Component {
 
     render () {
         return(
-            <div className="team">
+            <div className="teams-users-user">
+                <img className="user" src="/static/img/user.png"/>
                 <img onClick={this.deleteTeamUser} className="edit" src="/static/img/delete.png"/>
                 <p>{this.props.first_name} {this.props.last_name}</p>
             </div>

@@ -28,13 +28,38 @@
 }
 .match div{
     margin: 20px;
+    width: 200px;
+    padding: 10px;
+    border-right: 1px solid white;
+    border-left: 1px solid white;
+    text-align: center;
 }
 .match:first-child div{
-    margin: 1px;
+    margin-top: 1px;
+    margin-bottom: 1px;
 }
 .match a{
     color: white;
     text-decoration: none;
+}
+.teams-users {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+}
+.teams-users-user{
+    padding: 10px;
+    width: 120px;
+    height: 120px;
+    text-align: center;
+    color: white;
+    background-color: chocolate;
+    margin: 10px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0,0,0,1);
+}
+.teams-users-user > .user{
+    width: 50px;
 }
 .team{
     color: white;
@@ -43,6 +68,7 @@
     margin: 10px;
     border-radius: 5px;
     box-shadow: 0 0 10px rgba(0,0,0,1);
+    text-align: center;
 }
 .team a{
     color: white;
@@ -60,9 +86,16 @@
     float: left;
     cursor: pointer;
 }
+.match img{
+    width: 50px;
+}
 .team img{
     width: 100px;
     border-radius: 50px;
+}
+.team > img{
+    width: 50px;
+    border-radius: 25px;
 }
 .modal{
     float: right;
@@ -74,6 +107,12 @@
     background-color: chocolate;
     border-radius: 5px;
     box-shadow: 0 0 10px rgba(0,0,0,1);
+}
+.left-menu{
+    float: left;
+    width: 340px;
+    margin-left: 50px;
+    margin-top: -10px;
 }
 .loading {
     position: relative;
@@ -111,4 +150,8 @@
 
 @keyframes loading {
     100% {transform: rotate(1turn);}
+}
+
+.user{
+    width: 20px;
 }

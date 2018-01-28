@@ -19,7 +19,7 @@ class TeamUsersComponent extends React.Component {
             );
         }
         return (
-            <div className="teams">
+            <div className="teams-users">
                 {this.props.isLoading ? teamUserList : <div className="loading"/>}
                 { this.props.isLoading && this.props.count > (10 * (this.props.page - 1)) ? <div>
                     <button onClick={this.onLoadMore}>Показать еще</button>

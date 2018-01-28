@@ -7,9 +7,13 @@ import {Link} from "react-router-dom";
 class GameComponent extends React.Component {
     render () {
         return(
-            <div className="team">
-                <h3><Link to={"/game/" + this.props.id}>{this.props.name}</Link></h3>
-                {/*<p>{this.props.teamName}</p>*/}
+            <div className="match">
+                <div>
+                    <h3><Link to={"/game/" + this.props.id}>{this.props.name}</Link></h3>
+                </div>
+                <div>
+                    <p>{this.props.date}</p>
+                </div>
             </div>
         );
     }
@@ -21,6 +25,7 @@ GameComponent.propTypes = {
 
 const mapStoreToProps = (state, props) => ({
     name: state.games.games[props.id].name,
+    date: state.games.games[props.id].date,
     // teamName: state.teams.teams[state.games.games[props.id].winner].name,
 });
 

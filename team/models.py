@@ -6,7 +6,7 @@ class Team(models.Model):
     name = models.CharField(max_length=100)
     admin = models.ForeignKey(User, on_delete=True)
     games = models.IntegerField(default=0)
-    avatar = models.ImageField(upload_to='avatars', blank=True, null=True)
+    avatar = models.ImageField(upload_to='avatars', default='game.png')
 
     def __str__(self):
         return self.name

@@ -12,10 +12,13 @@ class MatchComponent extends React.Component {
                     <h3><Link to={"/match/" + this.props.id}>{this.props.name}</Link></h3>
                 </div>
                 <div>
+                    <p>{this.props.date}</p>
+                </div>
+                <div>
                     <p>{this.props.games} игр</p>
                 </div>
                 <div>
-                    <p>Турнир <Link to={"/turn/" + this.props.turnId}>{this.props.turnName}</Link></p>
+                    <p><Link to={"/turn/" + this.props.turnId}>{this.props.turnName}</Link></p>
                 </div>
             </div>
         );
@@ -30,6 +33,7 @@ const mapStoreToProps = (state, props) => ({
     name: state.matches.matches[props.id].name,
     games: state.matches.matches[props.id].games,
     avatar: state.matches.matches[props.id].avatar,
+    date: state.matches.matches[props.id].date,
     turnName: state.matches.turns[state.matches.matches[props.id].turn].name,
     turnId: state.matches.turns[state.matches.matches[props.id].turn].id,
 });

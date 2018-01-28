@@ -32,6 +32,9 @@ class MatchesComponent extends React.Component {
                         <p>Матч</p>
                     </div>
                     <div>
+                        <p>Время начала</p>
+                    </div>
+                    <div>
                         <p>Число игр</p>
                     </div>
                     <div>

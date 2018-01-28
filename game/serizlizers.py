@@ -10,13 +10,13 @@ class GameSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Game
-        fields = ('name', 'winner', 'id')
+        fields = ('name', 'winner', 'id', 'date')
 
 
 class GameSimpleSerializer(ShardingSerializer):
     class Meta:
         model = Game
-        fields = ('name', 'id', 'match')
+        fields = ('name', 'id', 'match', 'date')
 
 
 class GameTeamSerializer(ShardingSerializer):

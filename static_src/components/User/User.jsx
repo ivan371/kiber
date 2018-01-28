@@ -21,6 +21,7 @@ class UserComponent extends React.Component {
     render () {
         return(
             <div>
+                <img className="user" src="/static/img/user.png"/>
                 <img onClick={this.addUser} className="left-edit" src="/static/img/add.png"/>
                 <p>{this.props.first_name} {this.props.last_name}</p>
             </div>

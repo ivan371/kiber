@@ -27,6 +27,7 @@ class MatchPageComponent extends React.Component {
                     <img onClick={this.matchEdit} className="edit" src="/static/img/light_check.png"/>
                     <img src={this.props.avatar}/>
                     <h3>{this.props.name}</h3>
+                    <p>{this.props.date}</p>
                     <p>{this.props.games} игр</p>
                     <b>Турнир <Link to={"/turn/" + this.props.turnId}>{this.props.turnName}</Link></b>
                     <img onClick={this.gameCreate} className="edit" src="/static/img/add.png"/>
@@ -43,6 +44,7 @@ MatchPageComponent.propTypes = {
 const mapStoreToProps = (state, props) => ({
     name: state.matches.matches[props.id].name,
     games: state.matches.matches[props.id].games,
+    date: state.matches.matches[props.id].date,
     avatar: state.matches.matches[props.id].avatar,
     turnName: state.matches.turns[state.matches.matches[props.id].turn].name,
     turnId: state.matches.turns[state.matches.matches[props.id].turn].id,

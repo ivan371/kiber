@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from django.db import models
 
 from match.models import Match
@@ -8,6 +10,7 @@ class Game(models.Model):
     name = models.CharField(max_length=100, unique=True)
     winner = models.ForeignKey(Team, on_delete=True, null=True, blank=True)
     match = models.ForeignKey(Match, on_delete=True)
+    date = models.DateField(default=datetime.now)
 
     def __str__(self):
         return self.name
