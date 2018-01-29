@@ -1,5 +1,5 @@
 import React from 'react';
-import {loadGames, loadGamesMore} from "../../actions/games";
+import {loadGames, loadGamesMore, loadGameTeams} from "../../actions/games";
 import {urls} from "../../constans";
 import {bindActionCreators} from "redux";
 import PropTypes from 'prop-types';
@@ -8,7 +8,7 @@ import Game from "../Game/Game";
 
 class TeamGamesComponent extends React.Component {
     componentDidMount() {
-        this.props.loadGames(urls.game.gameUrl + '?team=' + this.props.id);
+        this.props.loadGameTeams(urls.game.gameTeamUrl + '?team=' + this.props.id);
     }
     onLoadMore = (e) => {
         this.props.loadGamesMore(urls.game.gameUrl + '?offset=' + (this.props.page - 1) * 10);
@@ -16,9 +16,9 @@ class TeamGamesComponent extends React.Component {
     render () {
         let gameList = [];
         if (this.props.isLoading) {
-            gameList = this.props.gameList.map(
+            gameList = this.props.gameTeamList.map(
                 (gameId) => {
-                    return <Game key={ gameId } id={ gameId } />
+                    return <Game key={ gameId } id={ this.props.gameTeams[gameId].game } />
                 }
             );
         }
@@ -38,8 +38,9 @@ TeamGamesComponent.propTypes = {
 };
 
 const mapStoreToProps = (state, props) => ({
-    isLoading: state.games.isLoading,
-    gameList: state.games.gameList,
+    isLoading: state.games.isGameTeamLoading,
+    gameTeamList: state.games.gameTeamList,
+    gameTeams: state.games.gameTeams,
     count: state.games.count,
     page: state.games.page,
 });
@@ -49,6 +50,7 @@ const mapDispatchToProps = (dispatch) => {
         ...bindActionCreators({
             loadGames,
             loadGamesMore,
+            loadGameTeams
         }, dispatch),
     };
 };

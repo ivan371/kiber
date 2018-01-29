@@ -4,7 +4,8 @@ export const urls = {
         teamUserUrl: '/api/teamuser/'
     },
     game: {
-        gameUrl: '/api/games/'
+        gameUrl: '/api/games/',
+        gameTeamUrl: '/api/gameteam/'
     },
     match: {
         matchUrl: '/api/matches/'

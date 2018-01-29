@@ -11,3 +11,10 @@ export function gameNormalize (games) {
     const game = new schema.Entity('game', {'winner': team});
     return normalize(games, game);
 }
+
+export function gameTeamsNormalize(gameTeams) {
+    const game = new schema.Entity('game');
+    const team = new schema.Entity('team');
+    const gameTeam = new schema.Entity('gameteam', {game: game, team: team});
+    return normalize(gameTeams, [gameTeam]);
+}

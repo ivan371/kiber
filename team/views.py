@@ -1,5 +1,5 @@
 from __future__ import absolute_import
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from rest_framework import viewsets
 from rest_framework.response import Response
 
@@ -53,14 +53,41 @@ class TeamUserViewSet(viewsets.ModelViewSet):
             else:
                 serializer.save(user=self.request.user, using='db2')
 
+    def get_object(self):
+        if 'team' in self.request.query_params:
+            if self.request.query_params['team'].isdigit:
+                queryset = UserTeam.objects.all().using('db2')
+        else:
+            queryset = self.filter_queryset(self.get_queryset())
+
+        lookup_url_kwarg = self.lookup_url_kwarg or self.lookup_field
+        assert lookup_url_kwarg in self.kwargs, (
+            'Expected view %s to be called with a URL keyword argument '
+            'named "%s". Fix your URL conf, or set the `.lookup_field` '
+            'attribute on the view correctly.' %
+            (self.__class__.__name__, lookup_url_kwarg)
+        )
+        filter_kwargs = {self.lookup_field: self.kwargs[lookup_url_kwarg]}
+        obj = get_object_or_404(queryset, **filter_kwargs)
+        self.check_object_permissions(self.request, obj)
+        # ob = UserTeam.objects.filter(id=self.kwargs['pk'])
+        # print(ob)
+        # if obj:
+        #     return get_object_or_404(UserTeam, id=0)
+        return obj
+
     def get_queryset(self):
         queryset = super(TeamUserViewSet, self).get_queryset()
         if 'team' in self.request.query_params:
             if self.request.query_params['team'].isdigit():
-                queryset = UserTeam.objects.all().using('db1')
-                qs = UserTeam.objects.all().using('db2')
-                queryset = (qs | queryset).distinct()\
-                    .filter(team=self.request.query_params['team']).prefetch_related('user')
+                queryset = UserTeam.objects.all().using('db1').filter(team=self.request.query_params['team'])\
+                    .select_related('user')
+                qs = UserTeam.objects.all().using('db2').filter(team=self.request.query_params['team'])\
+                    .select_related('user')
+                # queryset = (qs | queryset).distinct()\
+                #     .filter(team=self.request.query_params['team']).prefetch_related('user')
+                print(self.kwargs)
+                return list(set(chain(qs, queryset)))
 
         else:
             if hash(self.request.user.username) % 2 == 0:

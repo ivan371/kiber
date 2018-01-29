@@ -6,6 +6,7 @@ import {bindActionCreators} from "redux";
 import Team from "./Team";
 import TeamForm from "./TeamForm";
 import TeamUser from "./TeamUser";
+import PropTypes from 'prop-types';
 
 class TeamUsersComponent extends React.Component {
 
@@ -14,7 +15,7 @@ class TeamUsersComponent extends React.Component {
         if (this.props.isLoading) {
             teamUserList = this.props.teamUserList.map(
                 (teamUserId) => {
-                    return <TeamUser key={teamUserId} id={teamUserId} />
+                    return <TeamUser key={teamUserId} id={teamUserId} teamId={this.props.id}/>
                 }
             );
         }
@@ -35,6 +36,10 @@ const mapStoreToProps = (state, props) => ({
     // count: state.teams.count,
     // page: state.teams.page,
 });
+
+TeamUsersComponent.propTypes = {
+    id: PropTypes.number.isRequired,
+};
 
 const mapDispatchToProps = (dispatch) => {
     return {

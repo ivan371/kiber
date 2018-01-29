@@ -1,6 +1,9 @@
 .menu {
     display: flex;
     height: 20px;
+    padding: 10px;
+    font-size: 120%;
+    font-weight: 700;
     justify-content: space-around;
     background-color: chocolate;
     color: white;

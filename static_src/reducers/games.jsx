@@ -1,13 +1,19 @@
 import update from 'react-addons-update';
-import {LOAD_GAME, LOAD_GAME_SUCCESS, LOAD_GAMES, LOAD_GAMES_MORE, LOAD_GAMES_SUCCESS} from "../actions/games";
+import {
+    LOAD_GAME, LOAD_GAME_SUCCESS, LOAD_GAME_TEAM, LOAD_GAME_TEAM_SUCCESS, LOAD_GAMES, LOAD_GAMES_MORE,
+    LOAD_GAMES_SUCCESS
+} from "../actions/games";
 
 
 const inititalStore = {
     isLoading: false,
+    isGameTeamLoading: false,
     count: 0,
     page: 2,
     games: {},
     gameList: [],
+    gameTeams: {},
+    gameTeamList: [],
 };
 
 
@@ -20,6 +26,13 @@ export default function games (store = inititalStore, action) {
                     store = update(store, {
                         games: {
                             $merge: action.payload.entities.game,
+                        },
+                    });
+                }
+                if (action.payload.entities.hasOwnProperty('gameteam')) {
+                    store = update(store, {
+                        gameTeams: {
+                            $merge: action.payload.entities.gameteam,
                         },
                     });
                 }
@@ -77,6 +90,21 @@ export default function games (store = inititalStore, action) {
                 page: {
                     $set: store.page + 1,
                 },
+            });
+        case LOAD_GAME_TEAM:
+            return update(store, {
+                isGameTeamLoading: {
+                    $set: false,
+                }
+            });
+        case LOAD_GAME_TEAM_SUCCESS:
+            return update(store, {
+                isGameTeamLoading: {
+                    $set: true,
+                },
+                gameTeamList: {
+                    $set: action.payload.result,
+                }
             });
         default:
             return store;

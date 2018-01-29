@@ -14,7 +14,8 @@ export function teamNormalize (teams) {
 
 export function teamUsersNormalize(teamUsers) {
     const user = new schema.Entity('user');
-    const teamUser = new schema.Entity('teamuser', {user: user});
+    const team = new schema.Entity('team');
+    const teamUser = new schema.Entity('teamuser', {user: user, team: team});
     return normalize(teamUsers, [teamUser]);
 }
 

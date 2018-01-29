@@ -25,6 +25,7 @@ class TeamUserComponent extends React.Component {
 
 TeamUserComponent.propTypes = {
     id: PropTypes.number.isRequired,
+    teamId: PropTypes.number.isRequired,
 };
 
 const mapStoreToProps = (state, props) => ({

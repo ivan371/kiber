@@ -23,7 +23,7 @@ class OwnTeamComponent extends React.Component {
                 <TeamGames id={parseInt(this.props.match.params.id)}/>
                 <div className="teams">
                     {this.props.isLoading ? team : <div className="loading"/>}
-                    <TeamUsers/>
+                    <TeamUsers id={parseInt(this.props.match.params.id)}/>
                 </div>
             </div>
         );
