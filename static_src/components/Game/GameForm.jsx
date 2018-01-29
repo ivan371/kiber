@@ -8,6 +8,7 @@ import {urls} from "../../constans";
 class GameFormComponent extends React.Component {
     state = {
         name: '',
+        date: '',
     };
     onChange = (e) => {
         this.setState({[e.target.name]: e.target.value});
@@ -18,7 +19,7 @@ class GameFormComponent extends React.Component {
         }
     };
     onCreate = (e) => {
-        this.props.gameCreate(urls.game.gameUrl, this.state.name, this.props.id);
+        this.props.gameCreate(urls.game.gameUrl, this.state.name, this.state.date, this.props.id);
         this.setState({name: ''});
     };
     render () {
@@ -26,7 +27,10 @@ class GameFormComponent extends React.Component {
             <div>
                 <h2>Создать игру</h2>
                 <label>Название</label>
-                <input type="text" onChange={this.onChange} onKeyDown={this.onPress} value={this.state.name} name="name"/>
+                <input type="text" onChange={this.onChange} value={this.state.name} name="name"/>
+                <br/>
+                <label>Дата</label>
+                <input type="date" onChange={this.onChange} value={this.state.date} name="date"/>
                 <button onClick={this.onCreate}>Создать</button>
             </div>
         );

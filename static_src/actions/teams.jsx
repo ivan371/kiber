@@ -18,6 +18,13 @@ export const LOAD_TEAM_USERS_ERROR = 'LOAD_TEAM_USERS_ERROR';
 export const TEAM_USER_DELETE = 'TEAM_USER_DELETE';
 export const TEAM_USER_DELETE_SUCCESS = 'TEAM_USER_DELETE_SUCCESS';
 export const TEAM_USER_DELETE_ERROR = 'TEAM_USER_DELETE_ERROR';
+export const TEAM_UNMOUNT = 'TEAM_UNMOUNT';
+
+export function testUnmount() {
+    return {
+        type: TEAM_UNMOUNT,
+    }
+}
 
 export function deleteTeamUser(url, id) {
     const types = [TEAM_USER_DELETE, TEAM_USER_DELETE_SUCCESS, TEAM_USER_DELETE_ERROR];

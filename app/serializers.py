@@ -20,7 +20,12 @@ class ShardingSerializer(serializers.ModelSerializer):
             if 'using' in validated_data:
                 using = validated_data.pop('using')
                 instance = ModelClass(**validated_data)
-                instance.save(using=using)
+                if using == 'all':
+                    instance.save(using='db1')
+                    instance.save(using='db2')
+                    # instance.save()
+                else:
+                    instance.save(using=using)
             else:
                 instance = ModelClass.objects.create(**validated_data)
         except TypeError:

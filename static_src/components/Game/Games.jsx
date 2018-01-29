@@ -1,5 +1,5 @@
 import React from 'react';
-import {loadGames, loadGamesMore} from "../../actions/games";
+import {gameUnmount, loadGames, loadGamesMore} from "../../actions/games";
 import {urls} from "../../constans";
 import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
@@ -9,6 +9,9 @@ import GameForm from "./GameForm";
 class GamesComponent extends React.Component {
     componentDidMount() {
         this.props.loadGames(urls.game.gameUrl);
+    }
+    componentWillUnmount() {
+        this.props.gameUnmount();
     }
     onLoadMore = (e) => {
         this.props.loadGamesMore(urls.game.gameUrl + '?offset=' + (this.props.page - 1) * 10);
@@ -49,6 +52,7 @@ const mapDispatchToProps = (dispatch) => {
         ...bindActionCreators({
             loadGames,
             loadGamesMore,
+            gameUnmount
         }, dispatch),
     };
 };

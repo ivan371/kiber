@@ -1,5 +1,6 @@
 import update from 'react-addons-update';
 import {
+    GAME_UNMOUNT,
     LOAD_GAME, LOAD_GAME_SUCCESS, LOAD_GAME_TEAM, LOAD_GAME_TEAM_SUCCESS, LOAD_GAMES, LOAD_GAMES_MORE,
     LOAD_GAMES_SUCCESS
 } from "../actions/games";
@@ -40,6 +41,10 @@ export default function games (store = inititalStore, action) {
         }
     }
     switch (action.type) {
+        case GAME_UNMOUNT:
+            return update(store, {
+                isLoading: false,
+            });
         case LOAD_GAMES:
             return update(store, {
                 isLoading: {

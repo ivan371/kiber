@@ -18,7 +18,13 @@ export const LOAD_TURN_SUCCESS = 'LOAD_TURN_SUCCESS';
 export const LOAD_OWN_TURN_SUCCESS = 'LOAD_OWN_TURN_SUCCESS';
 export const LOAD_TURN = 'LOAD_TURN';
 export const LOAD_TURN_ERROR = 'LOAD_TURN_ERROR';
+export const MATCH_UNMOUNT = 'MATCH_UNMOUNT';
 
+export function matchUnmount() {
+    return {
+        type: MATCH_UNMOUNT,
+    }
+}
 
 
 export function loadMatches(url) {

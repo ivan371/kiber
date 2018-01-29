@@ -3,7 +3,7 @@ import {
     LOAD_OWN_TEAM_SUCCESS, LOAD_TEAM, LOAD_TEAM_SUCCESS, LOAD_TEAM_USER_SUCCESS, LOAD_TEAM_USERS,
     LOAD_TEAM_USERS_SUCCESS, LOAD_TEAMS,
     LOAD_TEAMS_MORE,
-    LOAD_TEAMS_SUCCESS, TEAM_USER_DELETE_SUCCESS
+    LOAD_TEAMS_SUCCESS, TEAM_UNMOUNT, TEAM_USER_DELETE_SUCCESS
 } from "../actions/teams";
 
 
@@ -43,6 +43,10 @@ export default function teams (store = inititalStore, action) {
     }
     let index = null;
     switch (action.type) {
+        case TEAM_UNMOUNT:
+            return update(store, {
+                isLoading: false,
+            });
         case LOAD_TEAMS:
             return update(store, {
                 isLoading: {

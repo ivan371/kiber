@@ -15,7 +15,7 @@ class TeamViewSet(viewsets.ModelViewSet):
     serializer_class = TeamSerializer
 
     def perform_create(self, serializer):
-        serializer.save(admin=self.request.user)
+        serializer.save(admin=self.request.user, using='all')
 
     def get_queryset(self):
         queryset = super(TeamViewSet, self).get_queryset()

@@ -12,7 +12,13 @@ export const LOAD_GAME_ERROR = 'LOAD_GAME_ERROR';
 export const LOAD_GAME_TEAM_SUCCESS = 'LOAD_GAME_TEAM_SUCCESS';
 export const LOAD_GAME_TEAM = 'LOAD_GAME_TEAM';
 export const LOAD_GAME_TEAM_ERROR = 'LOAD_GAME_TEAM_ERROR';
+export const GAME_UNMOUNT = 'GAME_UNMOUNT';
 
+export function gameUnmount() {
+    return {
+        type: GAME_UNMOUNT,
+    }
+}
 
 export function loadGames(url) {
     const types = [LOAD_GAMES, LOAD_GAMES_SUCCESS, LOAD_GAMES_ERROR];
@@ -30,9 +36,9 @@ export function loadGame(url) {
     return apiLoad(url, 'GET', types, null, gameNormalize, true);
 }
 
-export function gameCreate(url, name, match) {
+export function gameCreate(url, name, date, match) {
     const types = [LOAD_GAME, LOAD_GAME_SUCCESS, LOAD_GAME_ERROR];
-    return apiLoad(url, 'POST', types, JSON.stringify({name, match}), gameNormalize, true);
+    return apiLoad(url, 'POST', types, JSON.stringify({name, date, match}), gameNormalize, true);
 }
 
 export function loadGameTeams(url) {

@@ -497,7 +497,8 @@ $exports.store = store;
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.TEAM_USER_DELETE_ERROR = exports.TEAM_USER_DELETE_SUCCESS = exports.TEAM_USER_DELETE = exports.LOAD_TEAM_USERS_ERROR = exports.LOAD_TEAM_USERS_SUCCESS = exports.LOAD_TEAM_USERS = exports.LOAD_TEAM_USER_ERROR = exports.LOAD_TEAM_USER_SUCCESS = exports.LOAD_TEAM_USER = exports.LOAD_TEAM_ERROR = exports.LOAD_TEAM = exports.LOAD_OWN_TEAM_SUCCESS = exports.LOAD_TEAM_SUCCESS = exports.LOAD_TEAMS_ERROR = exports.LOAD_TEAMS = exports.LOAD_TEAMS_MORE = exports.LOAD_TEAMS_SUCCESS = undefined;
+exports.TEAM_UNMOUNT = exports.TEAM_USER_DELETE_ERROR = exports.TEAM_USER_DELETE_SUCCESS = exports.TEAM_USER_DELETE = exports.LOAD_TEAM_USERS_ERROR = exports.LOAD_TEAM_USERS_SUCCESS = exports.LOAD_TEAM_USERS = exports.LOAD_TEAM_USER_ERROR = exports.LOAD_TEAM_USER_SUCCESS = exports.LOAD_TEAM_USER = exports.LOAD_TEAM_ERROR = exports.LOAD_TEAM = exports.LOAD_OWN_TEAM_SUCCESS = exports.LOAD_TEAM_SUCCESS = exports.LOAD_TEAMS_ERROR = exports.LOAD_TEAMS = exports.LOAD_TEAMS_MORE = exports.LOAD_TEAMS_SUCCESS = undefined;
+exports.testUnmount = testUnmount;
 exports.deleteTeamUser = deleteTeamUser;
 exports.loadTeamUser = loadTeamUser;
 exports.loadTeamUsers = loadTeamUsers;
@@ -528,6 +529,13 @@ var LOAD_TEAM_USERS_ERROR = exports.LOAD_TEAM_USERS_ERROR = 'LOAD_TEAM_USERS_ERR
 var TEAM_USER_DELETE = exports.TEAM_USER_DELETE = 'TEAM_USER_DELETE';
 var TEAM_USER_DELETE_SUCCESS = exports.TEAM_USER_DELETE_SUCCESS = 'TEAM_USER_DELETE_SUCCESS';
 var TEAM_USER_DELETE_ERROR = exports.TEAM_USER_DELETE_ERROR = 'TEAM_USER_DELETE_ERROR';
+var TEAM_UNMOUNT = exports.TEAM_UNMOUNT = 'TEAM_UNMOUNT';
+
+function testUnmount() {
+    return {
+        type: TEAM_UNMOUNT
+    };
+}
 
 function deleteTeamUser(url, id) {
     var types = [TEAM_USER_DELETE, TEAM_USER_DELETE_SUCCESS, TEAM_USER_DELETE_ERROR];
@@ -1146,7 +1154,8 @@ module.exports = function (exec) {
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.LOAD_GAME_TEAM_ERROR = exports.LOAD_GAME_TEAM = exports.LOAD_GAME_TEAM_SUCCESS = exports.LOAD_GAME_ERROR = exports.LOAD_GAME = exports.LOAD_GAME_SUCCESS = exports.LOAD_GAMES_ERROR = exports.LOAD_GAMES = exports.LOAD_GAMES_MORE = exports.LOAD_GAMES_SUCCESS = undefined;
+exports.GAME_UNMOUNT = exports.LOAD_GAME_TEAM_ERROR = exports.LOAD_GAME_TEAM = exports.LOAD_GAME_TEAM_SUCCESS = exports.LOAD_GAME_ERROR = exports.LOAD_GAME = exports.LOAD_GAME_SUCCESS = exports.LOAD_GAMES_ERROR = exports.LOAD_GAMES = exports.LOAD_GAMES_MORE = exports.LOAD_GAMES_SUCCESS = undefined;
+exports.gameUnmount = gameUnmount;
 exports.loadGames = loadGames;
 exports.loadGamesMore = loadGamesMore;
 exports.loadGame = loadGame;
@@ -1169,6 +1178,13 @@ var LOAD_GAME_ERROR = exports.LOAD_GAME_ERROR = 'LOAD_GAME_ERROR';
 var LOAD_GAME_TEAM_SUCCESS = exports.LOAD_GAME_TEAM_SUCCESS = 'LOAD_GAME_TEAM_SUCCESS';
 var LOAD_GAME_TEAM = exports.LOAD_GAME_TEAM = 'LOAD_GAME_TEAM';
 var LOAD_GAME_TEAM_ERROR = exports.LOAD_GAME_TEAM_ERROR = 'LOAD_GAME_TEAM_ERROR';
+var GAME_UNMOUNT = exports.GAME_UNMOUNT = 'GAME_UNMOUNT';
+
+function gameUnmount() {
+    return {
+        type: GAME_UNMOUNT
+    };
+}
 
 function loadGames(url) {
     var types = [LOAD_GAMES, LOAD_GAMES_SUCCESS, LOAD_GAMES_ERROR];
@@ -1185,9 +1201,9 @@ function loadGame(url) {
     return (0, _load.apiLoad)(url, 'GET', types, null, _games.gameNormalize, true);
 }
 
-function gameCreate(url, name, match) {
+function gameCreate(url, name, date, match) {
     var types = [LOAD_GAME, LOAD_GAME_SUCCESS, LOAD_GAME_ERROR];
-    return (0, _load.apiLoad)(url, 'POST', types, JSON.stringify({ name: name, match: match }), _games.gameNormalize, true);
+    return (0, _load.apiLoad)(url, 'POST', types, JSON.stringify({ name: name, date: date, match: match }), _games.gameNormalize, true);
 }
 
 function loadGameTeams(url) {
@@ -2307,7 +2323,8 @@ exports.f = {}.propertyIsEnumerable;
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.LOAD_TURN_ERROR = exports.LOAD_TURN = exports.LOAD_OWN_TURN_SUCCESS = exports.LOAD_TURN_SUCCESS = exports.LOAD_TURNS_ERROR = exports.LOAD_TURNS = exports.LOAD_TURNS_MORE = exports.LOAD_TURNS_SUCCESS = exports.LOAD_MATCH_ERROR = exports.LOAD_MATCH = exports.LOAD_OWN_MATCH_SUCCESS = exports.LOAD_MATCH_SUCCESS = exports.LOAD_MATCHES_ERROR = exports.LOAD_MATCHES = exports.LOAD_MATCHES_MORE = exports.LOAD_MATCHES_SUCCESS = undefined;
+exports.MATCH_UNMOUNT = exports.LOAD_TURN_ERROR = exports.LOAD_TURN = exports.LOAD_OWN_TURN_SUCCESS = exports.LOAD_TURN_SUCCESS = exports.LOAD_TURNS_ERROR = exports.LOAD_TURNS = exports.LOAD_TURNS_MORE = exports.LOAD_TURNS_SUCCESS = exports.LOAD_MATCH_ERROR = exports.LOAD_MATCH = exports.LOAD_OWN_MATCH_SUCCESS = exports.LOAD_MATCH_SUCCESS = exports.LOAD_MATCHES_ERROR = exports.LOAD_MATCHES = exports.LOAD_MATCHES_MORE = exports.LOAD_MATCHES_SUCCESS = undefined;
+exports.matchUnmount = matchUnmount;
 exports.loadMatches = loadMatches;
 exports.loadMatchesMore = loadMatchesMore;
 exports.loadMatch = loadMatch;
@@ -2340,6 +2357,13 @@ var LOAD_TURN_SUCCESS = exports.LOAD_TURN_SUCCESS = 'LOAD_TURN_SUCCESS';
 var LOAD_OWN_TURN_SUCCESS = exports.LOAD_OWN_TURN_SUCCESS = 'LOAD_OWN_TURN_SUCCESS';
 var LOAD_TURN = exports.LOAD_TURN = 'LOAD_TURN';
 var LOAD_TURN_ERROR = exports.LOAD_TURN_ERROR = 'LOAD_TURN_ERROR';
+var MATCH_UNMOUNT = exports.MATCH_UNMOUNT = 'MATCH_UNMOUNT';
+
+function matchUnmount() {
+    return {
+        type: MATCH_UNMOUNT
+    };
+}
 
 function loadMatches(url) {
     var types = [LOAD_MATCHES, LOAD_MATCHES_SUCCESS, LOAD_MATCHES_ERROR];
@@ -7516,7 +7540,8 @@ var GameFormComponent = function (_React$Component) {
         }
 
         return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = GameFormComponent.__proto__ || Object.getPrototypeOf(GameFormComponent)).call.apply(_ref, [this].concat(args))), _this), _this.state = {
-            name: ''
+            name: '',
+            date: ''
         }, _this.onChange = function (e) {
             _this.setState(_defineProperty({}, e.target.name, e.target.value));
         }, _this.onPress = function (e) {
@@ -7524,7 +7549,7 @@ var GameFormComponent = function (_React$Component) {
                 _this.onCreate(e);
             }
         }, _this.onCreate = function (e) {
-            _this.props.gameCreate(_constans.urls.game.gameUrl, _this.state.name, _this.props.id);
+            _this.props.gameCreate(_constans.urls.game.gameUrl, _this.state.name, _this.state.date, _this.props.id);
             _this.setState({ name: '' });
         }, _temp), _possibleConstructorReturn(_this, _ret);
     }
@@ -7545,7 +7570,14 @@ var GameFormComponent = function (_React$Component) {
                     null,
                     "\u041D\u0430\u0437\u0432\u0430\u043D\u0438\u0435"
                 ),
-                _react2.default.createElement("input", { type: "text", onChange: this.onChange, onKeyDown: this.onPress, value: this.state.name, name: "name" }),
+                _react2.default.createElement("input", { type: "text", onChange: this.onChange, value: this.state.name, name: "name" }),
+                _react2.default.createElement("br", null),
+                _react2.default.createElement(
+                    "label",
+                    null,
+                    "\u0414\u0430\u0442\u0430"
+                ),
+                _react2.default.createElement("input", { type: "date", onChange: this.onChange, value: this.state.date, name: "date" }),
                 _react2.default.createElement(
                     "button",
                     { onClick: this.onCreate },
@@ -28307,7 +28339,7 @@ exports = module.exports = __webpack_require__(195)(false);
 
 
 // module
-exports.push([module.i, ".menu {\r\n    display: flex;\r\n    height: 20px;\r\n    padding: 10px;\r\n    font-size: 120%;\r\n    font-weight: 700;\r\n    justify-content: space-around;\r\n    background-color: chocolate;\r\n    color: white;\r\n}\r\n.menu a{\r\n    text-decoration: none;\r\n    color: white;\r\n}\r\n.teams{\r\n    margin: 0 auto;\r\n    width: 500px;\r\n}\r\n.matches {\r\n    width: 1024px;\r\n    margin: 0 auto;\r\n}\r\n.match {\r\n    display: flex;\r\n    justify-content: space-around;\r\n    color: white;\r\n    background-color: chocolate;\r\n    margin: 10px;\r\n    border-radius: 5px;\r\n    box-shadow: 0 0 10px rgba(0,0,0,1);\r\n}\r\n.match div{\r\n    margin: 20px;\r\n    width: 200px;\r\n    padding: 10px;\r\n    border-right: 1px solid white;\r\n    border-left: 1px solid white;\r\n    text-align: center;\r\n}\r\n.match:first-child div{\r\n    margin-top: 1px;\r\n    margin-bottom: 1px;\r\n}\r\n.match a{\r\n    color: white;\r\n    text-decoration: none;\r\n}\r\n.teams-users {\r\n    display: flex;\r\n    justify-content: space-around;\r\n    flex-wrap: wrap;\r\n}\r\n.teams-users-user{\r\n    padding: 10px;\r\n    width: 120px;\r\n    height: 120px;\r\n    text-align: center;\r\n    color: white;\r\n    background-color: chocolate;\r\n    margin: 10px;\r\n    border-radius: 5px;\r\n    box-shadow: 0 0 10px rgba(0,0,0,1);\r\n}\r\n.teams-users-user > .user{\r\n    width: 50px;\r\n}\r\n.team{\r\n    color: white;\r\n    padding: 20px;\r\n    background-color: chocolate;\r\n    margin: 10px;\r\n    border-radius: 5px;\r\n    box-shadow: 0 0 10px rgba(0,0,0,1);\r\n    text-align: center;\r\n}\r\n.team a{\r\n    color: white;\r\n    text-decoration: none;\r\n}\r\n.edit{\r\n    width: 20px !important;\r\n    border-radius: 0 !important;\r\n    float: right;\r\n    cursor: pointer;\r\n}\r\n.left-edit{\r\n    width: 20px !important;\r\n    border-radius: 0 !important;\r\n    float: left;\r\n    cursor: pointer;\r\n}\r\n.match img{\r\n    width: 50px;\r\n}\r\n.team img{\r\n    width: 100px;\r\n    border-radius: 50px;\r\n}\r\n.team > img{\r\n    width: 50px;\r\n    border-radius: 25px;\r\n}\r\n.modal{\r\n    float: right;\r\n    width: 300px;\r\n    color: white;\r\n    padding: 20px;\r\n    margin-right: 50px;\r\n    margin-top: 10px;\r\n    background-color: chocolate;\r\n    border-radius: 5px;\r\n    box-shadow: 0 0 10px rgba(0,0,0,1);\r\n}\r\n.left-menu{\r\n    float: left;\r\n    width: 340px;\r\n    margin-left: 50px;\r\n    margin-top: -10px;\r\n}\r\n.loading {\r\n    position: relative;\r\n    width: 0;\r\n    padding: 3%;  /* если задать в %, то будет рассчитываться от ширины родителя */\r\n    background:\r\n            linear-gradient(rgba(0,0,0,1) 30%, transparent 30%, transparent 70%, rgba(0,0,0,.4) 70%),\r\n            linear-gradient(to left, rgba(0,0,0,.2) 30%, transparent 30%, transparent 70%, rgba(0,0,0,.8) 70%);\r\n    background-repeat: no-repeat;\r\n    background-size: 10% 100%, 100% 10%;\r\n    background-position: 50% 0%, 0 50%;\r\n    -webkit-animation: loading .7s infinite steps(8);\r\n    animation: loading .7s infinite steps(8);\r\n}\r\n\r\n.loading:after {\r\n    content: '';\r\n    position: absolute;\r\n    top: 0;\r\n    left: 0;\r\n    width: 100%;\r\n    height: 100%;\r\n    background-image:\r\n            linear-gradient(rgba(0,0,0,.1) 30%, transparent 30%, transparent 70%, rgba(0,0,0,.5) 70%),\r\n            linear-gradient(to left, rgba(0,0,0,.3) 30%, transparent 30%, transparent 70%, rgba(0,0,0,.9) 70%);\r\n    background-repeat: no-repeat;\r\n    background-size: 10% 100%, 100% 10%;\r\n    background-position: 50% 0%, 0 50%;\r\n    -webkit-transform: rotate(45deg);\r\n    transform: rotate(45deg);\r\n}\r\n@-webkit-keyframes loading {\r\n    100% {-webkit-transform: rotate(1turn);}\r\n}\r\n\r\n@keyframes loading {\r\n    100% {transform: rotate(1turn);}\r\n}\r\n\r\n.user{\r\n    width: 20px;\r\n}", ""]);
+exports.push([module.i, "body{\r\n    font-family: Candara;\r\n}\r\n.menu {\r\n    display: flex;\r\n    height: 20px;\r\n    padding: 10px;\r\n    font-size: 120%;\r\n    font-weight: 700;\r\n    justify-content: space-around;\r\n    background-color: chocolate;\r\n    color: white;\r\n}\r\n.menu a{\r\n    text-decoration: none;\r\n    color: white;\r\n}\r\n.teams{\r\n    margin: 0 auto;\r\n    width: 500px;\r\n}\r\n.matches {\r\n    width: 1024px;\r\n    margin: 0 auto;\r\n}\r\n.match {\r\n    display: flex;\r\n    justify-content: space-around;\r\n    color: white;\r\n    background-color: chocolate;\r\n    margin: 10px;\r\n    border-radius: 5px;\r\n    box-shadow: 0 0 10px rgba(0,0,0,1);\r\n}\r\n.match div{\r\n    margin: 20px;\r\n    width: 200px;\r\n    padding: 10px;\r\n    border-right: 1px solid white;\r\n    border-left: 1px solid white;\r\n    text-align: center;\r\n}\r\n.match:first-child div{\r\n    margin-top: 1px;\r\n    margin-bottom: 1px;\r\n}\r\n.match a{\r\n    color: white;\r\n    text-decoration: none;\r\n}\r\n.teams-users {\r\n    display: flex;\r\n    justify-content: space-around;\r\n    flex-wrap: wrap;\r\n}\r\n.teams-users-user{\r\n    padding: 10px;\r\n    width: 120px;\r\n    height: 120px;\r\n    text-align: center;\r\n    color: white;\r\n    background-color: chocolate;\r\n    margin: 10px;\r\n    border-radius: 5px;\r\n    box-shadow: 0 0 10px rgba(0,0,0,1);\r\n}\r\n.teams-users-user > .user{\r\n    width: 50px;\r\n}\r\n.team{\r\n    color: white;\r\n    padding: 20px;\r\n    background-color: chocolate;\r\n    margin: 10px;\r\n    border-radius: 5px;\r\n    box-shadow: 0 0 10px rgba(0,0,0,1);\r\n    text-align: center;\r\n}\r\n.team a{\r\n    color: white;\r\n    text-decoration: none;\r\n}\r\n.edit{\r\n    width: 20px !important;\r\n    border-radius: 0 !important;\r\n    float: right;\r\n    cursor: pointer;\r\n}\r\n.left-edit{\r\n    width: 20px !important;\r\n    border-radius: 0 !important;\r\n    float: left;\r\n    cursor: pointer;\r\n}\r\n.match img{\r\n    width: 50px;\r\n}\r\n.team img{\r\n    width: 100px;\r\n    border-radius: 50px;\r\n}\r\n.team > img{\r\n    width: 50px;\r\n    border-radius: 25px;\r\n}\r\n.modal{\r\n    float: right;\r\n    width: 300px;\r\n    color: white;\r\n    padding: 20px;\r\n    margin-right: 50px;\r\n    margin-top: 10px;\r\n    background-color: chocolate;\r\n    border-radius: 5px;\r\n    box-shadow: 0 0 10px rgba(0,0,0,1);\r\n}\r\n.left-menu{\r\n    float: left;\r\n    width: 340px;\r\n    margin-left: 50px;\r\n    margin-top: -10px;\r\n}\r\n.loading {\r\n    position: relative;\r\n    width: 0;\r\n    padding: 3%;  /* если задать в %, то будет рассчитываться от ширины родителя */\r\n    background:\r\n            linear-gradient(rgba(0,0,0,1) 30%, transparent 30%, transparent 70%, rgba(0,0,0,.4) 70%),\r\n            linear-gradient(to left, rgba(0,0,0,.2) 30%, transparent 30%, transparent 70%, rgba(0,0,0,.8) 70%);\r\n    background-repeat: no-repeat;\r\n    background-size: 10% 100%, 100% 10%;\r\n    background-position: 50% 0%, 0 50%;\r\n    -webkit-animation: loading .7s infinite steps(8);\r\n    animation: loading .7s infinite steps(8);\r\n}\r\n\r\n.loading:after {\r\n    content: '';\r\n    position: absolute;\r\n    top: 0;\r\n    left: 0;\r\n    width: 100%;\r\n    height: 100%;\r\n    background-image:\r\n            linear-gradient(rgba(0,0,0,.1) 30%, transparent 30%, transparent 70%, rgba(0,0,0,.5) 70%),\r\n            linear-gradient(to left, rgba(0,0,0,.3) 30%, transparent 30%, transparent 70%, rgba(0,0,0,.9) 70%);\r\n    background-repeat: no-repeat;\r\n    background-size: 10% 100%, 100% 10%;\r\n    background-position: 50% 0%, 0 50%;\r\n    -webkit-transform: rotate(45deg);\r\n    transform: rotate(45deg);\r\n}\r\n@-webkit-keyframes loading {\r\n    100% {-webkit-transform: rotate(1turn);}\r\n}\r\n\r\n@keyframes loading {\r\n    100% {transform: rotate(1turn);}\r\n}\r\n\r\n.user{\r\n    width: 20px;\r\n}", ""]);
 
 // exports
 
@@ -28988,6 +29020,10 @@ function teams() {
     }
     var index = null;
     switch (action.type) {
+        case _teams.TEAM_UNMOUNT:
+            return (0, _reactAddonsUpdate2.default)(store, {
+                isLoading: false
+            });
         case _teams.LOAD_TEAMS:
             return (0, _reactAddonsUpdate2.default)(store, {
                 isLoading: {
@@ -32762,6 +32798,10 @@ function games() {
         }
     }
     switch (action.type) {
+        case _games.GAME_UNMOUNT:
+            return (0, _reactAddonsUpdate2.default)(store, {
+                isLoading: false
+            });
         case _games.LOAD_GAMES:
             return (0, _reactAddonsUpdate2.default)(store, {
                 isLoading: {
@@ -32924,6 +32964,10 @@ function matches() {
         }
     }
     switch (action.type) {
+        case _matches.MATCH_UNMOUNT:
+            return (0, _reactAddonsUpdate2.default)(store, {
+                isLoading: false
+            });
         case _matches.LOAD_MATCHES:
             return (0, _reactAddonsUpdate2.default)(store, {
                 isLoading: {
@@ -34108,7 +34152,7 @@ var TeamsComponent = function (_React$Component) {
                         "\u0412\u0441\u0435 \u043A\u043E\u043C\u0430\u043D\u0434\u044B"
                     )
                 ),
-                _react2.default.createElement(_TeamForm2.default, null),
+                this.state === 'all' ? _react2.default.createElement(_TeamForm2.default, null) : null,
                 this.props.isLoading || this.props.isTeamUserLoading ? teamList : _react2.default.createElement("div", { className: "loading" }),
                 this.props.isLoading && this.props.count > 10 * (this.props.page - 1) ? _react2.default.createElement(
                     "div",
@@ -34216,6 +34260,11 @@ var GamesComponent = function (_React$Component) {
             this.props.loadGames(_constans.urls.game.gameUrl);
         }
     }, {
+        key: "componentWillUnmount",
+        value: function componentWillUnmount() {
+            this.props.gameUnmount();
+        }
+    }, {
         key: "render",
         value: function render() {
             var gameList = [];
@@ -34258,7 +34307,8 @@ var mapStoreToProps = function mapStoreToProps(state, props) {
 var mapDispatchToProps = function mapDispatchToProps(dispatch) {
     return _extends({}, (0, _redux.bindActionCreators)({
         loadGames: _games.loadGames,
-        loadGamesMore: _games.loadGamesMore
+        loadGamesMore: _games.loadGamesMore,
+        gameUnmount: _games.gameUnmount
     }, dispatch));
 };
 

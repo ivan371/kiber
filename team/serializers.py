@@ -5,7 +5,7 @@ from core.serializers import UserSerializer
 from .models import Team, UserTeam
 
 
-class TeamSerializer(serializers.ModelSerializer):
+class TeamSerializer(ShardingSerializer):
     admin = UserSerializer(read_only=True)
 
     class Meta:
