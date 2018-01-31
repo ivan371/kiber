@@ -6,11 +6,10 @@ from .models import Team, UserTeam
 
 
 class TeamSerializer(ShardingSerializer):
-    admin = UserSerializer(read_only=True)
 
     class Meta:
         model = Team
-        fields = ('name', 'admin', 'id', 'games', 'avatar')
+        fields = ('name', 'id', 'games', 'avatar')
 
 
 class TeamSimpleSerializer(serializers.ModelSerializer):

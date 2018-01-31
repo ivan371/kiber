@@ -26,7 +26,6 @@ class TeamPageComponent extends React.Component {
                     <img onClick={this.teamEdit} className="edit" src="/static/img/light_check.png"/>
                     <img src={this.props.avatar}/>
                     <h2>Команда {this.props.name}</h2>
-                    <p>{this.props.first_name} {this.props.last_name}</p>
                     <p>{this.props.games} игр</p>
                     <img onClick={this.addUser} className="edit" src="/static/img/add.png"/>
                     <br/>
@@ -42,8 +41,6 @@ TeamPageComponent.propTypes = {
 
 const mapStoreToProps = (state, props) => ({
     name: state.teams.teams[props.id].name,
-    first_name: state.users.users[state.teams.teams[props.id].admin].first_name,
-    last_name: state.users.users[state.teams.teams[props.id].admin].last_name,
     games: state.teams.teams[props.id].games,
     avatar: state.teams.teams[props.id].avatar,
 });

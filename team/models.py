@@ -4,7 +4,6 @@ from django.db import models
 
 class Team(models.Model):
     name = models.CharField(max_length=100)
-    admin = models.ForeignKey(User, on_delete=True)
     games = models.IntegerField(default=0)
     avatar = models.ImageField(upload_to='avatars', default='game.png')
 
@@ -13,6 +12,6 @@ class Team(models.Model):
 
 
 class UserTeam(models.Model):
-    team = models.ForeignKey(Team, on_delete=True)
-    user = models.ForeignKey(User, on_delete=True)
+    team = models.ForeignKey(Team, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
 

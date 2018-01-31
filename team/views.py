@@ -11,11 +11,11 @@ from itertools import chain
 
 
 class TeamViewSet(viewsets.ModelViewSet):
-    queryset = Team.objects.all().order_by('-id').prefetch_related('admin')
+    queryset = Team.objects.all().order_by('-id')
     serializer_class = TeamSerializer
 
     def perform_create(self, serializer):
-        serializer.save(admin=self.request.user, using='all')
+        serializer.save()
 
     def get_queryset(self):
         queryset = super(TeamViewSet, self).get_queryset()

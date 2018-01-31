@@ -34505,13 +34505,6 @@ var TeamPageComponent = function (_React$Component) {
                     _react2.default.createElement(
                         "p",
                         null,
-                        this.props.first_name,
-                        " ",
-                        this.props.last_name
-                    ),
-                    _react2.default.createElement(
-                        "p",
-                        null,
                         this.props.games,
                         " \u0438\u0433\u0440"
                     ),
@@ -34532,8 +34525,6 @@ TeamPageComponent.propTypes = {
 var mapStoreToProps = function mapStoreToProps(state, props) {
     return {
         name: state.teams.teams[props.id].name,
-        first_name: state.users.users[state.teams.teams[props.id].admin].first_name,
-        last_name: state.users.users[state.teams.teams[props.id].admin].last_name,
         games: state.teams.teams[props.id].games,
         avatar: state.teams.teams[props.id].avatar
     };

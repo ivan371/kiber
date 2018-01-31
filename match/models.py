@@ -6,7 +6,7 @@ from turn.models import Turn
 
 class Match(models.Model):
     name = models.CharField(max_length=100)
-    turn = models.ForeignKey(Turn, on_delete=True)
+    turn = models.ForeignKey(Turn, on_delete=models.CASCADE)
     games = models.IntegerField(default=0)
     avatar = models.ImageField(upload_to='avatars', default='match.png')
     date = models.DateField(default=datetime.now)
