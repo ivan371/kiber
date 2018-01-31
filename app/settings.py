@@ -87,16 +87,28 @@ WSGI_APPLICATION = 'app.wsgi.application'
 DATABASES = {
     # 'default': {},
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'NAME': 'test0',
+        'ENGINE': 'django.db.backends.mysql',
+        'USER': 'test',
+        'PASSWORD': 'pass',
+        'HOST': 'localhost',
+        'PORT': '3306',
     },
     'db1': {
-        'NAME': os.path.join(BASE_DIR, 'db1.sqlite3'),
-        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': 'test1',
+        'ENGINE': 'django.db.backends.mysql',
+        'USER': 'test',
+        'PASSWORD': 'pass',
+        'HOST': 'localhost',
+        'PORT': '3306',
     },
     'db2': {
-        'NAME': os.path.join(BASE_DIR, 'db2.sqlite3'),
-        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': 'test2',
+        'ENGINE': 'django.db.backends.mysql',
+        'USER': 'test',
+        'PASSWORD': 'pass',
+        'HOST': 'localhost',
+        'PORT': '3306',
     },
 }
 

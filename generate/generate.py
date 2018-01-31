@@ -6,11 +6,25 @@ from team.models import Team, UserTeam
 from turn.models import Turn
 
 
-class Generator:
+class BaseGenerator:
     def __init__(self, count, using):
         self.count = count
         self.using = using
 
+
+class AdminGenerator(BaseGenerator):
+    def start(self):
+        u = User.objects.using(self.using).get(username='admin')
+        for i in range(self.count):
+            t = Team.objects.using(self.using).get(name='team{}'.format(i))
+            tu = UserTeam(
+                user=u,
+                team=t,
+            )
+            tu.save(using=self.using)
+
+
+class Generator(BaseGenerator):
     def start(self):
         c = int(self.count / 10)
 
@@ -52,14 +66,14 @@ class Generator:
                         name='game{}'.format(l + 10 * j + 100 * i),
                         match_id=m.id
                     )
-                    g.save()
-                    tm = Team.objects.get(name='team{}'.format(j + 10 * i))
+                    g.save(using=self.using)
+                    tm = Team.objects.using(self.using).get(name='team{}'.format(j + 10 * i))
                     print(g.name, t.name)
                     gt = GameTeam(
                         game=g,
                         team=tm
                     )
-                    gt.save()
+                    gt.save(using=self.using)
 
     def clean(self):
         for i in range(self.count):

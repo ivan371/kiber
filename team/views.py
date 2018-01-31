@@ -4,7 +4,7 @@ from rest_framework import viewsets
 from rest_framework.response import Response
 
 from app.api import router
-from app.views import ShardingViewSet
+from app.views import test_connection_to_db
 from .models import Team, UserTeam
 from .serializers import TeamSerializer, TeamUserSerializer, UserTeamSerializer, TeamUserWriteSerializer, \
     UserTeamWriteSerializer
@@ -20,14 +20,17 @@ class TeamViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         queryset = super(TeamViewSet, self).get_queryset()
-        if hash(self.request.user.username) % 2 == 0:
-            queryset = queryset.using('db1')
+        if test_connection_to_db('db2'):
+            if self.request.user.username.id % 2 != 0 or test_connection_to_db('db1'):
+                queryset = queryset.using('db2')
+            else:
+                queryset = queryset.using('db1')
         else:
-            queryset = queryset.using('db2')
+            queryset = queryset.using('db1')
         return queryset
 
 
-class TeamUserViewSet(ShardingViewSet):
+class TeamUserViewSet(viewsets.ModelViewSet):
     queryset = UserTeam.objects.all()
     serializer_class = TeamUserSerializer
 
@@ -49,7 +52,7 @@ class TeamUserViewSet(ShardingViewSet):
                 else:
                     serializer.save(team_id=self.request.query_params['team'], using='db2')
         else:
-            if hash(self.request.user.username) % 2 == 0:
+            if hash(self.request.user.id) % 2 == 0:
                 serializer.save(user=self.request.user, using='db1')
             else:
                 serializer.save(user=self.request.user, using='db2')
@@ -89,7 +92,13 @@ class TeamUserViewSet(ShardingViewSet):
                 # #     .filter(team=self.request.query_params['team']).prefetch_related('user')
                 # print(self.kwargs)
                 # return list(set(chain(qs, queryset)))
-                queryset = queryset.filter(team=self.request.query_params['team']).prefetch_related('user').using('db2')
+                queryset = queryset.filter(team=self.request.query_params['team']).prefetch_related('user')
+                if test_connection_to_db('db2'):
+                    print('test2')
+                    queryset = queryset.using('db2')
+                else:
+                    print('test1')
+                    queryset = queryset.using('db1')
         else:
             # if hash(self.request.user.username) % 2 == 0:
             if self.request.user.id % 2 == 0:
