@@ -3,6 +3,7 @@ from django.shortcuts import render
 from rest_framework import viewsets
 
 from app.api import router
+from app.views import ShardingViewSet
 from game.serizlizers import GameSerializer, GameTeamSerializer, TeamGameSerializer, GameSimpleSerializer
 from team.models import Team
 from .models import Game, GameTeam
@@ -28,7 +29,7 @@ class GameViewSet(viewsets.ModelViewSet):
         return queryset
 
 
-class GameTeamViewSet(viewsets.ModelViewSet):
+class GameTeamViewSet(ShardingViewSet):
     queryset = GameTeam.objects.all()
     serializer_class = GameTeamSerializer
 

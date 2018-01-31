@@ -4,6 +4,7 @@ from rest_framework import viewsets
 from rest_framework.response import Response
 
 from app.api import router
+from app.views import ShardingViewSet
 from .models import Team, UserTeam
 from .serializers import TeamSerializer, TeamUserSerializer, UserTeamSerializer, TeamUserWriteSerializer, \
     UserTeamWriteSerializer
@@ -26,7 +27,7 @@ class TeamViewSet(viewsets.ModelViewSet):
         return queryset
 
 
-class TeamUserViewSet(viewsets.ModelViewSet):
+class TeamUserViewSet(ShardingViewSet):
     queryset = UserTeam.objects.all()
     serializer_class = TeamUserSerializer
 
@@ -54,11 +55,11 @@ class TeamUserViewSet(viewsets.ModelViewSet):
                 serializer.save(user=self.request.user, using='db2')
 
     def get_object(self):
-        if 'team' in self.request.query_params:
-            if self.request.query_params['team'].isdigit:
-                queryset = UserTeam.objects.all().using('db2')
-        else:
-            queryset = self.filter_queryset(self.get_queryset())
+        # if 'team' in self.request.query_params:
+        #     if self.request.query_params['team'].isdigit:
+        #         queryset = UserTeam.objects.all().using('db2')
+        # else:
+        queryset = self.filter_queryset(self.get_queryset())
 
         lookup_url_kwarg = self.lookup_url_kwarg or self.lookup_field
         assert lookup_url_kwarg in self.kwargs, (
@@ -80,17 +81,18 @@ class TeamUserViewSet(viewsets.ModelViewSet):
         queryset = super(TeamUserViewSet, self).get_queryset()
         if 'team' in self.request.query_params:
             if self.request.query_params['team'].isdigit():
-                queryset = UserTeam.objects.all().using('db1').filter(team=self.request.query_params['team'])\
-                    .select_related('user')
-                qs = UserTeam.objects.all().using('db2').filter(team=self.request.query_params['team'])\
-                    .select_related('user')
-                # queryset = (qs | queryset).distinct()\
-                #     .filter(team=self.request.query_params['team']).prefetch_related('user')
-                print(self.kwargs)
-                return list(set(chain(qs, queryset)))
-
+                # queryset = UserTeam.objects.all().using('db1').filter(team=self.request.query_params['team'])\
+                #     .select_related('user')
+                # qs = UserTeam.objects.all().using('db2').filter(team=self.request.query_params['team'])\
+                #     .select_related('user')
+                # # queryset = (qs | queryset).distinct()\
+                # #     .filter(team=self.request.query_params['team']).prefetch_related('user')
+                # print(self.kwargs)
+                # return list(set(chain(qs, queryset)))
+                queryset = queryset.filter(team=self.request.query_params['team']).prefetch_related('user').using('db2')
         else:
-            if hash(self.request.user.username) % 2 == 0:
+            # if hash(self.request.user.username) % 2 == 0:
+            if self.request.user.id % 2 == 0:
                 queryset = queryset.using('db1')
             else:
                 queryset = queryset.using('db2')

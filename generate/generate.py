@@ -18,15 +18,14 @@ class Generator:
             t = Team(
                 name='team{}'.format(i),
                 games=self.count,
-                admin_id=1
             )
             t.save(using=self.using)
             for j in range(10):
-                u = User.objects.create_user(
-                    'user{}'.format(j + 10 * i),
-                    'ivan@ivan{}.ru'.format(j + 10 * i),
-                    'ivan123'
+                u = User(
+                    username='user{}'.format(j + 10 * i),
+                    email='ivan@ivan{}.ru'.format(j + 10 * i)
                 )
+                u.set_password('ivan123')
                 u.first_name = 'ivan{}'.format(j + 10 * i)
                 u.last_name = 'ivanon{}'.format(j + 10 * i)
                 u.save(using=self.using)
