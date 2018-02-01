@@ -1,14 +1,15 @@
 from __future__ import absolute_import
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from rest_framework import viewsets
 
 from app.api import router
+from app.views import test_connection_to_db, ShardingViewSet
 from game.serizlizers import GameSerializer, GameTeamSerializer, TeamGameSerializer, GameSimpleSerializer
 from team.models import Team
 from .models import Game, GameTeam
 
 
-class GameViewSet(viewsets.ModelViewSet):
+class GameViewSet(ShardingViewSet):
     queryset = Game.objects.all()
     serializer_class = GameSimpleSerializer
 
@@ -19,9 +20,12 @@ class GameViewSet(viewsets.ModelViewSet):
             serializer.save(using='db2')
 
     def get_queryset(self):
-        queryset = Game.objects.using('db1')
-        qs = Game.objects.using('db2')
-        queryset = (qs | queryset).distinct()
+        if test_connection_to_db('db2'):
+            queryset = Game.objects.using('db2')
+        else:
+            queryset = Game.objects.using('db1')
+        # qs = Game.objects.using('db2')
+        # queryset = (qs | queryset).distinct()
         if 'match' in self.request.query_params:
             if self.request.query_params['match'].isdigit:
                 queryset = queryset.filter(match_id=self.request.query_params['match'])

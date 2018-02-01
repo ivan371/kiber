@@ -21,7 +21,7 @@ class TeamViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         queryset = super(TeamViewSet, self).get_queryset()
         if test_connection_to_db('db2'):
-            if self.request.user.username.id % 2 != 0 or test_connection_to_db('db1'):
+            if self.request.user.id % 2 != 0 or test_connection_to_db('db1'):
                 queryset = queryset.using('db2')
             else:
                 queryset = queryset.using('db1')
@@ -94,17 +94,20 @@ class TeamUserViewSet(viewsets.ModelViewSet):
                 # return list(set(chain(qs, queryset)))
                 queryset = queryset.filter(team=self.request.query_params['team']).prefetch_related('user')
                 if test_connection_to_db('db2'):
-                    print('test2')
                     queryset = queryset.using('db2')
                 else:
-                    print('test1')
                     queryset = queryset.using('db1')
         else:
-            # if hash(self.request.user.username) % 2 == 0:
             if self.request.user.id % 2 == 0:
-                queryset = queryset.using('db1')
+                if test_connection_to_db('db1'):
+                    queryset = queryset.using('db1')
+                else:
+                    queryset = queryset.using('db2')
             else:
-                queryset = queryset.using('db2')
+                if test_connection_to_db('db2'):
+                    queryset = queryset.using('db2')
+                else:
+                    queryset = queryset.using('db1')
             queryset = queryset.filter(user=self.request.user).prefetch_related('team')
         return queryset
 
