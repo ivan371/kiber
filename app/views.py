@@ -22,11 +22,13 @@ class ShardingViewSet(viewsets.ModelViewSet):
         queryset = self.filter_queryset(self.get_queryset())
         if test_connection_to_db('db2'):
             if test_connection_to_db('db1'):
+                print(int(self.kwargs['pk']) % 2)
                 if int(self.kwargs['pk']) % 2 != 0:
                     queryset = queryset.using('db2')
                 else:
                     queryset = queryset.using('db1')
-            queryset = queryset.using('db2')
+            else:
+                queryset = queryset.using('db2')
         else:
             queryset = queryset.using('db1')
         lookup_url_kwarg = self.lookup_url_kwarg or self.lookup_field

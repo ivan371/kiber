@@ -16,7 +16,8 @@ class TeamViewSet(viewsets.ModelViewSet):
     serializer_class = TeamSerializer
 
     def perform_create(self, serializer):
-        serializer.save()
+        if test_connection_to_db('db1') and test_connection_to_db('db2'):
+            serializer.save(using='all')
 
     def get_queryset(self):
         queryset = super(TeamViewSet, self).get_queryset()
@@ -45,17 +46,20 @@ class TeamUserViewSet(viewsets.ModelViewSet):
             return TeamUserSerializer
 
     def perform_create(self, serializer):
-        if 'team' in self.request.query_params:
-            if self.request.query_params['team'].isdigit:
-                if hash(self.request.user.username) % 2 == 0:
-                    serializer.save(team_id=self.request.query_params['team'], using='db1')
-                else:
-                    serializer.save(team_id=self.request.query_params['team'], using='db2')
-        else:
-            if hash(self.request.user.id) % 2 == 0:
-                serializer.save(user=self.request.user, using='db1')
+        if test_connection_to_db('db1') and test_connection_to_db('db2'):
+            if 'team' in self.request.query_params:
+                if self.request.query_params['team'].isdigit:
+                    # if hash(self.request.user.username) % 2 == 0:
+                    #     serializer.save(team_id=self.request.query_params['team'], using='db1')
+                    # else:
+                    #     serializer.save(team_id=self.request.query_params['team'], using='db2')
+                    serializer.save(team_id=self.request.query_params['team'], using='all')
             else:
-                serializer.save(user=self.request.user, using='db2')
+                # if hash(self.request.user.id) % 2 == 0:
+                #     serializer.save(user=self.request.user, using='db1')
+                # else:
+                #     serializer.save(user=self.request.user, using='db2')
+                serializer.save(user=self.request.user, using='all')
 
     def get_object(self):
         # if 'team' in self.request.query_params:
