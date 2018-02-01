@@ -21,6 +21,10 @@ class GameViewSet(ShardingViewSet):
             # else:
             #     serializer.save(using='db2')
 
+    def perform_update(self, serializer):
+        if test_connection_to_db('db1') and test_connection_to_db('db2'):
+            serializer.save(using='all')
+
     def get_queryset(self):
         if test_connection_to_db('db2'):
             queryset = Game.objects.using('db2')
@@ -75,6 +79,10 @@ class GameTeamViewSet(ShardingViewSet):
                 # else:
                 #     serializer.save(team_id=self.request.query_params['team'], using='db2')
                 serializer.save(team_id=self.request.query_params['team'], using='all')
+
+    def perform_update(self, serializer):
+        if test_connection_to_db('db1') and test_connection_to_db('db2'):
+            serializer.save(using='all')
 
     def get_queryset(self):
         queryset = super(GameTeamViewSet, self).get_queryset()

@@ -19,6 +19,10 @@ class TeamViewSet(viewsets.ModelViewSet):
         if test_connection_to_db('db1') and test_connection_to_db('db2'):
             serializer.save(using='all')
 
+    def perform_update(self, serializer):
+        if test_connection_to_db('db1') and test_connection_to_db('db2'):
+            serializer.save(using='all')
+
     def get_queryset(self):
         queryset = super(TeamViewSet, self).get_queryset()
         if test_connection_to_db('db2'):
@@ -60,6 +64,10 @@ class TeamUserViewSet(viewsets.ModelViewSet):
                 # else:
                 #     serializer.save(user=self.request.user, using='db2')
                 serializer.save(user=self.request.user, using='all')
+
+    def perform_update(self, serializer):
+        if test_connection_to_db('db1') and test_connection_to_db('db2'):
+            serializer.save(using='all')
 
     def get_object(self):
         # if 'team' in self.request.query_params:

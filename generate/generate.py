@@ -24,6 +24,40 @@ class AdminGenerator(BaseGenerator):
             tu.save(using=self.using)
 
 
+class TeamGenerator(BaseGenerator):
+    def start(self):
+        cc = int(self.count / 100)
+        for i in range(cc):
+            t = Turn(
+                name='turn{}'.format(i)
+            )
+            t.save(using=self.using)
+            for j in range(10):
+                m = Match(
+                    name='match{}'.format(j + 10 * i),
+                    turn_id=t.id
+                )
+                m.save(using=self.using)
+                for l in range(10):
+                    g = Game(
+                        name='game{}'.format(l + 10 * j + 100 * i),
+                        match_id=m.id
+                    )
+                    g.save(using=self.using)
+                    tm = Team.objects.using(self.using).get(name='team{}'.format(j + 10 * i))
+                    gt = GameTeam(
+                        game=g,
+                        team=tm
+                    )
+                    gt.save(using=self.using)
+
+    def clean(self):
+        cc = int(self.count / 100)
+        for i in range(cc):
+            t = Turn.objects.using(self.using).get(name='turn{}'.format(i))
+            t.delete()
+
+
 class Generator(BaseGenerator):
     def start(self):
         c = int(self.count / 10)
