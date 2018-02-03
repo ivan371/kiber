@@ -20,7 +20,7 @@ export const TEAM_USER_DELETE_SUCCESS = 'TEAM_USER_DELETE_SUCCESS';
 export const TEAM_USER_DELETE_ERROR = 'TEAM_USER_DELETE_ERROR';
 export const TEAM_UNMOUNT = 'TEAM_UNMOUNT';
 
-export function testUnmount() {
+export function teamUnmount() {
     return {
         type: TEAM_UNMOUNT,
     }

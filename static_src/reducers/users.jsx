@@ -1,10 +1,12 @@
 import update from 'react-addons-update';
-import {LOAD_USERS, LOAD_USERS_SUCCESS} from "../actions/users";
+import {LOAD_USERS, LOAD_USERS_SUCCESS, LOGIN_ERROR, LOGIN_SUCCESS} from "../actions/users";
 
 const inititalStore = {
     users: {},
     userList: [],
     isLoading: false,
+    isLogin: localStorage.hasOwnProperty("token"),
+    isFailed: false,
 };
 
 
@@ -28,6 +30,22 @@ export default function users (store = inititalStore, action) {
             return update(store, {
                 isLoading: {
                     $set: false,
+                }
+            });
+        case LOGIN_SUCCESS:
+            localStorage.setItem("token", action.payload.access_token);
+            return update(store, {
+                isLogin: {
+                    $set: true,
+                },
+                isFailed: {
+                    $set: false,
+                }
+            });
+        case LOGIN_ERROR:
+            return update(store, {
+                isFailed: {
+                    $set: true,
                 }
             });
         case LOAD_USERS_SUCCESS:

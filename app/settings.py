@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'turn.apps.TurnConfig',
     'match.apps.MatchConfig',
     'debug_toolbar',
+    'oauth2_provider',
     # "django_sharding",
 ]
 
@@ -160,7 +161,16 @@ MEDIA_ROOT = os.path.join(os.path.dirname(BASE_DIR), 'media/')
 REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
     'PAGE_SIZE': 10,
-    'TEST_REQUEST_DEFAULT_FORMAT': 'json'
+    'TEST_REQUEST_DEFAULT_FORMAT': 'json',
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'oauth2_provider.contrib.rest_framework.OAuth2Authentication',
+    )
+
 }
+
+OAUTH2_PROVIDER = {
+    'SCOPES': {'read': 'Read scope', 'write': 'Write scope', 'groups': 'Access to your groups'}
+}
+
 
 INTERNAL_IPS = '127.0.0.1'

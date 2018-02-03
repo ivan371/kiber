@@ -1,7 +1,9 @@
 from __future__ import absolute_import
 from django.shortcuts import render, get_object_or_404
-from rest_framework import viewsets
+from rest_framework import viewsets, permissions
 from rest_framework.response import Response
+from oauth2_provider.contrib.rest_framework import TokenHasReadWriteScope, TokenHasScope
+
 
 from app.api import router
 from app.views import test_connection_to_db
@@ -14,6 +16,7 @@ from itertools import chain
 class TeamViewSet(viewsets.ModelViewSet):
     queryset = Team.objects.all().order_by('-id')
     serializer_class = TeamSerializer
+    permission_classes = [permissions.IsAuthenticated, TokenHasReadWriteScope]
 
     def perform_create(self, serializer):
         if test_connection_to_db('db1') and test_connection_to_db('db2'):

@@ -1,5 +1,5 @@
 import React from 'react';
-import {Route, Switch} from "react-router-dom";
+import {Redirect, Route, Switch, withRouter} from "react-router-dom";
 import Layout from "./Layout";
 import Teams from "./Team/Teams";
 import Games from "./Game/Games";
@@ -9,6 +9,22 @@ import Matches from "./Match/Matches";
 import Turnes from "./Match/Turnes";
 import Modal from "./Modal";
 import OwnMatch from "./Match/OwnMatch";
+import Login from "./Login";
+import {connect} from "react-redux";
+import {bindActionCreators} from "redux";
+
+const PrivateRoute = ({ component: Component, isLogin, ...rest }) => (
+    <Route {...rest} render={props => (
+        isLogin ? (
+            <Component {...props}/>
+        ) : (
+            <Redirect to={{
+                pathname: '/login',
+                state: { from: props.location }
+            }}/>
+        )
+    )}/>
+);
 
 
 class AppComponent extends React.Component {
@@ -18,9 +34,10 @@ class AppComponent extends React.Component {
                 <Layout/>
                 <Modal/>
                 <Switch>
+                    <Route exact path="/login" component={Login}/>
                     <Route exact path="/teams" component={Teams}/>
                     <Route exact path="/team/:id" component={OwnTeam}/>
-                    <Route exact path="/games" component={Games}/>
+                    <PrivateRoute exact path="/games" component={Games} isLogin={this.props.isLogin}/>
                     <Route exact path="/game/:id" component={OwnGame}/>
                     <Route exact path="/matches" component={Matches}/>
                     <Route exact path="/turns" component={Turnes}/>
@@ -32,4 +49,18 @@ class AppComponent extends React.Component {
     }
 }
 
-export default AppComponent;
+const mapStoreToProps = (state, props) => ({
+    isLogin: state.users.isLogin,
+});
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        ...bindActionCreators({
+        }, dispatch),
+    };
+};
+
+export default withRouter(connect(
+    mapStoreToProps,
+    mapDispatchToProps
+)(AppComponent));

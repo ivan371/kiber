@@ -1,12 +1,15 @@
 import {CALL_API, getJSON} from "redux-api-middleware";
 import cookie from 'react-cookies';
 
-export function apiLoad(url, method, types, body, normalizer, isSimple, id) {
+export function apiLoad(url, method, types, body, normalizer, isSimple, id, isForm=false) {
     return {
         [CALL_API]: {
             credentials: 'same-origin',
             endpoint: url,
-            headers: { 'Content-Type': 'application/json', "X-CSRFToken": cookie.load('csrftoken'), },
+            headers: !isForm ? {
+                'Content-Type': 'application/json',
+                'Authorization': localStorage.hasOwnProperty('token') ? 'Bearer ' + localStorage.token : null,
+            } : {},
             method: method,
             body: body,
             types: [
@@ -19,6 +22,8 @@ export function apiLoad(url, method, types, body, normalizer, isSimple, id) {
                         }
                         return getJSON(res).then(
                             (json) => {
+                                // if (isForm)
+                                //     return json;
                                 if(isSimple)
                                     return normalizer(json);
                                 else
