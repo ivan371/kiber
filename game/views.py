@@ -75,6 +75,9 @@ class GameTeamViewSet(ShardingViewSet):
                 # else:
                 #     serializer.save(game_id=self.request.query_params['game'], using='db2')
                 serializer.save(game_id=self.request.query_params['game'], using='all')
+                # time = datetime.datetime.now()
+                # int(time.strftime("%Y%m%d%H%M%S"))
+                # random.randint(0, 100)
             elif 'team' in self.request.query_params:
                 # print(serializer.validated_data)
                 # if hash(serializer.validated_data['game'].name) % 2 == 0:
@@ -126,6 +129,7 @@ class GameTeamViewSet(ShardingViewSet):
         else:
             return GameTeam.objects.none()
         return queryset
+
 
 router.register('games', GameViewSet)
 router.register('gameteam', GameTeamViewSet)
