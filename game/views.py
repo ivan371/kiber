@@ -1,6 +1,7 @@
 from __future__ import absolute_import
 from django.shortcuts import render, get_object_or_404
-from rest_framework import viewsets
+from oauth2_provider.contrib.rest_framework import TokenHasReadWriteScope
+from rest_framework import viewsets, permissions
 
 from app.api import router
 from app.views import test_connection_to_db, ShardingViewSet
@@ -12,6 +13,7 @@ from .models import Game, GameTeam
 class GameViewSet(ShardingViewSet):
     queryset = Game.objects.all()
     serializer_class = GameSimpleSerializer
+    permission_classes = [permissions.IsAuthenticated, TokenHasReadWriteScope]
 
     def perform_create(self, serializer):
         if test_connection_to_db('db1') and test_connection_to_db('db2'):
@@ -51,6 +53,7 @@ class GameViewSet(ShardingViewSet):
 class GameTeamViewSet(ShardingViewSet):
     queryset = GameTeam.objects.all()
     serializer_class = GameTeamSerializer
+    permission_classes = [permissions.IsAuthenticated, TokenHasReadWriteScope]
 
     def get_serializer_class(self):
         if self.request.method == 'POST':

@@ -22,12 +22,12 @@ class LoginComponent extends React.Component {
     };
 
     render() {
-        const { from } = this.props.location.state || { from: { pathname: '/' } };
-        // if (this.props.isLogin) {
-        //     return (
-        //         <Redirect to={from}/>
-        //     )
-        // }
+        const { from } = this.props.location.state || { from: { pathname: '/games' } };
+        if (this.props.isLogin) {
+            return (
+                <Redirect to={from}/>
+            )
+        }
         return (
             <div className="login">
                 <p>Логин</p>
@@ -51,7 +51,6 @@ const mapDispatchToProps = (dispatch) => {
         ...bindActionCreators({
             login,
             logout,
-            // modalOpen,
         }, dispatch),
     };
 };

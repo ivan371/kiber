@@ -34,11 +34,11 @@ class AppComponent extends React.Component {
                 <Layout/>
                 <Modal/>
                 <Switch>
-                    <Route exact path="/login" component={Login}/>
-                    <Route exact path="/teams" component={Teams}/>
-                    <Route exact path="/team/:id" component={OwnTeam}/>
+                    <Route exact path="/login" component={Login} />
+                    <PrivateRoute exact path="/teams" component={Teams} isLogin={this.props.isLogin}/>
+                    <PrivateRoute exact path="/team/:id" component={OwnTeam} isLogin={this.props.isLogin}/>
                     <PrivateRoute exact path="/games" component={Games} isLogin={this.props.isLogin}/>
-                    <Route exact path="/game/:id" component={OwnGame}/>
+                    <PrivateRoute exact path="/game/:id" component={OwnGame} isLogin={this.props.isLogin}/>
                     <Route exact path="/matches" component={Matches}/>
                     <Route exact path="/turns" component={Turnes}/>
                     <Route exact path="/match/:id" component={OwnMatch}/>

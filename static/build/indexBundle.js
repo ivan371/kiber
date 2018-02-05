@@ -28529,7 +28529,7 @@ exports = module.exports = __webpack_require__(197)(false);
 
 
 // module
-exports.push([module.i, "body{\r\n    font-family: Candara;\r\n}\r\n.menu {\r\n    display: flex;\r\n    height: 20px;\r\n    padding: 10px;\r\n    font-size: 120%;\r\n    font-weight: 700;\r\n    justify-content: space-around;\r\n    background-color: chocolate;\r\n    color: white;\r\n}\r\n.menu a{\r\n    text-decoration: none;\r\n    color: white;\r\n}\r\n.teams{\r\n    margin: 0 auto;\r\n    width: 500px;\r\n}\r\n.matches {\r\n    width: 1024px;\r\n    margin: 0 auto;\r\n}\r\n.match {\r\n    display: flex;\r\n    justify-content: space-around;\r\n    color: white;\r\n    background-color: chocolate;\r\n    margin: 10px;\r\n    border-radius: 5px;\r\n    box-shadow: 0 0 10px rgba(0,0,0,1);\r\n}\r\n.match div{\r\n    margin: 20px;\r\n    width: 200px;\r\n    padding: 10px;\r\n    border-right: 1px solid white;\r\n    border-left: 1px solid white;\r\n    text-align: center;\r\n}\r\n.match:first-child div{\r\n    margin-top: 1px;\r\n    margin-bottom: 1px;\r\n}\r\n.match a{\r\n    color: white;\r\n    text-decoration: none;\r\n}\r\n.teams-users {\r\n    display: flex;\r\n    justify-content: space-around;\r\n    flex-wrap: wrap;\r\n}\r\n.teams-users-user{\r\n    padding: 10px;\r\n    width: 120px;\r\n    height: 120px;\r\n    text-align: center;\r\n    color: white;\r\n    background-color: chocolate;\r\n    margin: 10px;\r\n    border-radius: 5px;\r\n    box-shadow: 0 0 10px rgba(0,0,0,1);\r\n}\r\n.teams-users-user > .user{\r\n    width: 50px;\r\n}\r\n.team{\r\n    color: white;\r\n    padding: 20px;\r\n    background-color: chocolate;\r\n    margin: 10px;\r\n    border-radius: 5px;\r\n    box-shadow: 0 0 10px rgba(0,0,0,1);\r\n    text-align: center;\r\n}\r\n.team a{\r\n    color: white;\r\n    text-decoration: none;\r\n}\r\n.edit{\r\n    width: 20px !important;\r\n    border-radius: 0 !important;\r\n    float: right;\r\n    cursor: pointer;\r\n}\r\n.left-edit{\r\n    width: 20px !important;\r\n    border-radius: 0 !important;\r\n    float: left;\r\n    cursor: pointer;\r\n}\r\n.match img{\r\n    width: 50px;\r\n}\r\n.team img{\r\n    width: 100px;\r\n    border-radius: 50px;\r\n}\r\n.team > img{\r\n    width: 50px;\r\n    border-radius: 25px;\r\n}\r\n.modal{\r\n    float: right;\r\n    width: 300px;\r\n    color: white;\r\n    padding: 20px;\r\n    margin-right: 50px;\r\n    margin-top: 10px;\r\n    background-color: chocolate;\r\n    border-radius: 5px;\r\n    box-shadow: 0 0 10px rgba(0,0,0,1);\r\n}\r\n.left-menu{\r\n    float: left;\r\n    width: 340px;\r\n    margin-left: 50px;\r\n    margin-top: -10px;\r\n}\r\n.loading {\r\n    position: relative;\r\n    width: 0;\r\n    padding: 3%;  /* если задать в %, то будет рассчитываться от ширины родителя */\r\n    background:\r\n            linear-gradient(rgba(0,0,0,1) 30%, transparent 30%, transparent 70%, rgba(0,0,0,.4) 70%),\r\n            linear-gradient(to left, rgba(0,0,0,.2) 30%, transparent 30%, transparent 70%, rgba(0,0,0,.8) 70%);\r\n    background-repeat: no-repeat;\r\n    background-size: 10% 100%, 100% 10%;\r\n    background-position: 50% 0%, 0 50%;\r\n    -webkit-animation: loading .7s infinite steps(8);\r\n    animation: loading .7s infinite steps(8);\r\n}\r\n\r\n.loading:after {\r\n    content: '';\r\n    position: absolute;\r\n    top: 0;\r\n    left: 0;\r\n    width: 100%;\r\n    height: 100%;\r\n    background-image:\r\n            linear-gradient(rgba(0,0,0,.1) 30%, transparent 30%, transparent 70%, rgba(0,0,0,.5) 70%),\r\n            linear-gradient(to left, rgba(0,0,0,.3) 30%, transparent 30%, transparent 70%, rgba(0,0,0,.9) 70%);\r\n    background-repeat: no-repeat;\r\n    background-size: 10% 100%, 100% 10%;\r\n    background-position: 50% 0%, 0 50%;\r\n    -webkit-transform: rotate(45deg);\r\n    transform: rotate(45deg);\r\n}\r\n@-webkit-keyframes loading {\r\n    100% {-webkit-transform: rotate(1turn);}\r\n}\r\n\r\n@keyframes loading {\r\n    100% {transform: rotate(1turn);}\r\n}\r\n\r\n.user{\r\n    width: 20px;\r\n}", ""]);
+exports.push([module.i, "body{\r\n    font-family: Candara;\r\n}\r\n.menu {\r\n    display: flex;\r\n    height: 20px;\r\n    padding: 10px;\r\n    font-size: 120%;\r\n    font-weight: 700;\r\n    justify-content: space-around;\r\n    background-color: chocolate;\r\n    color: white;\r\n}\r\n.menu a{\r\n    text-decoration: none;\r\n    color: white;\r\n    cursor: pointer;\r\n}\r\n.teams{\r\n    margin: 0 auto;\r\n    width: 500px;\r\n}\r\n.matches {\r\n    width: 1024px;\r\n    margin: 0 auto;\r\n}\r\n.match {\r\n    display: flex;\r\n    justify-content: space-around;\r\n    color: white;\r\n    background-color: chocolate;\r\n    margin: 10px;\r\n    border-radius: 5px;\r\n    box-shadow: 0 0 10px rgba(0,0,0,1);\r\n}\r\n.match div{\r\n    margin: 20px;\r\n    width: 200px;\r\n    padding: 10px;\r\n    border-right: 1px solid white;\r\n    border-left: 1px solid white;\r\n    text-align: center;\r\n}\r\n.match:first-child div{\r\n    margin-top: 1px;\r\n    margin-bottom: 1px;\r\n}\r\n.match a{\r\n    color: white;\r\n    text-decoration: none;\r\n}\r\n.teams-users {\r\n    display: flex;\r\n    justify-content: space-around;\r\n    flex-wrap: wrap;\r\n}\r\n.teams-users-user{\r\n    padding: 10px;\r\n    width: 120px;\r\n    height: 120px;\r\n    text-align: center;\r\n    color: white;\r\n    background-color: chocolate;\r\n    margin: 10px;\r\n    border-radius: 5px;\r\n    box-shadow: 0 0 10px rgba(0,0,0,1);\r\n}\r\n.teams-users-user > .user{\r\n    width: 50px;\r\n}\r\n.team{\r\n    color: white;\r\n    padding: 20px;\r\n    background-color: chocolate;\r\n    margin: 10px;\r\n    border-radius: 5px;\r\n    box-shadow: 0 0 10px rgba(0,0,0,1);\r\n    text-align: center;\r\n}\r\n.team a{\r\n    color: white;\r\n    text-decoration: none;\r\n}\r\n.edit{\r\n    width: 20px !important;\r\n    border-radius: 0 !important;\r\n    float: right;\r\n    cursor: pointer;\r\n}\r\n.left-edit{\r\n    width: 20px !important;\r\n    border-radius: 0 !important;\r\n    float: left;\r\n    cursor: pointer;\r\n}\r\n.match img{\r\n    width: 50px;\r\n}\r\n.team img{\r\n    width: 100px;\r\n    border-radius: 50px;\r\n}\r\n.team > img{\r\n    width: 50px;\r\n    border-radius: 25px;\r\n}\r\n.modal{\r\n    float: right;\r\n    width: 300px;\r\n    color: white;\r\n    padding: 20px;\r\n    margin-right: 50px;\r\n    margin-top: 10px;\r\n    background-color: chocolate;\r\n    border-radius: 5px;\r\n    box-shadow: 0 0 10px rgba(0,0,0,1);\r\n}\r\n.left-menu{\r\n    float: left;\r\n    width: 340px;\r\n    margin-left: 50px;\r\n    margin-top: -10px;\r\n}\r\n.loading {\r\n    position: relative;\r\n    width: 0;\r\n    padding: 3%;  /* если задать в %, то будет рассчитываться от ширины родителя */\r\n    background:\r\n            linear-gradient(rgba(0,0,0,1) 30%, transparent 30%, transparent 70%, rgba(0,0,0,.4) 70%),\r\n            linear-gradient(to left, rgba(0,0,0,.2) 30%, transparent 30%, transparent 70%, rgba(0,0,0,.8) 70%);\r\n    background-repeat: no-repeat;\r\n    background-size: 10% 100%, 100% 10%;\r\n    background-position: 50% 0%, 0 50%;\r\n    -webkit-animation: loading .7s infinite steps(8);\r\n    animation: loading .7s infinite steps(8);\r\n}\r\n\r\n.loading:after {\r\n    content: '';\r\n    position: absolute;\r\n    top: 0;\r\n    left: 0;\r\n    width: 100%;\r\n    height: 100%;\r\n    background-image:\r\n            linear-gradient(rgba(0,0,0,.1) 30%, transparent 30%, transparent 70%, rgba(0,0,0,.5) 70%),\r\n            linear-gradient(to left, rgba(0,0,0,.3) 30%, transparent 30%, transparent 70%, rgba(0,0,0,.9) 70%);\r\n    background-repeat: no-repeat;\r\n    background-size: 10% 100%, 100% 10%;\r\n    background-position: 50% 0%, 0 50%;\r\n    -webkit-transform: rotate(45deg);\r\n    transform: rotate(45deg);\r\n}\r\n@-webkit-keyframes loading {\r\n    100% {-webkit-transform: rotate(1turn);}\r\n}\r\n\r\n@keyframes loading {\r\n    100% {transform: rotate(1turn);}\r\n}\r\n\r\n.user{\r\n    width: 20px;\r\n}", ""]);
 
 // exports
 
@@ -32896,6 +32896,13 @@ function users() {
                     $set: false
                 }
             });
+        case _users.LOGOUT:
+            localStorage.clear();
+            return (0, _reactAddonsUpdate2.default)(store, {
+                isLogin: {
+                    $set: false
+                }
+            });
         case _users.LOGIN_SUCCESS:
             localStorage.setItem("token", action.payload.access_token);
             return (0, _reactAddonsUpdate2.default)(store, {
@@ -33010,7 +33017,15 @@ function games() {
     switch (action.type) {
         case _games.GAME_UNMOUNT:
             return (0, _reactAddonsUpdate2.default)(store, {
-                isLoading: false
+                isLoading: {
+                    $set: false
+                },
+                gameTeamList: {
+                    $set: []
+                },
+                gameList: {
+                    $set: []
+                }
             });
         case _games.LOAD_GAMES:
             return (0, _reactAddonsUpdate2.default)(store, {
@@ -33551,10 +33566,10 @@ var AppComponent = function (_React$Component) {
                     _reactRouterDom.Switch,
                     null,
                     _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: "/login", component: _Login2.default }),
-                    _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: "/teams", component: _Teams2.default }),
-                    _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: "/team/:id", component: _OwnTeam2.default }),
+                    _react2.default.createElement(PrivateRoute, { exact: true, path: "/teams", component: _Teams2.default, isLogin: this.props.isLogin }),
+                    _react2.default.createElement(PrivateRoute, { exact: true, path: "/team/:id", component: _OwnTeam2.default, isLogin: this.props.isLogin }),
                     _react2.default.createElement(PrivateRoute, { exact: true, path: "/games", component: _Games2.default, isLogin: this.props.isLogin }),
-                    _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: "/game/:id", component: _OwnGame2.default }),
+                    _react2.default.createElement(PrivateRoute, { exact: true, path: "/game/:id", component: _OwnGame2.default, isLogin: this.props.isLogin }),
                     _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: "/matches", component: _Matches2.default }),
                     _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: "/turns", component: _Turnes2.default }),
                     _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: "/match/:id", component: _OwnMatch2.default })
@@ -34210,6 +34225,8 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _react = __webpack_require__(0);
@@ -34217,6 +34234,12 @@ var _react = __webpack_require__(0);
 var _react2 = _interopRequireDefault(_react);
 
 var _reactRouterDom = __webpack_require__(14);
+
+var _users = __webpack_require__(82);
+
+var _reactRedux = __webpack_require__(3);
+
+var _redux = __webpack_require__(2);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -34230,9 +34253,19 @@ var LayoutComponent = function (_React$Component) {
     _inherits(LayoutComponent, _React$Component);
 
     function LayoutComponent() {
+        var _ref;
+
+        var _temp, _this, _ret;
+
         _classCallCheck(this, LayoutComponent);
 
-        return _possibleConstructorReturn(this, (LayoutComponent.__proto__ || Object.getPrototypeOf(LayoutComponent)).apply(this, arguments));
+        for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+            args[_key] = arguments[_key];
+        }
+
+        return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = LayoutComponent.__proto__ || Object.getPrototypeOf(LayoutComponent)).call.apply(_ref, [this].concat(args))), _this), _this.onLogout = function () {
+            _this.props.logout();
+        }, _temp), _possibleConstructorReturn(_this, _ret);
     }
 
     _createClass(LayoutComponent, [{
@@ -34276,6 +34309,23 @@ var LayoutComponent = function (_React$Component) {
                         null,
                         "\u0422\u0443\u0440\u043D\u0438\u0440\u044B"
                     )
+                ),
+                this.props.isLogin ? _react2.default.createElement(
+                    "a",
+                    { onClick: this.onLogout },
+                    _react2.default.createElement(
+                        "div",
+                        null,
+                        "\u0412\u044B\u0439\u0442\u0438"
+                    )
+                ) : _react2.default.createElement(
+                    _reactRouterDom.Link,
+                    { to: "/login" },
+                    _react2.default.createElement(
+                        "div",
+                        null,
+                        "\u0412\u043E\u0439\u0442\u0438"
+                    )
                 )
             );
         }
@@ -34284,7 +34334,20 @@ var LayoutComponent = function (_React$Component) {
     return LayoutComponent;
 }(_react2.default.Component);
 
-exports.default = LayoutComponent;
+var mapStoreToProps = function mapStoreToProps(state, props) {
+    return {
+        isLogin: state.users.isLogin,
+        isFailed: state.users.isFailed
+    };
+};
+
+var mapDispatchToProps = function mapDispatchToProps(dispatch) {
+    return _extends({}, (0, _redux.bindActionCreators)({
+        logout: _users.logout
+    }, dispatch));
+};
+
+exports.default = (0, _reactRouterDom.withRouter)((0, _reactRedux.connect)(mapStoreToProps, mapDispatchToProps)(LayoutComponent));
 
 /***/ }),
 /* 294 */
@@ -36411,15 +36474,12 @@ var LoginComponent = function (_React$Component) {
     _createClass(LoginComponent, [{
         key: "render",
         value: function render() {
-            var _ref2 = this.props.location.state || { from: { pathname: '/' } },
+            var _ref2 = this.props.location.state || { from: { pathname: '/games' } },
                 from = _ref2.from;
-            // if (this.props.isLogin) {
-            //     return (
-            //         <Redirect to={from}/>
-            //     )
-            // }
 
-
+            if (this.props.isLogin) {
+                return _react2.default.createElement(_reactRouterDom.Redirect, { to: from });
+            }
             return _react2.default.createElement(
                 "div",
                 { className: "login" },
@@ -36464,7 +36524,6 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch) {
     return _extends({}, (0, _redux.bindActionCreators)({
         login: _users.login,
         logout: _users.logout
-        // modalOpen,
     }, dispatch));
 };
 

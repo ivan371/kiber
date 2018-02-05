@@ -43,7 +43,15 @@ export default function games (store = inititalStore, action) {
     switch (action.type) {
         case GAME_UNMOUNT:
             return update(store, {
-                isLoading: false,
+                isLoading: {
+                    $set: false,
+                },
+                gameTeamList: {
+                    $set: []
+                },
+                gameList: {
+                    $set: [],
+                }
             });
         case LOAD_GAMES:
             return update(store, {
