@@ -29,7 +29,8 @@ class AdminGenerator(BaseGenerator):
 
 def get_pk():
     time = datetime.datetime.now()
-    time = int(time.strftime("%Y%m%d%H%M%S"))
+    time = time.strftime("%d%H%M%S")
+    print(time)
     return time
 
 
@@ -41,28 +42,38 @@ class RandomGenerator:
         c = int(self.count / 10)
 
         for i in range(c):
-            t = Team(
-                name='team{}'.format(i),
+            t1 = Team(
+                name='team_{}'.format(i),
                 games=self.count,
             )
-            t.save(using='db1')
-            t.save(using='db2')
+            t2 = Team(
+                name='team_{}'.format(i),
+                games=self.count,
+            )
+            t1.save(using='db1')
+            t2.save(using='db2')
             for j in range(10):
                 u = User(
-                    username='user{}'.format(j + 10 * i),
+                    username='random_{}'.format(j + 10 * i),
                     email='ivan@ivan{}.ru'.format(j + 10 * i)
                 )
                 u.set_password('ivan123')
                 u.first_name = 'ivan{}'.format(j + 10 * i)
                 u.last_name = 'ivanon{}'.format(j + 10 * i)
                 ran_db = random.randint(1, 2)
-                u.id = get_pk() + ran_db + random.randint(0, 10)
-                u.save(using='db' + ran_db)
-                tu = UserTeam(
-                    user=u,
-                    team=t,
-                )
-                tu.save(using=ran_db)
+                u.id = int(get_pk() + str(ran_db) + str(random.randint(0, 9)))
+                u.save(using='db' + str(ran_db))
+                if ran_db == 1:
+                    tu = UserTeam(
+                        user=u,
+                        team=t1,
+                    )
+                else:
+                    tu = UserTeam(
+                        user=u,
+                        team=t2,
+                    )
+                tu.save(using='db' + str(ran_db))
         cc = int(self.count / 100)
 
         for i in range(cc):
@@ -80,18 +91,18 @@ class RandomGenerator:
                 m.save(using='db2')
                 for l in range(10):
                     g = Game(
-                        name='game{}'.format(l + 10 * j + 100 * i),
+                        name='game__{}'.format(l + 10 * j + 100 * i),
                         match_id=m.id
                     )
                     ran_db = random.randint(1, 2)
-                    g.id = get_pk() + ran_db + random.randint(0, 10)
-                    g.save(using='db' + ran_db)
-                    tm = Team.objects.using('db' + ran_db).get(name='team{}'.format(j + 10 * i))
+                    g.id = int(get_pk() + str(ran_db) + str(random.randint(0, 9)))
+                    g.save(using='db' + str(ran_db))
+                    tm = Team.objects.using('db' + str(ran_db)).filter(name='team_{}'.format(j + 10 * i))[0]
                     gt = GameTeam(
                         game=g,
                         team=tm
                     )
-                    gt.save(using=ran_db)
+                    gt.save(using=str(ran_db))
 
 
 class TeamGenerator(BaseGenerator):
