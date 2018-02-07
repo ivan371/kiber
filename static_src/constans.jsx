@@ -11,7 +11,8 @@ export const urls = {
         matchUrl: '/api/matches/'
     },
     user: {
-        userUrl: '/api/users/'
+        userUrl: '/api/users/',
+        currentUrl: '/api/users/current/'
     },
     login: {
         loginUrl: '/o/token/',

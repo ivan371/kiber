@@ -35,6 +35,18 @@ class LayoutComponent extends React.Component {
                     </div>
                 </Link>
                 {this.props.isLogin ?
+                    <Link to="/self">
+                        <div>
+                            Личный кабинет
+                        </div>
+                    </Link>
+                    :
+                    <Link to="/registration">
+                        <div>
+                            Регистрация
+                        </div>
+                    </Link>}
+                {this.props.isLogin ?
                     <a onClick={this.onLogout}>
                         <div>
                             Выйти

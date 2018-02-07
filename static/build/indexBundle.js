@@ -383,7 +383,8 @@ var urls = exports.urls = {
         matchUrl: '/api/matches/'
     },
     user: {
-        userUrl: '/api/users/'
+        userUrl: '/api/users/',
+        currentUrl: '/api/users/current/'
     },
     login: {
         loginUrl: '/o/token/'
@@ -2406,8 +2407,10 @@ exports.f = {}.propertyIsEnumerable;
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.LOGOUT = exports.LOGIN_ERROR = exports.LOGIN_SUCCESS = exports.LOGIN = exports.LOAD_USERS_ERROR = exports.LOAD_USERS_SUCCESS = exports.LOAD_USERS = undefined;
+exports.REGISTRATION_ERROR = exports.REGISTRATION_SUCCESS = exports.REGISTRATION = exports.LOGOUT = exports.LOGIN_ERROR = exports.LOGIN_SUCCESS = exports.LOGIN = exports.LOAD_USER_ERROR = exports.LOAD_USER_SUCCESS = exports.LOAD_USER = exports.LOAD_USERS_ERROR = exports.LOAD_USERS_SUCCESS = exports.LOAD_USERS = undefined;
+exports.loadUser = loadUser;
 exports.loadUsers = loadUsers;
+exports.registration = registration;
 exports.login = login;
 exports.logout = logout;
 
@@ -2418,14 +2421,32 @@ var _load = __webpack_require__(42);
 var LOAD_USERS = exports.LOAD_USERS = 'LOAD_USERS';
 var LOAD_USERS_SUCCESS = exports.LOAD_USERS_SUCCESS = 'LOAD_USERS_SUCCESS';
 var LOAD_USERS_ERROR = exports.LOAD_USERS_ERROR = 'LOAD_USERS_ERROR';
+var LOAD_USER = exports.LOAD_USER = 'LOAD_USER';
+var LOAD_USER_SUCCESS = exports.LOAD_USER_SUCCESS = 'LOAD_USER_SUCCESS';
+var LOAD_USER_ERROR = exports.LOAD_USER_ERROR = 'LOAD_USER_ERROR';
 var LOGIN = exports.LOGIN = 'LOGIN';
 var LOGIN_SUCCESS = exports.LOGIN_SUCCESS = 'LOGIN_SUCCESS';
 var LOGIN_ERROR = exports.LOGIN_ERROR = 'LOGIN_ERROR';
 var LOGOUT = exports.LOGOUT = 'LOGOUT';
+var REGISTRATION = exports.REGISTRATION = 'REGISTRATION';
+var REGISTRATION_SUCCESS = exports.REGISTRATION_SUCCESS = 'REGISTRATION_SUCCESS';
+var REGISTRATION_ERROR = exports.REGISTRATION_ERROR = 'REGISTRATION_ERROR';
+
+function loadUser(url) {
+    var types = [LOAD_USER, LOAD_USER_SUCCESS, LOAD_USER_ERROR];
+    return (0, _load.apiLoad)(url, 'GET', types, null, _users.userNormalize, true);
+}
 
 function loadUsers(url) {
     var types = [LOAD_USERS, LOAD_USERS_SUCCESS, LOAD_USERS_ERROR];
     return (0, _load.apiLoad)(url, 'GET', types, null, _users.usersNormalize, false);
+}
+
+function registration(url, username, password, email, first_name, last_name) {
+    var types = [REGISTRATION, REGISTRATION_SUCCESS, REGISTRATION_ERROR];
+    return (0, _load.apiLoad)(url, 'POST', types, JSON.stringify({ username: username, password: password, email: email, first_name: first_name, last_name: last_name }), function (o) {
+        return o;
+    }, true);
 }
 
 function login(url, username, password, client_id, client_secret, grant_type) {
@@ -32928,6 +32949,15 @@ function users() {
                     $set: action.payload.result
                 }
             });
+        case _users.LOAD_USER_SUCCESS:
+            return (0, _reactAddonsUpdate2.default)(store, {
+                isLoading: {
+                    $set: true
+                },
+                userList: {
+                    $set: [action.payload.result]
+                }
+            });
         default:
             return store;
     }
@@ -33522,6 +33552,14 @@ var _reactRedux = __webpack_require__(3);
 
 var _redux = __webpack_require__(2);
 
+var _Registration = __webpack_require__(313);
+
+var _Registration2 = _interopRequireDefault(_Registration);
+
+var _SelfRoom = __webpack_require__(314);
+
+var _SelfRoom2 = _interopRequireDefault(_SelfRoom);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -33566,13 +33604,15 @@ var AppComponent = function (_React$Component) {
                     _reactRouterDom.Switch,
                     null,
                     _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: "/login", component: _Login2.default }),
+                    _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: "/registration", component: _Registration2.default }),
                     _react2.default.createElement(PrivateRoute, { exact: true, path: "/teams", component: _Teams2.default, isLogin: this.props.isLogin }),
                     _react2.default.createElement(PrivateRoute, { exact: true, path: "/team/:id", component: _OwnTeam2.default, isLogin: this.props.isLogin }),
                     _react2.default.createElement(PrivateRoute, { exact: true, path: "/games", component: _Games2.default, isLogin: this.props.isLogin }),
                     _react2.default.createElement(PrivateRoute, { exact: true, path: "/game/:id", component: _OwnGame2.default, isLogin: this.props.isLogin }),
                     _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: "/matches", component: _Matches2.default }),
                     _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: "/turns", component: _Turnes2.default }),
-                    _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: "/match/:id", component: _OwnMatch2.default })
+                    _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: "/match/:id", component: _OwnMatch2.default }),
+                    _react2.default.createElement(PrivateRoute, { path: "/self", component: _SelfRoom2.default, isLogin: this.props.isLogin })
                 )
             );
         }
@@ -34308,6 +34348,23 @@ var LayoutComponent = function (_React$Component) {
                         "div",
                         null,
                         "\u0422\u0443\u0440\u043D\u0438\u0440\u044B"
+                    )
+                ),
+                this.props.isLogin ? _react2.default.createElement(
+                    _reactRouterDom.Link,
+                    { to: "/self" },
+                    _react2.default.createElement(
+                        "div",
+                        null,
+                        "\u041B\u0438\u0447\u043D\u044B\u0439 \u043A\u0430\u0431\u0438\u043D\u0435\u0442"
+                    )
+                ) : _react2.default.createElement(
+                    _reactRouterDom.Link,
+                    { to: "/registration" },
+                    _react2.default.createElement(
+                        "div",
+                        null,
+                        "\u0420\u0435\u0433\u0438\u0441\u0442\u0440\u0430\u0446\u0438\u044F"
                     )
                 ),
                 this.props.isLogin ? _react2.default.createElement(
@@ -36482,30 +36539,44 @@ var LoginComponent = function (_React$Component) {
             }
             return _react2.default.createElement(
                 "div",
-                { className: "login" },
+                { className: "teams" },
                 _react2.default.createElement(
-                    "p",
-                    null,
-                    "\u041B\u043E\u0433\u0438\u043D"
-                ),
-                _react2.default.createElement("input", { name: "login", onChange: this.onChange }),
-                _react2.default.createElement(
-                    "p",
-                    null,
-                    "\u041F\u0430\u0440\u043E\u043B\u044C"
-                ),
-                _react2.default.createElement("input", { name: "password", onChange: this.onChange, type: "password" }),
-                _react2.default.createElement("br", null),
-                _react2.default.createElement(
-                    "button",
-                    { onClick: this.login },
-                    "\u0412\u043E\u0439\u0442\u0438"
-                ),
-                this.props.isFalied ? _react2.default.createElement(
-                    "p",
-                    null,
-                    "\u041D\u0435\u0432\u0435\u0440\u043D\u044B\u0439 \u043B\u043E\u0433\u0438\u043D \u0438\u043B\u0438 \u043F\u0430\u0440\u043E\u043B\u044C!"
-                ) : null
+                    "div",
+                    { className: "team" },
+                    _react2.default.createElement(
+                        "p",
+                        null,
+                        "\u041B\u043E\u0433\u0438\u043D"
+                    ),
+                    _react2.default.createElement("input", { name: "login", onChange: this.onChange }),
+                    _react2.default.createElement(
+                        "p",
+                        null,
+                        "\u041F\u0430\u0440\u043E\u043B\u044C"
+                    ),
+                    _react2.default.createElement("input", { name: "password", onChange: this.onChange, type: "password" }),
+                    _react2.default.createElement("br", null),
+                    _react2.default.createElement(
+                        "button",
+                        { onClick: this.login },
+                        "\u0412\u043E\u0439\u0442\u0438"
+                    ),
+                    this.props.isFalied ? _react2.default.createElement(
+                        "p",
+                        null,
+                        "\u041D\u0435\u0432\u0435\u0440\u043D\u044B\u0439 \u043B\u043E\u0433\u0438\u043D \u0438\u043B\u0438 \u043F\u0430\u0440\u043E\u043B\u044C!"
+                    ) : null,
+                    _react2.default.createElement(
+                        "p",
+                        null,
+                        "\u0415\u0449\u0435 \u043D\u0435 \u0437\u0430\u0440\u0435\u0433\u0438\u0441\u0442\u0440\u0438\u0440\u043E\u0432\u0430\u043D\u044B?! ",
+                        _react2.default.createElement(
+                            "a",
+                            { href: "/registration" },
+                            "\u0417\u0430\u0440\u0435\u0433\u0438\u0441\u0442\u0440\u0438\u0440\u043E\u0432\u0430\u0442\u044C\u0441\u044F"
+                        )
+                    )
+                )
             );
         }
     }]);
@@ -36528,6 +36599,257 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch) {
 };
 
 exports.default = (0, _reactRedux.connect)(mapStoreToProps, mapDispatchToProps)(LoginComponent);
+
+/***/ }),
+/* 313 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _reactRedux = __webpack_require__(3);
+
+var _redux = __webpack_require__(2);
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _users = __webpack_require__(53);
+
+var _reactRouterDom = __webpack_require__(14);
+
+var _Modal = __webpack_require__(146);
+
+var _Modal2 = _interopRequireDefault(_Modal);
+
+var _modal = __webpack_require__(18);
+
+var _constans = __webpack_require__(5);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var RegistrationComponent = function (_React$Component) {
+    _inherits(RegistrationComponent, _React$Component);
+
+    function RegistrationComponent() {
+        var _ref;
+
+        var _temp, _this, _ret;
+
+        _classCallCheck(this, RegistrationComponent);
+
+        for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+            args[_key] = arguments[_key];
+        }
+
+        return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = RegistrationComponent.__proto__ || Object.getPrototypeOf(RegistrationComponent)).call.apply(_ref, [this].concat(args))), _this), _this.state = {
+            login: '',
+            password: '',
+            first_name: '',
+            last_name: '',
+            email: ''
+        }, _this.onChange = function (e) {
+            _this.setState(_defineProperty({}, e.target.name, e.target.value));
+        }, _this.onCreate = function (e) {
+            _this.props.registration(_constans.urls.user.userUrl, _this.state.login, _this.state.password, _this.state.email, _this.state.first_name, _this.state.last_name);
+        }, _temp), _possibleConstructorReturn(_this, _ret);
+    }
+
+    _createClass(RegistrationComponent, [{
+        key: "render",
+        value: function render() {
+            return _react2.default.createElement(
+                "div",
+                { className: "teams" },
+                _react2.default.createElement(
+                    "div",
+                    { className: "team" },
+                    _react2.default.createElement(
+                        "h3",
+                        null,
+                        "\u0420\u0435\u0433\u0438\u0441\u0442\u0440\u0430\u0446\u0438\u044F"
+                    ),
+                    _react2.default.createElement(
+                        "p",
+                        null,
+                        "\u041B\u043E\u0433\u0438\u043D"
+                    ),
+                    _react2.default.createElement("input", { name: "login", onChange: this.onChange }),
+                    _react2.default.createElement(
+                        "p",
+                        null,
+                        "\u041F\u0430\u0440\u043E\u043B\u044C"
+                    ),
+                    _react2.default.createElement("input", { name: "password", onChange: this.onChange, type: "password" }),
+                    _react2.default.createElement(
+                        "p",
+                        null,
+                        "e-mail"
+                    ),
+                    _react2.default.createElement("input", { name: "email", onChange: this.onChange }),
+                    _react2.default.createElement(
+                        "p",
+                        null,
+                        "\u0418\u043C\u044F"
+                    ),
+                    _react2.default.createElement("input", { name: "first_name", onChange: this.onChange }),
+                    _react2.default.createElement(
+                        "p",
+                        null,
+                        "\u0424\u0430\u043C\u0438\u043B\u0438\u044F"
+                    ),
+                    _react2.default.createElement("input", { name: "last_name", onChange: this.onChange }),
+                    _react2.default.createElement("br", null),
+                    _react2.default.createElement(
+                        "button",
+                        { onClick: this.onCreate },
+                        "\u0417\u0430\u0440\u0435\u0433\u0438\u0441\u0442\u0440\u0438\u0440\u043E\u0432\u0430\u0442\u044C\u0441\u044F"
+                    ),
+                    this.props.isFalied ? _react2.default.createElement(
+                        "p",
+                        null,
+                        "\u041D\u0435 \u043F\u0440\u0430\u0432\u0438\u043B\u044C\u043D\u044B\u0439 \u0444\u043E\u0440\u043C\u0430\u0442 \u043F\u0440\u0435\u0434\u043E\u0441\u0442\u0430\u0432\u043B\u0435\u043D\u043D\u044B\u0445 \u0434\u0430\u043D\u043D\u044B\u0445!"
+                    ) : null
+                )
+            );
+        }
+    }]);
+
+    return RegistrationComponent;
+}(_react2.default.Component);
+
+var mapStoreToProps = function mapStoreToProps(state, props) {
+    return {
+        isFalied: state.users.isFalied
+    };
+};
+
+var mapDispatchToProps = function mapDispatchToProps(dispatch) {
+    return _extends({}, (0, _redux.bindActionCreators)({
+        registration: _users.registration
+    }, dispatch));
+};
+
+exports.default = (0, _reactRedux.connect)(mapStoreToProps, mapDispatchToProps)(RegistrationComponent);
+
+/***/ }),
+/* 314 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _reactRedux = __webpack_require__(3);
+
+var _redux = __webpack_require__(2);
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _users = __webpack_require__(53);
+
+var _reactRouterDom = __webpack_require__(14);
+
+var _Modal = __webpack_require__(146);
+
+var _Modal2 = _interopRequireDefault(_Modal);
+
+var _modal = __webpack_require__(18);
+
+var _constans = __webpack_require__(5);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var SelfRoomComponent = function (_React$Component) {
+    _inherits(SelfRoomComponent, _React$Component);
+
+    function SelfRoomComponent() {
+        _classCallCheck(this, SelfRoomComponent);
+
+        return _possibleConstructorReturn(this, (SelfRoomComponent.__proto__ || Object.getPrototypeOf(SelfRoomComponent)).apply(this, arguments));
+    }
+
+    _createClass(SelfRoomComponent, [{
+        key: "componentDidMount",
+        value: function componentDidMount() {
+            this.props.loadUser(_constans.urls.user.currentUrl);
+        }
+    }, {
+        key: "render",
+        value: function render() {
+            return _react2.default.createElement(
+                "div",
+                { className: "teams" },
+                _react2.default.createElement(
+                    "div",
+                    { className: "team" },
+                    "\u041B\u0438\u0447\u043D\u044B\u0439 \u043A\u0430\u0431\u0438\u043D\u0435\u0442",
+                    this.props.isLoading ? _react2.default.createElement(
+                        "div",
+                        null,
+                        _react2.default.createElement(
+                            "p",
+                            null,
+                            this.props.users[this.props.userList[0]].first_name,
+                            " ",
+                            this.props.users[this.props.userList[0]].last_name
+                        )
+                    ) : _react2.default.createElement("div", { className: "loading" })
+                )
+            );
+        }
+    }]);
+
+    return SelfRoomComponent;
+}(_react2.default.Component);
+
+var mapStoreToProps = function mapStoreToProps(state, props) {
+    return {
+        isLoading: state.users.isLoading,
+        userList: state.users.userList,
+        users: state.users.users
+    };
+};
+
+var mapDispatchToProps = function mapDispatchToProps(dispatch) {
+    return _extends({}, (0, _redux.bindActionCreators)({
+        loadUser: _users.loadUser
+    }, dispatch));
+};
+
+exports.default = (0, _reactRedux.connect)(mapStoreToProps, mapDispatchToProps)(SelfRoomComponent);
 
 /***/ })
 /******/ ]);

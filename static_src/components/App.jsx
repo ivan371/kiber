@@ -12,6 +12,8 @@ import OwnMatch from "./Match/OwnMatch";
 import Login from "./Login";
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
+import Registration from "./Registration";
+import SelfRoom from "./SelfRoom";
 
 const PrivateRoute = ({ component: Component, isLogin, ...rest }) => (
     <Route {...rest} render={props => (
@@ -35,6 +37,7 @@ class AppComponent extends React.Component {
                 <Modal/>
                 <Switch>
                     <Route exact path="/login" component={Login} />
+                    <Route exact path="/registration" component={Registration} />
                     <PrivateRoute exact path="/teams" component={Teams} isLogin={this.props.isLogin}/>
                     <PrivateRoute exact path="/team/:id" component={OwnTeam} isLogin={this.props.isLogin}/>
                     <PrivateRoute exact path="/games" component={Games} isLogin={this.props.isLogin}/>
@@ -42,7 +45,7 @@ class AppComponent extends React.Component {
                     <Route exact path="/matches" component={Matches}/>
                     <Route exact path="/turns" component={Turnes}/>
                     <Route exact path="/match/:id" component={OwnMatch}/>
-
+                    <PrivateRoute path="/self" component={SelfRoom} isLogin={this.props.isLogin}/>
                 </Switch>
             </div>
         );

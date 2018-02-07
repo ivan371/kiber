@@ -1,59 +1,59 @@
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
 import React from 'react';
-import {login, logout} from "../actions/users";
+import {login, logout, registration} from "../actions/users";
 import {Redirect, withRouter} from "react-router-dom";
 import Modal from "./Modal";
 import {modalOpen} from "../actions/modal";
 import {secrets, urls} from "../constans";
-class LoginComponent extends React.Component {
+class RegistrationComponent extends React.Component {
     state = {
         login: '',
         password: '',
+        first_name: '',
+        last_name: '',
+        email: '',
     };
 
     onChange = (e) => {
         this.setState({[e.target.name]: e.target.value});
     };
 
-    login = () => {
-        this.props.login(urls.login.loginUrl, this.state.login, this.state.password,
-            secrets.client_id, secrets.client_secret, secrets.grant_type);
+    onCreate = (e) => {
+        this.props.registration(urls.user.userUrl, this.state.login, this.state.password, this.state.email, this.state.first_name, this.state.last_name);
     };
 
     render() {
-        const { from } = this.props.location.state || { from: { pathname: '/games' } };
-        if (this.props.isLogin) {
-            return (
-                <Redirect to={from}/>
-            )
-        }
         return (
             <div className="teams">
                 <div className="team">
+                    <h3>Регистрация</h3>
                     <p>Логин</p>
                     <input name="login" onChange={this.onChange}/>
                     <p>Пароль</p>
                     <input name="password" onChange={this.onChange} type="password"/>
+                    <p>e-mail</p>
+                    <input name="email" onChange={this.onChange}/>
+                    <p>Имя</p>
+                    <input name="first_name" onChange={this.onChange}/>
+                    <p>Фамилия</p>
+                    <input name="last_name" onChange={this.onChange}/>
                     <br/>
-                    <button onClick={this.login}>Войти</button>
-                    {this.props.isFalied ? <p>Неверный логин или пароль!</p> : null}
-                    <p>Еще не зарегистрированы?! <a href='/registration'>Зарегистрироваться</a></p>
+                    <button onClick={this.onCreate}>Зарегистрироваться</button>
+                    {this.props.isFalied ? <p>Не правильный формат предоставленных данных!</p> : null}
                 </div>
             </div>
         )
     }
 }
 const mapStoreToProps = (state, props) => ({
-    isLogin: state.users.isLogin,
-    isFailed: state.users.isFailed,
+    isFalied: state.users.isFalied,
 });
 
 const mapDispatchToProps = (dispatch) => {
     return {
         ...bindActionCreators({
-            login,
-            logout,
+            registration
         }, dispatch),
     };
 };
@@ -61,4 +61,4 @@ const mapDispatchToProps = (dispatch) => {
 export default connect(
     mapStoreToProps,
     mapDispatchToProps
-)(LoginComponent);
+)(RegistrationComponent);
