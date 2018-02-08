@@ -1,4 +1,7 @@
 from __future__ import absolute_import
+
+import random
+
 from django.shortcuts import render, get_object_or_404
 from oauth2_provider.contrib.rest_framework import TokenHasReadWriteScope
 from rest_framework import viewsets, permissions
@@ -6,6 +9,7 @@ from rest_framework import viewsets, permissions
 from app.api import router
 from app.views import test_connection_to_db, ShardingViewSet
 from game.serizlizers import GameSerializer, GameTeamSerializer, TeamGameSerializer, GameSimpleSerializer
+from generate.generate import get_pk
 from team.models import Team
 from .models import Game, GameTeam
 
@@ -17,8 +21,8 @@ class GameViewSet(ShardingViewSet):
 
     def perform_create(self, serializer):
         if test_connection_to_db('db1') and test_connection_to_db('db2'):
-            # serializer.save(using='all')
-            serializer.save()
+            ran_db = random.randint(1, 2)
+            serializer.save(using=ran_db, id=int(get_pk() + str(ran_db)))
             # if hash(serializer.validated_data['name']) % 2 == 0:
             #     serializer.save(using='db1')
             # else:
@@ -26,7 +30,8 @@ class GameViewSet(ShardingViewSet):
 
     def perform_update(self, serializer):
         if test_connection_to_db('db1') and test_connection_to_db('db2'):
-            serializer.save()
+            db = self.get_object().id
+            serializer.save(using=db%2)
 
     def get_queryset(self):
         if test_connection_to_db('db2'):

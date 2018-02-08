@@ -30,14 +30,13 @@ export function registration(url, username, password, email, first_name, last_na
     return apiLoad(url, 'POST', types, JSON.stringify({username, password, email, first_name, last_name}), o => o, true);
 }
 
-export function login(url, username, password, client_id, client_secret, grant_type) {
+export function login(url, username, password, client_id, grant_type) {
     const types = [LOGIN, LOGIN_SUCCESS, LOGIN_ERROR];
     let form = new FormData();
     form.append('username',username);
     form.append('password', password);
     form.append('client_id', client_id);
     form.append('password', password);
-    form.append('client_secret', client_secret);
     form.append('grant_type', grant_type);
     // return apiLoad(url, 'POST', types, JSON.stringify({username, password, client_id, client_secret, grant_type}), () => {}, true);
     return apiLoad(url, 'POST', types, form, o => o, true, null, true);

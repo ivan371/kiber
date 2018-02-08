@@ -11,5 +11,8 @@ class MatchViewSet(viewsets.ModelViewSet):
     queryset = Match.objects.all().order_by('-id')
     serializer_class = MatchSerializer
 
+    def get_queryset(self):
+        queryset = super(MatchViewSet, self).get_queryset()
+        return queryset.using('db1')
 
 router.register('matches', MatchViewSet)

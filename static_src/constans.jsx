@@ -27,7 +27,6 @@ export const modalConst = {
 };
 
 export const secrets = {
-    client_id: 'xUZ7QSvZqBivofuI6M4XaS2ITlx814msGEBEDuh3',
-    client_secret: '3uSikBp1grBMx3Pi57vyeGfmJmlNYXa5GUzv0PeNbl898HEFJSNg6CFXaBKDxx1LEGzb9Y70gTXxDqsg31u0veyn3g7OoPTMwiRRM9dBLfkT4s4VyO2cBW6hgLEqHZQc',
+    client_id: 'I2h4votqGuvUQwG8tJG93aI17BXlTNEF6aM2v1Nu',
     grant_type: 'password',
 };

@@ -54,12 +54,12 @@ class RandomGenerator:
             t2.save(using='db2')
             for j in range(10):
                 u = User(
-                    username='rand_{}'.format(j + 10 * i),
+                    username='user{}'.format(j + 10 * i),
                     email='ivan@ivan{}.ru'.format(j + 10 * i)
                 )
                 u.set_password('ivan123')
                 u.first_name = 'ivan{}'.format(j + 10 * i)
-                u.last_name = 'ivanon{}'.format(j + 10 * i)
+                u.last_name = 'ivanov{}'.format(j + 10 * i)
                 ran_db = random.randint(1, 2)
                 u.id = int(get_pk() + str(ran_db))
                 print(u.id)
@@ -103,7 +103,7 @@ class RandomGenerator:
                         game=g,
                         team=tm
                     )
-                    gt.save(using=str(ran_db))
+                    gt.save(using='db' + str(ran_db))
 
 
 class TeamGenerator(BaseGenerator):

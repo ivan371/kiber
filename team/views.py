@@ -28,13 +28,13 @@ class TeamViewSet(ShardingViewSet):
 
     def get_queryset(self):
         queryset = super(TeamViewSet, self).get_queryset()
-        # if test_connection_to_db('db2'):
-        #     if self.request.user.id % 2 != 0 or test_connection_to_db('db2'):
-        #         queryset = queryset.using('db2')
-        #     else:
-        #         queryset = queryset.using('db1')
-        # else:
-        #     queryset = queryset.using('db1')
+        if test_connection_to_db('db2'):
+            if test_connection_to_db('db1'):
+                queryset = queryset.using('db2')
+            else:
+                queryset = queryset.using('db1')
+        else:
+            queryset = queryset.using('db1')
         return queryset
 
 
