@@ -5,11 +5,12 @@ from rest_framework.decorators import list_route
 from rest_framework.exceptions import AuthenticationFailed
 from rest_framework.response import Response
 
+from app.views import ShardingViewSet
 from .serializers import UserSerializer, UserEditSerializer
 from app.api import router
 
 
-class UserViewSet(viewsets.ModelViewSet):
+class UserViewSet(ShardingViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
 

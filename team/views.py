@@ -6,17 +6,17 @@ from oauth2_provider.contrib.rest_framework import TokenHasReadWriteScope, Token
 
 
 from app.api import router
-from app.views import test_connection_to_db
+from app.views import test_connection_to_db, ShardingViewSet
 from .models import Team, UserTeam
 from .serializers import TeamSerializer, TeamUserSerializer, UserTeamSerializer, TeamUserWriteSerializer, \
     UserTeamWriteSerializer
 from itertools import chain
 
 
-class TeamViewSet(viewsets.ModelViewSet):
+class TeamViewSet(ShardingViewSet):
     queryset = Team.objects.all().order_by('-id')
     serializer_class = TeamSerializer
-    permission_classes = [permissions.IsAuthenticated, TokenHasReadWriteScope]
+    # permission_classes = [permissions.IsAuthenticated, TokenHasReadWriteScope]
 
     def perform_create(self, serializer):
         if test_connection_to_db('db1') and test_connection_to_db('db2'):
@@ -28,17 +28,17 @@ class TeamViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         queryset = super(TeamViewSet, self).get_queryset()
-        if test_connection_to_db('db2'):
-            if self.request.user.id % 2 != 0 or test_connection_to_db('db1'):
-                queryset = queryset.using('db2')
-            else:
-                queryset = queryset.using('db1')
-        else:
-            queryset = queryset.using('db1')
+        # if test_connection_to_db('db2'):
+        #     if self.request.user.id % 2 != 0 or test_connection_to_db('db2'):
+        #         queryset = queryset.using('db2')
+        #     else:
+        #         queryset = queryset.using('db1')
+        # else:
+        #     queryset = queryset.using('db1')
         return queryset
 
 
-class TeamUserViewSet(viewsets.ModelViewSet):
+class TeamUserViewSet(ShardingViewSet):
     queryset = UserTeam.objects.all()
     serializer_class = TeamUserSerializer
 
@@ -60,7 +60,10 @@ class TeamUserViewSet(viewsets.ModelViewSet):
                     #     serializer.save(team_id=self.request.query_params['team'], using='db1')
                     # else:
                     #     serializer.save(team_id=self.request.query_params['team'], using='db2')
-                    serializer.save(team_id=self.request.query_params['team'], using='all')
+                    if self.request.user.id % 2 == 0:
+                        serializer.save(team_id=self.request.query_params['team'], using='db2')
+                    else:
+                        serializer.save(team_id=self.request.query_params['team'], using='db1')
             else:
                 # if hash(self.request.user.id) % 2 == 0:
                 #     serializer.save(user=self.request.user, using='db1')
@@ -71,29 +74,6 @@ class TeamUserViewSet(viewsets.ModelViewSet):
     def perform_update(self, serializer):
         if test_connection_to_db('db1') and test_connection_to_db('db2'):
             serializer.save(using='all')
-
-    def get_object(self):
-        # if 'team' in self.request.query_params:
-        #     if self.request.query_params['team'].isdigit:
-        #         queryset = UserTeam.objects.all().using('db2')
-        # else:
-        queryset = self.filter_queryset(self.get_queryset())
-
-        lookup_url_kwarg = self.lookup_url_kwarg or self.lookup_field
-        assert lookup_url_kwarg in self.kwargs, (
-            'Expected view %s to be called with a URL keyword argument '
-            'named "%s". Fix your URL conf, or set the `.lookup_field` '
-            'attribute on the view correctly.' %
-            (self.__class__.__name__, lookup_url_kwarg)
-        )
-        filter_kwargs = {self.lookup_field: self.kwargs[lookup_url_kwarg]}
-        obj = get_object_or_404(queryset, **filter_kwargs)
-        self.check_object_permissions(self.request, obj)
-        # ob = UserTeam.objects.filter(id=self.kwargs['pk'])
-        # print(ob)
-        # if obj:
-        #     return get_object_or_404(UserTeam, id=0)
-        return obj
 
     def get_queryset(self):
         queryset = super(TeamUserViewSet, self).get_queryset()

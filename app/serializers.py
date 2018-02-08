@@ -1,8 +1,11 @@
+import random
 import traceback
 
 from rest_framework import serializers
 from rest_framework.serializers import raise_errors_on_nested_writes
 from rest_framework.utils import model_meta
+
+from generate.generate import get_pk
 
 
 class ShardingSerializer(serializers.ModelSerializer):
@@ -10,24 +13,30 @@ class ShardingSerializer(serializers.ModelSerializer):
         raise_errors_on_nested_writes('create', self, validated_data)
 
         ModelClass = self.Meta.model
+        print('meta in create', ModelClass._meta.verbose_name)
         info = model_meta.get_field_info(ModelClass)
         many_to_many = {}
         for field_name, relation_info in info.relations.items():
             if relation_info.to_many and (field_name in validated_data):
                 many_to_many[field_name] = validated_data.pop(field_name)
-
         try:
-            if 'using' in validated_data:
-                using = validated_data.pop('using')
+            if ModelClass._meta.verbose_name == 'game' or ModelClass._meta.verbose_name == 'user':
+                ran_db = random.randint(1, 2)
+                validated_data['id'] = int(get_pk() + str(ran_db))
                 instance = ModelClass(**validated_data)
-                if using == 'all':
-                    instance.save(using='db1')
-                    instance.save(using='db2')
-                    # instance.save()
-                else:
-                    instance.save(using=using)
+                instance.save(using='db' + str(ran_db))
             else:
-                instance = ModelClass.objects.create(**validated_data)
+                if 'using' in validated_data:
+                    using = validated_data.pop('using')
+                    instance = ModelClass(**validated_data)
+                    if using == 'all':
+                        instance.save(using='db1')
+                        instance.save(using='db2')
+                        # instance.save()
+                    else:
+                        instance.save(using=using)
+                else:
+                    instance = ModelClass.objects.create(**validated_data)
         except TypeError:
             tb = traceback.format_exc()
             msg = (

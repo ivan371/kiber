@@ -113,7 +113,7 @@ DATABASES = {
     },
 }
 
-# DATABASE_ROUTERS = ['app.db_route.PrimaryRouter',]
+DATABASE_ROUTERS = ['app.db_route.PrimaryRouter',]
 
 
 # Password validation

@@ -13,11 +13,12 @@ from .models import Game, GameTeam
 class GameViewSet(ShardingViewSet):
     queryset = Game.objects.all()
     serializer_class = GameSimpleSerializer
-    permission_classes = [permissions.IsAuthenticated, TokenHasReadWriteScope]
+    # permission_classes = [permissions.IsAuthenticated, TokenHasReadWriteScope]
 
     def perform_create(self, serializer):
         if test_connection_to_db('db1') and test_connection_to_db('db2'):
-            serializer.save(using='all')
+            # serializer.save(using='all')
+            serializer.save()
             # if hash(serializer.validated_data['name']) % 2 == 0:
             #     serializer.save(using='db1')
             # else:
@@ -25,7 +26,7 @@ class GameViewSet(ShardingViewSet):
 
     def perform_update(self, serializer):
         if test_connection_to_db('db1') and test_connection_to_db('db2'):
-            serializer.save(using='all')
+            serializer.save()
 
     def get_queryset(self):
         if test_connection_to_db('db2'):
@@ -53,7 +54,7 @@ class GameViewSet(ShardingViewSet):
 class GameTeamViewSet(ShardingViewSet):
     queryset = GameTeam.objects.all()
     serializer_class = GameTeamSerializer
-    permission_classes = [permissions.IsAuthenticated, TokenHasReadWriteScope]
+    # permission_classes = [permissions.IsAuthenticated, TokenHasReadWriteScope]
 
     def get_serializer_class(self):
         if self.request.method == 'POST':
@@ -74,7 +75,10 @@ class GameTeamViewSet(ShardingViewSet):
                 #     serializer.save(game_id=self.request.query_params['game'], using='db1')
                 # else:
                 #     serializer.save(game_id=self.request.query_params['game'], using='db2')
-                serializer.save(game_id=self.request.query_params['game'], using='all')
+                if int(self.request.query_params['game']) % 2 == 0:
+                    serializer.save(game_id=self.request.query_params['game'], using='db2')
+                else:
+                    serializer.save(game_id=self.request.query_params['game'], using='db1')
                 # time = datetime.datetime.now()
                 # int(time.strftime("%Y%m%d%H%M%S"))
                 # random.randint(0, 100)
@@ -84,7 +88,10 @@ class GameTeamViewSet(ShardingViewSet):
                 #     serializer.save(team_id=self.request.query_params['team'], using='db1')
                 # else:
                 #     serializer.save(team_id=self.request.query_params['team'], using='db2')
-                serializer.save(team_id=self.request.query_params['team'], using='all')
+                if serializer.validated_data['game'].id % 2 == 0:
+                    serializer.save(team_id=self.request.query_params['team'], using='db2')
+                else:
+                    serializer.save(team_id=self.request.query_params['team'], using='db1')
 
     def perform_update(self, serializer):
         if test_connection_to_db('db1') and test_connection_to_db('db2'):
