@@ -1,6 +1,9 @@
+from app.views import test_connection_to_db
+
+
 class PrimaryRouter(object):
     def db_for_read(self, model, **hints):
-        print(hints, model._meta.verbose_name)
+        # print(hints, model._meta.verbose_name)
         # if 'instance' in hints:
         #     if model._meta.app_label == 'game' or model._meta.app_label == 'team':
         #         if hash(hints['instance'].name) % 2:
@@ -11,6 +14,9 @@ class PrimaryRouter(object):
         #             print('db1')
         #             return 'db1'
         # return 'db2'
+        if model._meta.verbose_name == 'access token':
+            if not test_connection_to_db('db1'):
+                return 'sl1'
         return None
 
     def db_for_write(self, model, **hints):

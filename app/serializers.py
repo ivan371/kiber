@@ -13,7 +13,7 @@ class ShardingSerializer(serializers.ModelSerializer):
         raise_errors_on_nested_writes('create', self, validated_data)
 
         ModelClass = self.Meta.model
-        print('meta in create', ModelClass._meta.verbose_name)
+        # print('meta in create', ModelClass._meta.verbose_name)
         info = model_meta.get_field_info(ModelClass)
         many_to_many = {}
         for field_name, relation_info in info.relations.items():

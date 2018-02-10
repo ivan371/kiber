@@ -1,3 +1,4 @@
+import random
 from itertools import chain
 
 from django.shortcuts import get_object_or_404
@@ -29,9 +30,15 @@ class ShardingViewSet(viewsets.ModelViewSet):
                 else:
                     queryset = queryset.using('db1')
             else:
-                queryset = queryset.using('db2')
+                if int(self.kwargs['pk']) % 2 == 0:
+                    queryset = queryset.using('db2')
+                else:
+                    queryset = queryset.using('sl1')
         else:
-            queryset = queryset.using('db1')
+            if int(self.kwargs['pk']) % 2 == 0:
+                queryset = queryset.using('sl2')
+            else:
+                queryset = queryset.using('db1')
         lookup_url_kwarg = self.lookup_url_kwarg or self.lookup_field
         assert lookup_url_kwarg in self.kwargs, (
             'Expected view %s to be called with a URL keyword argument '
@@ -46,16 +53,22 @@ class ShardingViewSet(viewsets.ModelViewSet):
 
     def list(self, request, *args, **kwargs):
         queryset = self.filter_queryset(self.get_queryset())
-        if test_connection_to_db('db2'):
+        if queryset.model._meta.verbose_name == 'game' or queryset.model._meta.verbose_name == 'user':
             if test_connection_to_db('db2'):
-                print(queryset.model._meta.verbose_name)
-                if queryset.model._meta.verbose_name == 'game' or queryset.model._meta.verbose_name == 'user':
+                if test_connection_to_db('db1'):
                     queryset = list(set(chain(queryset.using('db1'), queryset.using('db2'))))
+                else:
+                    queryset = list(set(chain(queryset.using('sl1'), queryset.using('db2'))))
+            else:
+                queryset = list(set(chain(queryset.using('db1'), queryset.using('sl2'))))
+        else:
+            if test_connection_to_db('db2'):
+                if test_connection_to_db('db1'):
+                    queryset = queryset.using('db' + str(random.randint(1, 2)))
+                else:
+                    queryset = queryset.using('db2')
             else:
                 queryset = queryset.using('db1')
-        else:
-            queryset = queryset.using('db1')
-
         page = self.paginate_queryset(queryset)
         if page is not None:
             serializer = self.get_serializer(page, many=True)

@@ -21,8 +21,11 @@ class GameViewSet(ShardingViewSet):
 
     def perform_create(self, serializer):
         if test_connection_to_db('db1') and test_connection_to_db('db2'):
-            ran_db = random.randint(1, 2)
-            serializer.save(using=ran_db, id=int(get_pk() + str(ran_db)))
+            if 'match' in self.request.query_params:
+                if self.request.query_params['match'].is_digit():
+                    ran_db = random.randint(1, 2)
+                    serializer.save(match_id=self.request.query_params['match'],
+                                    using=ran_db, id=int(get_pk() + str(ran_db)))
             # if hash(serializer.validated_data['name']) % 2 == 0:
             #     serializer.save(using='db1')
             # else:

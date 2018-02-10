@@ -111,6 +111,22 @@ DATABASES = {
         'HOST': 'localhost',
         'PORT': '3306',
     },
+    'sl1': {
+        'NAME': 'slave1',
+        'ENGINE': 'django.db.backends.mysql',
+        'USER': 'test',
+        'PASSWORD': 'pass',
+        'HOST': 'localhost',
+        'PORT': '3306',
+    },
+    'sl2': {
+        'NAME': 'slave2',
+        'ENGINE': 'django.db.backends.mysql',
+        'USER': 'test',
+        'PASSWORD': 'pass',
+        'HOST': 'localhost',
+        'PORT': '3306',
+    },
 }
 
 DATABASE_ROUTERS = ['app.db_route.PrimaryRouter',]
