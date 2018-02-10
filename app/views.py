@@ -51,34 +51,26 @@ class ShardingViewSet(viewsets.ModelViewSet):
         self.check_object_permissions(self.request, obj)
         return obj
 
+    def get_paginated_qs(self, queryset, db1, db2):
+        if 'offset' in self.request.query_params:
+            offset = int(self.request.query_params['offset'])
+            limit = offset + 10
+            queryset = list(set(chain(queryset.using(db1)[offset:limit],
+                                      queryset.using(db2)[offset:limit])))
+        else:
+            queryset = list(set(chain(queryset.using(db1), queryset.using(db2))))
+        return queryset
+
     def list(self, request, *args, **kwargs):
         queryset = self.filter_queryset(self.get_queryset())
         if queryset.model._meta.verbose_name == 'game' or queryset.model._meta.verbose_name == 'user':
             if test_connection_to_db('db2'):
                 if test_connection_to_db('db1'):
-                    if 'offset' in self.request.query_params:
-                        offset = int(self.request.query_params['offset'])
-                        limit = offset + 10
-                        queryset = list(set(chain(queryset.using('db1')[offset:limit],
-                                                  queryset.using('db2')[offset:limit])))
-                    else:
-                        queryset = list(set(chain(queryset.using('db1'), queryset.using('db2'))))
+                    queryset = self.get_paginated_qs(queryset, 'db1', 'db2')
                 else:
-                    if 'offset' in self.request.query_params:
-                        offset = int(self.request.query_params['offset'])
-                        limit = offset + 10
-                        queryset = list(set(chain(queryset.using('sl1')[offset:limit],
-                                                  queryset.using('db2')[offset:limit])))
-                    else:
-                        queryset = list(set(chain(queryset.using('sl1'), queryset.using('db2'))))
+                    queryset = self.get_paginated_qs(queryset, 'sl1', 'db2')
             else:
-                if 'offset' in self.request.query_params:
-                    offset = int(self.request.query_params['offset'])
-                    limit = offset + 10
-                    queryset = list(set(chain(queryset.using('db1')[offset:limit],
-                                              queryset.using('sl2')[offset:limit])))
-                else:
-                    queryset = list(set(chain(queryset.using('db1'), queryset.using('sl2'))))
+                queryset = self.get_paginated_qs(queryset, 'db1', 'sl2')
         else:
             if test_connection_to_db('db2'):
                 if test_connection_to_db('db1'):
