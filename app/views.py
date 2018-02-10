@@ -56,11 +56,29 @@ class ShardingViewSet(viewsets.ModelViewSet):
         if queryset.model._meta.verbose_name == 'game' or queryset.model._meta.verbose_name == 'user':
             if test_connection_to_db('db2'):
                 if test_connection_to_db('db1'):
-                    queryset = list(set(chain(queryset.using('db1'), queryset.using('db2'))))
+                    if 'offset' in self.request.query_params:
+                        offset = int(self.request.query_params['offset'])
+                        limit = offset + 10
+                        queryset = list(set(chain(queryset.using('db1')[offset:limit],
+                                                  queryset.using('db2')[offset:limit])))
+                    else:
+                        queryset = list(set(chain(queryset.using('db1'), queryset.using('db2'))))
                 else:
-                    queryset = list(set(chain(queryset.using('sl1'), queryset.using('db2'))))
+                    if 'offset' in self.request.query_params:
+                        offset = int(self.request.query_params['offset'])
+                        limit = offset + 10
+                        queryset = list(set(chain(queryset.using('sl1')[offset:limit],
+                                                  queryset.using('db2')[offset:limit])))
+                    else:
+                        queryset = list(set(chain(queryset.using('sl1'), queryset.using('db2'))))
             else:
-                queryset = list(set(chain(queryset.using('db1'), queryset.using('sl2'))))
+                if 'offset' in self.request.query_params:
+                    offset = int(self.request.query_params['offset'])
+                    limit = offset + 10
+                    queryset = list(set(chain(queryset.using('db1')[offset:limit],
+                                              queryset.using('sl2')[offset:limit])))
+                else:
+                    queryset = list(set(chain(queryset.using('db1'), queryset.using('sl2'))))
         else:
             if test_connection_to_db('db2'):
                 if test_connection_to_db('db1'):
@@ -69,10 +87,10 @@ class ShardingViewSet(viewsets.ModelViewSet):
                     queryset = queryset.using('db2')
             else:
                 queryset = queryset.using('db1')
-        page = self.paginate_queryset(queryset)
-        if page is not None:
-            serializer = self.get_serializer(page, many=True)
-            return self.get_paginated_response(serializer.data)
+            page = self.paginate_queryset(queryset)
+            if page is not None:
+                serializer = self.get_serializer(page, many=True)
+                return self.get_paginated_response(serializer.data)
 
         serializer = self.get_serializer(queryset, many=True)
         return Response(serializer.data)
