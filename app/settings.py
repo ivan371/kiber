@@ -30,6 +30,11 @@ ALLOWED_HOSTS = []
 
 # Application definition
 
+CELERY_BROKER_URL = 'redis://localhost:6379/0'
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'
+CELERY_TASK_SERIALIZER = 'json'
+
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -45,6 +50,7 @@ INSTALLED_APPS = [
     'match.apps.MatchConfig',
     'debug_toolbar',
     'oauth2_provider',
+
     # "django_sharding",
 ]
 

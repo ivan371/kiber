@@ -6,6 +6,7 @@ from rest_framework.exceptions import AuthenticationFailed
 from rest_framework.response import Response
 
 from app.views import ShardingViewSet
+from core.tasks import send_mail
 from .serializers import UserSerializer, UserEditSerializer
 from app.api import router
 
@@ -18,6 +19,10 @@ class UserViewSet(ShardingViewSet):
         if self.request.method == 'POST':
             return UserEditSerializer
         return UserSerializer
+
+    def perform_create(self, serializer):
+        send_mail(serializer.validated_data['email'], serializer.validated_data['username'])
+        serializer.save()
 
     @list_route()
     def current(self, request, *args, **kwargs):

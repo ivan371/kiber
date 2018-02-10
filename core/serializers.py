@@ -2,6 +2,8 @@ from django.contrib.auth.models import User
 from django.http import Http404
 from rest_framework import serializers
 
+from core.tasks import send_mail
+
 
 class UserSerializer(serializers.ModelSerializer):
 

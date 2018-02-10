@@ -8,3 +8,4 @@ class TeamConfig(AppConfig):
 
     def ready(self):
         from .views import TeamViewSet
+        import team.signals
