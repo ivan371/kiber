@@ -1,4 +1,5 @@
 import random
+from collections import OrderedDict
 from itertools import chain
 
 from django.shortcuts import get_object_or_404
@@ -21,6 +22,10 @@ def test_connection_to_db(database_name):
 
 
 class ShardingViewSet(viewsets.ModelViewSet):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.count = 0
+
     def get_object(self):
         queryset = self.filter_queryset(self.get_queryset())
         if test_connection_to_db('db2'):
@@ -52,13 +57,14 @@ class ShardingViewSet(viewsets.ModelViewSet):
         return obj
 
     def get_paginated_qs(self, queryset, db1, db2):
+        self.count = queryset.using('db1').count() + queryset.using('db2').count()
         if 'offset' in self.request.query_params:
             offset = int(self.request.query_params['offset'])
             limit = offset + 10
             queryset = list(set(chain(queryset.using(db1)[offset:limit],
                                       queryset.using(db2)[offset:limit])))
         else:
-            queryset = list(set(chain(queryset.using(db1), queryset.using(db2))))
+            queryset = list(set(chain(queryset.using(db1)[:10], queryset.using(db2)[:10])))
         return queryset
 
     def list(self, request, *args, **kwargs):
@@ -71,6 +77,11 @@ class ShardingViewSet(viewsets.ModelViewSet):
                     queryset = self.get_paginated_qs(queryset, 'sl1', 'db2')
             else:
                 queryset = self.get_paginated_qs(queryset, 'db1', 'sl2')
+            serializer = self.get_serializer(queryset, many=True)
+            return Response(OrderedDict([
+                ('count', self.count),
+                ('results', serializer.data)
+            ]))
         else:
             if test_connection_to_db('db2'):
                 if test_connection_to_db('db1'):

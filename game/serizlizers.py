@@ -16,7 +16,7 @@ class GameSerializer(serializers.ModelSerializer):
 class GameSimpleSerializer(ShardingSerializer):
     class Meta:
         model = Game
-        fields = ('name', 'id', 'match', 'date')
+        fields = ('name', 'id', 'date')
 
 
 class GameTeamSerializer(ShardingSerializer):

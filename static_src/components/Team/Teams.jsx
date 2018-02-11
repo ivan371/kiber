@@ -59,7 +59,7 @@ class TeamsComponent extends React.Component {
                     <button name="my" onClick={this.switchTeam}>Мои команды</button>
                     <button name="all" onClick={this.switchTeam}>Все команды</button>
                 </div>
-                {this.state === 'all' ? <TeamForm/> : null}
+                {this.state.team === 'all' ? <TeamForm/> : null}
                 {this.props.isLoading || this.props.isTeamUserLoading ? teamList : <div className="loading"/>}
                 { this.props.isLoading && this.props.count > (10 * (this.props.page - 1)) ? <div>
                     <button onClick={this.onLoadMore}>Показать еще</button>

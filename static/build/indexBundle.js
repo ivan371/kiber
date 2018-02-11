@@ -187,6 +187,7 @@ var urls = exports.urls = {
     },
     game: {
         gameUrl: '/api/games/',
+        gameMatch: '/api/games/?match=',
         gameTeamUrl: '/api/gameteam/'
     },
     match: {
@@ -1282,9 +1283,9 @@ function loadGame(url) {
     return (0, _load.apiLoad)(url, 'GET', types, null, _games.gameNormalize, true);
 }
 
-function gameCreate(url, name, date, match) {
+function gameCreate(url, name, date) {
     var types = [LOAD_GAME, LOAD_GAME_SUCCESS, LOAD_GAME_ERROR];
-    return (0, _load.apiLoad)(url, 'POST', types, JSON.stringify({ name: name, date: date, match: match }), _games.gameNormalize, true);
+    return (0, _load.apiLoad)(url, 'POST', types, JSON.stringify({ name: name, date: date }), _games.gameNormalize, true);
 }
 
 function loadGameTeams(url) {
@@ -7758,8 +7759,8 @@ var GameFormComponent = function (_React$Component) {
                 _this.onCreate(e);
             }
         }, _this.onCreate = function (e) {
-            _this.props.gameCreate(_constans.urls.game.gameUrl, _this.state.name, _this.state.date, _this.props.id);
-            _this.setState({ name: '' });
+            _this.props.gameCreate(_constans.urls.game.gameMatch + _this.props.id, _this.state.name, _this.state.date);
+            _this.setState({ name: '', date: '' });
         }, _temp), _possibleConstructorReturn(_this, _ret);
     }
 
@@ -34518,7 +34519,7 @@ var TeamsComponent = function (_React$Component) {
                         "\u0412\u0441\u0435 \u043A\u043E\u043C\u0430\u043D\u0434\u044B"
                     )
                 ),
-                this.state === 'all' ? _react2.default.createElement(_TeamForm2.default, null) : null,
+                this.state.team === 'all' ? _react2.default.createElement(_TeamForm2.default, null) : null,
                 this.props.isLoading || this.props.isTeamUserLoading ? teamList : _react2.default.createElement("div", { className: "loading" }),
                 this.props.isLoading && this.props.count > 10 * (this.props.page - 1) ? _react2.default.createElement(
                     "div",

@@ -19,8 +19,8 @@ class GameFormComponent extends React.Component {
         }
     };
     onCreate = (e) => {
-        this.props.gameCreate(urls.game.gameUrl, this.state.name, this.state.date, this.props.id);
-        this.setState({name: ''});
+        this.props.gameCreate(urls.game.gameMatch + this.props.id, this.state.name, this.state.date);
+        this.setState({name: '', date: ''});
     };
     render () {
         return(
