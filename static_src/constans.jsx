@@ -11,6 +11,9 @@ export const urls = {
     match: {
         matchUrl: '/api/matches/'
     },
+    turn: {
+        turnsUrl: '/api/turns/',
+    },
     user: {
         userUrl: '/api/users/',
         currentUrl: '/api/users/current/'

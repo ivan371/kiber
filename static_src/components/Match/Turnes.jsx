@@ -3,11 +3,17 @@ import {loadTeams, loadTeamsMore} from "../../actions/teams";
 import {urls} from "../../constans";
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
+import {loadTurns, turnUnmount} from "../../actions/matches";
+import Turn from "./Turn";
 
 class TurnesComponent extends React.Component {
 
     componentDidMount() {
-        // this.props.loadTeams(urls.team.teamUrl);
+        this.props.loadTurns(urls.turn.turnsUrl);
+    }
+
+    componentWillUnmount() {
+        this.props.turnUnmount();
     }
 
     // onLoadMore = (e) => {
@@ -15,39 +21,38 @@ class TurnesComponent extends React.Component {
     // };
 
     render () {
-        // let teamList = [];
-        // if (this.props.isLoading) {
-        //     teamList = this.props.teamList.map(
-        //         (teamId) => {
-        //             return <Team key={ teamId } id={ teamId } />
-        //         }
-        //     );
-        // }
+        let turnList = [];
+        if (this.props.isLoading) {
+            turnList = this.props.turnList.map(
+                (turnId) => {
+                    return <Turn key={ turnId } id={ turnId } />
+                }
+            );
+        }
         return (
             <div className="teams">
                 {/*<TeamForm/>*/}
-                {/*{teamList}*/}
+                {turnList}
                 {/*{ this.props.isLoading && this.props.count > (10 * (this.props.page - 1)) ? <div>*/}
                     {/*<button onClick={this.onLoadMore}>Показать еще</button>*/}
                 {/*</div> : null }*/}
-                Турниры
             </div>
         );
     }
 }
 
 const mapStoreToProps = (state, props) => ({
-    isLoading: state.teams.isLoading,
-    teamList: state.teams.teamsList,
-    count: state.teams.count,
-    page: state.teams.page,
+    isLoading: state.matches.isLoading,
+    turnList: state.matches.turnList,
+    count: state.matches.count,
+    page: state.matches.page,
 });
 
 const mapDispatchToProps = (dispatch) => {
     return {
         ...bindActionCreators({
-            loadTeams,
-            loadTeamsMore,
+            loadTurns,
+            turnUnmount,
         }, dispatch),
     };
 };

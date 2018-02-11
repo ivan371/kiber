@@ -3,13 +3,17 @@ import {loadTeams, loadTeamsMore} from "../../actions/teams";
 import {urls} from "../../constans";
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
-import {loadMatches, loadMatchesMore} from "../../actions/matches";
+import {loadMatches, loadMatchesMore, matchUnmount} from "../../actions/matches";
 import Match from "./Match";
 
 class MatchesComponent extends React.Component {
 
     componentDidMount() {
         this.props.loadMatches(urls.match.matchUrl);
+    }
+
+    componentWillUnmount() {
+        this.props.matchUnmount();
     }
 
     // onLoadMore = (e) => {
@@ -62,6 +66,7 @@ const mapDispatchToProps = (dispatch) => {
         ...bindActionCreators({
             loadMatches,
             loadMatchesMore,
+            matchUnmount
         }, dispatch),
     };
 };

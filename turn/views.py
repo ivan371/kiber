@@ -8,7 +8,7 @@ from .serfializers import  TurnSerializer
 
 
 class TurnViewSet(viewsets.ModelViewSet):
-    queryset = Turn.objects.all().order_by('-id')
+    queryset = Turn.objects.all().order_by('-id').using('db2')
     serializer_class = TurnSerializer
 
 router.register('turns', TurnViewSet)

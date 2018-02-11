@@ -2,7 +2,7 @@ import update from 'react-addons-update';
 import {
     LOAD_MATCH, LOAD_MATCH_SUCCESS, LOAD_MATCHES, LOAD_MATCHES_MORE, LOAD_MATCHES_SUCCESS,
     LOAD_OWN_MATCH_SUCCESS, LOAD_OWN_TURN_SUCCESS, LOAD_TURN, LOAD_TURN_SUCCESS, LOAD_TURNS, LOAD_TURNS_MORE,
-    LOAD_TURNS_SUCCESS, MATCH_UNMOUNT
+    LOAD_TURNS_SUCCESS, MATCH_UNMOUNT, TURN_UNMOUNT
 } from "../actions/matches";
 
 const inititalStore = {
@@ -41,7 +41,15 @@ export default function matches (store = inititalStore, action) {
     switch (action.type) {
         case MATCH_UNMOUNT:
             return update(store, {
-                isLoading: false,
+                isLoading: {
+                    $set: false
+                }
+            });
+        case TURN_UNMOUNT:
+            return update(store, {
+                isLoading: {
+                    $set: false
+                }
             });
         case LOAD_MATCHES:
             return update(store, {

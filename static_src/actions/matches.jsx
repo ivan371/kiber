@@ -19,6 +19,7 @@ export const LOAD_OWN_TURN_SUCCESS = 'LOAD_OWN_TURN_SUCCESS';
 export const LOAD_TURN = 'LOAD_TURN';
 export const LOAD_TURN_ERROR = 'LOAD_TURN_ERROR';
 export const MATCH_UNMOUNT = 'MATCH_UNMOUNT';
+export const TURN_UNMOUNT = 'TURN_UNMOUNT';
 
 export function matchUnmount() {
     return {
@@ -26,6 +27,11 @@ export function matchUnmount() {
     }
 }
 
+export function turnUnmount() {
+    return {
+        type: TURN_UNMOUNT,
+    }
+}
 
 export function loadMatches(url) {
     const types = [LOAD_MATCHES, LOAD_MATCHES_SUCCESS, LOAD_MATCHES_ERROR];
@@ -48,7 +54,7 @@ export function matchCreate(url, name) {
     return apiLoad(url, 'POST', types, JSON.stringify({name}), matchNormalize, true);
 }
 
-export function loadTurnss(url) {
+export function loadTurns(url) {
     const types = [LOAD_TURNS, LOAD_TURNS_SUCCESS, LOAD_TURNS_ERROR];
     return apiLoad(url, 'GET', types, null, turnsNormalize, false);
 }

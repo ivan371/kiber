@@ -193,6 +193,9 @@ var urls = exports.urls = {
     match: {
         matchUrl: '/api/matches/'
     },
+    turn: {
+        turnsUrl: '/api/turns/'
+    },
     user: {
         userUrl: '/api/users/',
         currentUrl: '/api/users/current/'
@@ -2479,13 +2482,14 @@ exports.f = {}.propertyIsEnumerable;
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.MATCH_UNMOUNT = exports.LOAD_TURN_ERROR = exports.LOAD_TURN = exports.LOAD_OWN_TURN_SUCCESS = exports.LOAD_TURN_SUCCESS = exports.LOAD_TURNS_ERROR = exports.LOAD_TURNS = exports.LOAD_TURNS_MORE = exports.LOAD_TURNS_SUCCESS = exports.LOAD_MATCH_ERROR = exports.LOAD_MATCH = exports.LOAD_OWN_MATCH_SUCCESS = exports.LOAD_MATCH_SUCCESS = exports.LOAD_MATCHES_ERROR = exports.LOAD_MATCHES = exports.LOAD_MATCHES_MORE = exports.LOAD_MATCHES_SUCCESS = undefined;
+exports.TURN_UNMOUNT = exports.MATCH_UNMOUNT = exports.LOAD_TURN_ERROR = exports.LOAD_TURN = exports.LOAD_OWN_TURN_SUCCESS = exports.LOAD_TURN_SUCCESS = exports.LOAD_TURNS_ERROR = exports.LOAD_TURNS = exports.LOAD_TURNS_MORE = exports.LOAD_TURNS_SUCCESS = exports.LOAD_MATCH_ERROR = exports.LOAD_MATCH = exports.LOAD_OWN_MATCH_SUCCESS = exports.LOAD_MATCH_SUCCESS = exports.LOAD_MATCHES_ERROR = exports.LOAD_MATCHES = exports.LOAD_MATCHES_MORE = exports.LOAD_MATCHES_SUCCESS = undefined;
 exports.matchUnmount = matchUnmount;
+exports.turnUnmount = turnUnmount;
 exports.loadMatches = loadMatches;
 exports.loadMatchesMore = loadMatchesMore;
 exports.loadMatch = loadMatch;
 exports.matchCreate = matchCreate;
-exports.loadTurnss = loadTurnss;
+exports.loadTurns = loadTurns;
 exports.loadTurnsMore = loadTurnsMore;
 exports.loadTurn = loadTurn;
 exports.turnCreate = turnCreate;
@@ -2514,10 +2518,17 @@ var LOAD_OWN_TURN_SUCCESS = exports.LOAD_OWN_TURN_SUCCESS = 'LOAD_OWN_TURN_SUCCE
 var LOAD_TURN = exports.LOAD_TURN = 'LOAD_TURN';
 var LOAD_TURN_ERROR = exports.LOAD_TURN_ERROR = 'LOAD_TURN_ERROR';
 var MATCH_UNMOUNT = exports.MATCH_UNMOUNT = 'MATCH_UNMOUNT';
+var TURN_UNMOUNT = exports.TURN_UNMOUNT = 'TURN_UNMOUNT';
 
 function matchUnmount() {
     return {
         type: MATCH_UNMOUNT
+    };
+}
+
+function turnUnmount() {
+    return {
+        type: TURN_UNMOUNT
     };
 }
 
@@ -2541,7 +2552,7 @@ function matchCreate(url, name) {
     return (0, _load.apiLoad)(url, 'POST', types, JSON.stringify({ name: name }), _matches.matchNormalize, true);
 }
 
-function loadTurnss(url) {
+function loadTurns(url) {
     var types = [LOAD_TURNS, LOAD_TURNS_SUCCESS, LOAD_TURNS_ERROR];
     return (0, _load.apiLoad)(url, 'GET', types, null, _matches.turnsNormalize, false);
 }
@@ -33220,7 +33231,15 @@ function matches() {
     switch (action.type) {
         case _matches.MATCH_UNMOUNT:
             return (0, _reactAddonsUpdate2.default)(store, {
-                isLoading: false
+                isLoading: {
+                    $set: false
+                }
+            });
+        case _matches.TURN_UNMOUNT:
+            return (0, _reactAddonsUpdate2.default)(store, {
+                isLoading: {
+                    $set: false
+                }
             });
         case _matches.LOAD_MATCHES:
             return (0, _reactAddonsUpdate2.default)(store, {
@@ -34477,6 +34496,11 @@ var TeamsComponent = function (_React$Component) {
             this.props.loadTeamUsers(_constans.urls.team.teamUserUrl);
         }
     }, {
+        key: "componentWillUnmount",
+        value: function componentWillUnmount() {
+            this.props.teamUnmount();
+        }
+    }, {
         key: "componentWillUpdate",
         value: function componentWillUpdate(nextProps, nextState) {
             if (this.state.team !== nextState.team) {
@@ -34553,7 +34577,8 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch) {
     return _extends({}, (0, _redux.bindActionCreators)({
         loadTeams: _teams.loadTeams,
         loadTeamsMore: _teams.loadTeamsMore,
-        loadTeamUsers: _teams.loadTeamUsers
+        loadTeamUsers: _teams.loadTeamUsers,
+        teamUnmount: _teams.teamUnmount
     }, dispatch));
 };
 
@@ -35469,6 +35494,11 @@ var MatchesComponent = function (_React$Component) {
         value: function componentDidMount() {
             this.props.loadMatches(_constans.urls.match.matchUrl);
         }
+    }, {
+        key: "componentWillUnmount",
+        value: function componentWillUnmount() {
+            this.props.matchUnmount();
+        }
 
         // onLoadMore = (e) => {
         //     this.props.loadTeamsMore(urls.team.teamUrl + '?offset=' + (this.props.page - 1) * 10);
@@ -35555,7 +35585,8 @@ var mapStoreToProps = function mapStoreToProps(state, props) {
 var mapDispatchToProps = function mapDispatchToProps(dispatch) {
     return _extends({}, (0, _redux.bindActionCreators)({
         loadMatches: _matches.loadMatches,
-        loadMatchesMore: _matches.loadMatchesMore
+        loadMatchesMore: _matches.loadMatchesMore,
+        matchUnmount: _matches.matchUnmount
     }, dispatch));
 };
 
@@ -35714,6 +35745,12 @@ var _reactRedux = __webpack_require__(3);
 
 var _redux = __webpack_require__(2);
 
+var _matches = __webpack_require__(54);
+
+var _Turn = __webpack_require__(315);
+
+var _Turn2 = _interopRequireDefault(_Turn);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -35733,9 +35770,14 @@ var TurnesComponent = function (_React$Component) {
 
     _createClass(TurnesComponent, [{
         key: "componentDidMount",
-        value: function componentDidMount() {}
-        // this.props.loadTeams(urls.team.teamUrl);
-
+        value: function componentDidMount() {
+            this.props.loadTurns(_constans.urls.turn.turnsUrl);
+        }
+    }, {
+        key: "componentWillUnmount",
+        value: function componentWillUnmount() {
+            this.props.turnUnmount();
+        }
 
         // onLoadMore = (e) => {
         //     this.props.loadTeamsMore(urls.team.teamUrl + '?offset=' + (this.props.page - 1) * 10);
@@ -35744,18 +35786,16 @@ var TurnesComponent = function (_React$Component) {
     }, {
         key: "render",
         value: function render() {
-            // let teamList = [];
-            // if (this.props.isLoading) {
-            //     teamList = this.props.teamList.map(
-            //         (teamId) => {
-            //             return <Team key={ teamId } id={ teamId } />
-            //         }
-            //     );
-            // }
+            var turnList = [];
+            if (this.props.isLoading) {
+                turnList = this.props.turnList.map(function (turnId) {
+                    return _react2.default.createElement(_Turn2.default, { key: turnId, id: turnId });
+                });
+            }
             return _react2.default.createElement(
                 "div",
                 { className: "teams" },
-                "\u0422\u0443\u0440\u043D\u0438\u0440\u044B"
+                turnList
             );
         }
     }]);
@@ -35765,17 +35805,17 @@ var TurnesComponent = function (_React$Component) {
 
 var mapStoreToProps = function mapStoreToProps(state, props) {
     return {
-        isLoading: state.teams.isLoading,
-        teamList: state.teams.teamsList,
-        count: state.teams.count,
-        page: state.teams.page
+        isLoading: state.matches.isLoading,
+        turnList: state.matches.turnList,
+        count: state.matches.count,
+        page: state.matches.page
     };
 };
 
 var mapDispatchToProps = function mapDispatchToProps(dispatch) {
     return _extends({}, (0, _redux.bindActionCreators)({
-        loadTeams: _teams.loadTeams,
-        loadTeamsMore: _teams.loadTeamsMore
+        loadTurns: _matches.loadTurns,
+        turnUnmount: _matches.turnUnmount
     }, dispatch));
 };
 
@@ -36850,6 +36890,86 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch) {
 };
 
 exports.default = (0, _reactRedux.connect)(mapStoreToProps, mapDispatchToProps)(SelfRoomComponent);
+
+/***/ }),
+/* 315 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactRedux = __webpack_require__(3);
+
+var _redux = __webpack_require__(2);
+
+var _propTypes = __webpack_require__(1);
+
+var _propTypes2 = _interopRequireDefault(_propTypes);
+
+var _reactRouterDom = __webpack_require__(12);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var TurnComponent = function (_React$Component) {
+    _inherits(TurnComponent, _React$Component);
+
+    function TurnComponent() {
+        _classCallCheck(this, TurnComponent);
+
+        return _possibleConstructorReturn(this, (TurnComponent.__proto__ || Object.getPrototypeOf(TurnComponent)).apply(this, arguments));
+    }
+
+    _createClass(TurnComponent, [{
+        key: "render",
+        value: function render() {
+            return _react2.default.createElement(
+                "div",
+                { className: "match" },
+                _react2.default.createElement(
+                    "div",
+                    null,
+                    this.props.name
+                )
+            );
+        }
+    }]);
+
+    return TurnComponent;
+}(_react2.default.Component);
+
+TurnComponent.propTypes = {
+    id: _propTypes2.default.number.isRequired
+};
+
+var mapStoreToProps = function mapStoreToProps(state, props) {
+    return {
+        name: state.matches.turns[props.id].name
+    };
+};
+
+var mapDispatchToProps = function mapDispatchToProps(dispatch) {
+    return _extends({}, (0, _redux.bindActionCreators)({}, dispatch));
+};
+
+exports.default = (0, _reactRedux.connect)(mapStoreToProps, mapDispatchToProps)(TurnComponent);
 
 /***/ })
 /******/ ]);

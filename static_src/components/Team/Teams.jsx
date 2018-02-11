@@ -1,5 +1,5 @@
 import React from 'react';
-import {loadTeams, loadTeamsMore, loadTeamUsers} from "../../actions/teams";
+import {loadTeams, loadTeamsMore, loadTeamUsers, teamUnmount} from "../../actions/teams";
 import {urls} from "../../constans";
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
@@ -10,6 +10,10 @@ class TeamsComponent extends React.Component {
 
     componentDidMount() {
         this.props.loadTeamUsers(urls.team.teamUserUrl);
+    }
+
+    componentWillUnmount() {
+        this.props.teamUnmount();
     }
 
     componentWillUpdate(nextProps, nextState) {
@@ -85,6 +89,7 @@ const mapDispatchToProps = (dispatch) => {
             loadTeams,
             loadTeamsMore,
             loadTeamUsers,
+            teamUnmount,
         }, dispatch),
     };
 };
