@@ -99,7 +99,7 @@ DATABASES = {
         'USER': 'test',
         'PASSWORD': 'pass',
         'HOST': 'localhost',
-        'PORT': '3306',
+        'PORT': '3307',
     },
     'db1': {
         'NAME': 'test1',
@@ -107,7 +107,7 @@ DATABASES = {
         'USER': 'test',
         'PASSWORD': 'pass',
         'HOST': 'localhost',
-        'PORT': '3306',
+        'PORT': '3307',
     },
     'db2': {
         'NAME': 'test2',

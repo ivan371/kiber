@@ -3,7 +3,7 @@ from app.views import test_connection_to_db
 
 class PrimaryRouter(object):
     def db_for_read(self, model, **hints):
-        # print(hints, model._meta.verbose_name)
+        print(hints, model._meta.verbose_name)
         # if 'instance' in hints:
         #     if model._meta.app_label == 'game' or model._meta.app_label == 'team':
         #         if hash(hints['instance'].name) % 2:

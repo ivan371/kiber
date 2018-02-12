@@ -57,7 +57,7 @@ class ShardingViewSet(viewsets.ModelViewSet):
         return obj
 
     def get_paginated_qs(self, queryset, db1, db2):
-        self.count = queryset.using('db1').count() + queryset.using('db2').count()
+        self.count = queryset.using(db1).count() + queryset.using(db2).count()
         if 'offset' in self.request.query_params:
             offset = int(self.request.query_params['offset'])
             limit = offset + 10
@@ -69,6 +69,7 @@ class ShardingViewSet(viewsets.ModelViewSet):
 
     def list(self, request, *args, **kwargs):
         queryset = self.filter_queryset(self.get_queryset())
+        print(queryset.model._meta.verbose_name)
         if queryset.model._meta.verbose_name == 'game' or queryset.model._meta.verbose_name == 'user':
             if test_connection_to_db('db2'):
                 if test_connection_to_db('db1'):
